@@ -1,0 +1,19 @@
+{* This is a comment block
+
+Available vars in this template:
+  - review_subject      Recipient name (not implemented)
+  - review_body         Review Body
+  - review_id           Review Id
+  - nickname            Nickname
+  - review_url          Url to Approved review
+  - product_name        Product name that has been reviewed
+
+Use vars: {{var var_name}}
+*}<!--@subject New review ({{var review_subject}}) @-->
+
+<b>{{var nickname}}</b> has posted a new review of <b>{{var product_name}}</b>:<br/><br/>
+{{var review_body}}<br/><br/>
+--<br/>
+Review Id: {{var review_id}}<br/><br/>
+
+You can see this review and approve it via web interface <a href="{{var review_url}}">here</a>.

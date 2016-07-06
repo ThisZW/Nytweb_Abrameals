@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Invitereferrals_Campaign extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Invitereferrals
+ * @package        Invitereferrals_Campaign
+ * @copyright      Copyright (c) 2014
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+-->
+<config>
+    <modules>
+        <Invitereferrals_Campaign>
+            <version>1.1.2</version>
+        </Invitereferrals_Campaign>
+    </modules>
+    <global>
+        <blocks>
+            <Invitereferrals_campaign>
+                <class>Invitereferrals_Campaign_Block</class>
+            </Invitereferrals_campaign>
+        </blocks>
+        <helpers>
+            <campaign>
+                <class>Invitereferrals_Campaign_Helper</class>
+            </campaign>
+        </helpers>
+    </global>
+    <frontend>
+        <layout>
+            <updates>
+                <Invitereferrals_campaign>
+                    <file>Invitereferrals_campaign.xml</file>
+                </Invitereferrals_campaign>
+            </updates>
+        </layout>
+    </frontend>
+    <default>
+        <Invitereferrals_campaign>
+            <Invitereferrals>
+                <active>1</active>
+                <meta_title>InviteReferrals Customer Referral Program</meta_title>
+            </Invitereferrals>
+        </Invitereferrals_campaign>
+    </default>
+</config>

@@ -1,0 +1,7 @@
+phpunit*.phar
+media
+var
+*.png
+*.jpg
+*.gif
+*.pdf

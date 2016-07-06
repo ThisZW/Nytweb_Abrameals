@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <AW_AdvancedReviews>
+            <active>true</active>
+            <codePool>local</codePool>
+        </AW_AdvancedReviews>
+    </modules>
+    <phpunit>
+        <suite>
+            <modules>
+                <AW_AdvancedReviews/>
+            </modules>
+        </suite>
+    </phpunit>
+</config>

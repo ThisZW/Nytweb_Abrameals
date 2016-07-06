@@ -1,0 +1,35 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_AdvancedReviews
+ * @version    2.3.9
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><input type="hidden" id="proscons">
+<input type="hidden" id="pros-state-id" name="pros-state" value="<?php echo $this->isProsOpen() ?>" />
+<input type="hidden" id="cons-state-id" name="cons-state" value="<?php echo $this->isConsOpen() ?>" />
+
+<div id="loading-mask" style="display:none;">
+    <p class="loader" id="loading_mask_loader"><img src="<?php echo $this->getSkinUrl('images/ajax-loader-tr.gif',array('_area'=>'adminhtml', '_package'=>'default')) ?>" alt="<?php echo Mage::helper('adminhtml')->__('Loading...') ?>" /><br /><?php echo Mage::helper('adminhtml')->__('Please wait...') ?></p>
+</div>
+<div id="advancereviews-filters">
+    <?php echo $this->getChildHtml('advancedreviews_ajax-proscons'); ?>
+</div>

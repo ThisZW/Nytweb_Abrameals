@@ -1,0 +1,360 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <AW_AdvancedReviews>
+            <version>2.3.9</version><platform>ce</platform>
+            <depends>
+                <Mage_Review />
+            </depends>
+        </AW_AdvancedReviews>
+    </modules>
+    <global>
+        <rewrite>
+            <aw_advancedreviews_review>
+                <from><![CDATA[#^/admin/catalog_product_review/#]]>
+                </from>
+                <to>/admin/awadvancedreviews_review/</to>
+            </aw_advancedreviews_review>
+        </rewrite>
+        <models>
+            <helpdeskultimate>
+                <rewrite>
+                    <proto_source_advancedreviews>AW_AdvancedReviews_Model_Hdu_Advancedreviews</proto_source_advancedreviews>
+                </rewrite>
+            </helpdeskultimate>
+            <adminhtml>
+                <rewrite>
+                    <url>AW_AdvancedReviews_Model_Patch_Url</url>
+                </rewrite>
+            </adminhtml>
+            <review_mysql4>
+                <rewrite>
+                    <review_collection>AW_AdvancedReviews_Model_Mysql4_Review_Collection</review_collection>
+                    <review>AW_AdvancedReviews_Model_Mysql4_Review</review>
+                </rewrite>
+            </review_mysql4>
+            <advancedreviews>
+                <class>AW_AdvancedReviews_Model</class>
+                <resourceModel>advancedreviews_mysql4</resourceModel>
+            </advancedreviews>
+            <advancedreviews_mysql4>
+                <class>AW_AdvancedReviews_Model_Mysql4</class>
+                <entities>
+                    <helpfulness>
+                        <table>aw_advancedreviews_helpfulness</table>
+                    </helpfulness>
+                    <abuse>
+                        <table>aw_advancedreviews_abuse</table>
+                    </abuse>
+                    <proscons>
+                        <table>aw_advancedreviews_pc</table>
+                    </proscons>
+                    <proscons_store>
+                        <table>aw_advancedreviews_pc_store</table>
+                    </proscons_store>
+                    <proscons_vote>
+                        <table>aw_advancedreviews_pc_vote</table>
+                    </proscons_vote>
+                    <recommend>
+                        <table>aw_advancedreviews_recommend</table>
+                    </recommend>
+                </entities>
+            </advancedreviews_mysql4>
+        </models>
+        <blocks>
+            <advancedreviews>
+                <class>AW_AdvancedReviews_Block</class>
+            </advancedreviews>
+            <adminhtml>
+                <rewrite>
+                    <review_edit>AW_AdvancedReviews_Block_Adminhtml_Review_Edit</review_edit>
+                </rewrite>
+            </adminhtml>
+            <helpdeskultimate>
+                <rewrite>
+                    <adminhtml_tickets_edit_tab_thread>AW_AdvancedReviews_Block_Adminhtml_Tickets_Thread</adminhtml_tickets_edit_tab_thread>
+                </rewrite>
+            </helpdeskultimate>
+            <review>
+                <rewrite></rewrite>
+                <links_rewrite>
+                    <helper>AW_AdvancedReviews_Block_Product_Helper</helper>
+                </links_rewrite>
+            </review>
+        </blocks>
+        <helpers>
+            <advancedreviews>
+                <class>AW_AdvancedReviews_Helper</class>
+            </advancedreviews>
+        </helpers>
+        <resources>
+            <advancedreviews_setup>
+                <setup>
+                    <module>AW_AdvancedReviews</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </advancedreviews_setup>
+            <advancedreviews_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </advancedreviews_write>
+            <advancedreviews_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </advancedreviews_read>
+        </resources>
+        <template>
+            <email>
+                <advancedreviews_email_notification_email_template translate="label" module="advancedreviews">
+                    <label>Advanced Reviews Email Notification</label>
+                    <file>advancedreviews/email_template.html</file>
+                    <type>html</type>
+                </advancedreviews_email_notification_email_template>
+            </email>
+        </template>
+        <events>
+            <controller_front_init_routers>
+                <observers>
+                    <advancedreviews>
+                        <type>singleton</type>
+                        <class>AW_AdvancedReviews_Model_Urlrewrite</class>
+                        <method>init</method>
+                    </advancedreviews>
+                </observers>
+            </controller_front_init_routers>
+            <controller_action_predispatch>
+                <observers>
+                    <front_controller_predispatch>
+                        <type>singleton</type>
+                        <class>AW_AdvancedReviews_Model_Observer</class>
+                        <method>pageLoadBefore</method>
+                    </front_controller_predispatch>
+                </observers>
+            </controller_action_predispatch>
+        </events>
+    </global>
+    <frontend>
+        <routers>
+            <advancedreviews>
+                <use>standard</use>
+                <args>
+                    <module>AW_AdvancedReviews</module>
+                    <frontName>advancedreviews</frontName>
+                </args>
+            </advancedreviews>
+            <review>
+                <args>
+                    <modules>
+                        <AW_AdvancedReviews before="Mage_Review">AW_AdvancedReviews</AW_AdvancedReviews>
+                    </modules>
+                </args>
+            </review>
+        </routers>
+        <translate>
+            <modules>
+                <AW_AdvancedReviews>
+                    <files>
+                        <default>AW_AdvancedReviews.csv</default>
+                    </files>
+                </AW_AdvancedReviews>
+            </modules>
+        </translate>
+        <layout>
+            <updates>
+                <advancedreviews>
+                    <file>advancedreviews.xml</file>
+                </advancedreviews>
+            </updates>
+        </layout>
+    </frontend>
+    <adminhtml>
+        <layout>
+            <updates>
+                <advancedreviews>
+                    <file>advancedreviews.xml</file>
+                </advancedreviews>
+            </updates>
+        </layout>
+        <menu>
+            <catalog>
+                <children>
+                    <reviews_ratings>
+                        <children>
+                            <advancedreviews module="advancedreviews" translate="title">
+                                <title>Advanced Reviews</title>
+                                <children>
+                                    <abused_reviews module="advancedreviews" translate="title">
+                                        <title>Abuse reports</title>
+                                        <action>adminhtml/awadvancedreviews_abuse</action>
+                                        <sort_order>1</sort_order>
+                                    </abused_reviews>
+                                    <pros_menu module="advancedreviews" translate="title">
+                                        <title>Pros</title>
+                                        <action>adminhtml/awadvancedreviews_proscons/pros</action>
+                                        <sort_order>2</sort_order>
+                                    </pros_menu>
+                                    <cons_menu module="advancedreviews" translate="title">
+                                        <title>Cons</title>
+                                        <action>adminhtml/awadvancedreviews_proscons/cons</action>
+                                        <sort_order>3</sort_order>
+                                    </cons_menu>
+                                    <user_defined_menu module="advancedreviews" translate="title">
+                                        <title>User-defined Pros and Cons</title>
+                                        <action>adminhtml/awadvancedreviews_proscons/user</action>
+                                        <sort_order>4</sort_order>
+                                    </user_defined_menu>
+                                </children>
+                            </advancedreviews>
+                        </children>
+                    </reviews_ratings>
+                </children>
+            </catalog>
+        </menu>
+        <translate>
+            <modules>
+                <advancedreviewsmodule>
+                    <files>
+                        <default>AW_AdvancedReviews.csv</default>
+                    </files>
+                </advancedreviewsmodule>
+            </modules>
+        </translate>
+        <acl>
+            <all>
+                <title>Allow Everything</title>
+            </all>
+            <resources>
+                <admin>
+                    <children>
+                        <catalog>
+                            <children>
+                                <reviews_ratings>
+                                    <children>
+                                        <advancedreviews>
+                                            <title>Advanced Reviews</title>
+                                            <sort_order>33</sort_order>
+                                            <children>
+                                                <abused_reviews module="advancedreviews" translate="title">
+                                                    <title>Abuse reports</title>
+                                                    <sort_order>1</sort_order>
+                                                </abused_reviews>
+                                                <pros_menu module="advancedreviews" translate="title">
+                                                    <title>Pros</title>
+                                                    <sort_order>2</sort_order>
+                                                </pros_menu>
+                                                <cons_menu module="advancedreviews" translate="title">
+                                                    <title>Cons</title>
+                                                    <sort_order>3</sort_order>
+                                                </cons_menu>
+                                                <user_defined_menu module="advancedreviews" translate="title">
+                                                    <title>User-defined Pros and Cons</title>
+                                                    <sort_order>4</sort_order>
+                                                </user_defined_menu>
+                                            </children>
+                                        </advancedreviews>
+                                    </children>
+                                </reviews_ratings>
+                            </children>
+                        </catalog>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <advancedreviews>
+                                            <title>Advanced Reviews</title>
+                                        </advancedreviews>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+    </adminhtml>
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <awadvancedreviews after="Mage_Adminhtml">AW_AdvancedReviews_Adminhtml</awadvancedreviews>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+    <default>
+        <advancedreviews>
+            <general>
+                <link_hdu>0</link_hdu>
+            </general>
+            <email_notification>
+                <enabled>0</enabled>
+            </email_notification>
+            <display_options>
+                <show_ordering>1</show_ordering>
+                <show_helpfulness>1</show_helpfulness>
+                <show_socialshare>1</show_socialshare>
+                <show_reportabuse>1</show_reportabuse>
+                <show_prosandcons>1</show_prosandcons>
+                <show_allmylinks>1</show_allmylinks>
+                <show_recommend>1</show_recommend>
+            </display_options>
+            <access_options>
+                <!--allow_only_logged>0</allow_only_logged-->
+                <allow_only_logged_vote>0</allow_only_logged_vote>
+                <allow_only_sold>0</allow_only_sold>
+                <allow_only_logged_abuse>0</allow_only_logged_abuse>
+                <order_status>pending</order_status>
+            </access_options>
+            <ordering_options>
+                <ordering_items>by_date,by_rating,by_helpfulness</ordering_items>
+            </ordering_options>
+            <social_options>
+                <social_block_text>
+<![CDATA[<div style="display: block;">
+    <div style="float:left; margin: 3px;">
+        <a href="http://www.facebook.com/share.php?u=__URL__&amp;t=__TITLE__" target="_blank" style="text-decoration: none;">
+            <img src="__IMAGEPATH__link-facebook.gif" alt="Facebook" title="Add to Facebook" height="16" width="16">
+        </a>
+        <a href="http://digg.com/submit?phase=2&amp;url=__URL__&amp;title=__TITLE__" target="_blank" style="text-decoration: none;">
+            <img src="__IMAGEPATH__link-digg.gif" alt="Digg" title="Digg this" height="16" width="16">
+        </a>
+        <a href="http://del.icio.us/post?noui&amp;jump=close&amp;url=__URL__&amp;title=__TITLE__" target="_blank" style="text-decoration: none;">
+            <img src="__IMAGEPATH__link-delicious.gif" alt="DelIcioUs" title="Save to del.icio.us" height="16" width="16">
+        </a>
+    </div>
+    <div>Share this review</div>
+</div>]]>
+                </social_block_text>
+            </social_options>
+            <proscons_options>
+                <enable_user_defined>1</enable_user_defined>
+                <enable_proscons_moderation>1</enable_proscons_moderation>
+                <pros_display_count>3</pros_display_count>
+                <cons_display_count>3</cons_display_count>
+            </proscons_options>
+            <recommend_options>
+                <recommend_field1>Definitely yes</recommend_field1>
+                <recommend_field2>Likely</recommend_field2>
+                <recommend_field3>Not sure</recommend_field3>
+                <recommend_field4>Unlikely</recommend_field4>
+                <recommend_field5>Never!</recommend_field5>
+            </recommend_options>
+            <productpage_options>
+                <count>3</count>
+                <ordering>by_date</ordering>
+            </productpage_options>
+            <summary_block>
+                <enabled>1</enabled>
+            </summary_block>
+            <antispam>
+                <enabled>1</enabled>
+            </antispam>
+        </advancedreviews>
+    </default>
+</config>

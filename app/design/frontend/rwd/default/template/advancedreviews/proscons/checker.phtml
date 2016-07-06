@@ -1,0 +1,95 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_AdvancedReviews
+ * @version    2.3.9
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php
+?>
+<?php if ( $this->canShow() ):  ?>
+            <table  class="data-table" id="product-review-table" cellspacing="0" style="margin-top: 7px;">
+                <thead>
+                    <tr>
+                        <th><?php echo $this->__('Pros') ?></th>
+                        <th><?php echo $this->__('Cons') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: left; width: 50%; padding-left: 5px;">
+<!-- Pros -->
+    <?php if ( $pros = $this->getProsCollection() ):  ?>
+        <?php if ( count($pros) ):  ?>
+            <ul>
+            <?php $i=0;?>
+            <?php foreach( $pros as $prosItem ): ?>
+                <?php if($i == Mage::helper('advancedreviews')->confProsDisplayCount()):?>
+                    </ul><ul id="hiddenProsList_form" class="hiddenList" hidden="1">
+                <?php endif;?>
+                <li>
+                    <input name="proscons_items[]" id="props-<?php echo $prosItem->getId() ?>" value="<?php echo $prosItem->getId() ?>" type="checkbox">
+                    <label for="props-<?php echo $prosItem->getId() ?>"><?php echo $this->__( $prosItem->getName() ) ?></label>
+                </li>
+            <?php $i++;?>
+            <?php endforeach ?>
+            </ul>
+            <?php if($i>Mage::helper('advancedreviews')->confProsDisplayCount()):?>
+                <a href="#" onclick="showHideProscons('pros',true);return false;" id="hiddenProsListSwitcher_form"><?php echo $this->__( 'show more Pros' ) ?></a>
+            <?php endif;?>
+        <?php endif ?>
+    <?php endif ?>
+    <?php if ( $this->showUserDefined() ): ?>
+        <em><?php echo  $this->__('Enter your Pros, separated by comma') ?></em>
+        <input type="text" name="user-pros" value="" style="width: 100%" />
+    <?php endif ?>
+                        </td>
+                        <td style="text-align: left; width: 50%; padding-left: 5px;">
+<!-- Cons -->
+    <?php if ( $cons = $this->getConsCollection() ):  ?>
+        <?php if ( count($cons) ):  ?>
+            <ul>
+            <?php $i=0;?>
+            <?php foreach( $cons as $consItem ): ?>
+                <?php if($i == Mage::helper('advancedreviews')->confConsDisplayCount()):?>
+                    </ul><ul id="hiddenConsList_form" class="hiddenList" hidden="1">
+                <?php endif;?>
+                <li>
+                    <input name="proscons_items[]" id="conss-<?php echo $consItem->getId() ?>" value="<?php echo $consItem->getId() ?>" type="checkbox">
+                    <label for="conss-<?php echo $consItem->getId() ?>"><?php echo $this->__( $consItem->getName() ) ?></label>
+                </li>
+            <?php $i++;?>
+            <?php endforeach ?>
+            </ul>
+            <?php if($i>Mage::helper('advancedreviews')->confConsDisplayCount()):?>
+                <a href="#" onclick="showHideProscons('cons',true);return false;" id="hiddenConsListSwitcher_form"><?php echo $this->__('show more Cons') ?></a>
+            <?php endif;?>
+        <?php endif ?>
+    <?php endif ?>
+    <?php if ( $this->showUserDefined() ): ?>
+        <em><?php echo  $this->__('Enter your Cons, separated by comma') ?></em>
+        <input type="text" name="user-cons" value="" style="width: 100%" />
+    <?php endif ?>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+<?php endif ?>

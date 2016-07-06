@@ -1,0 +1,49 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_AdvancedReviews
+ * @version    2.3.9
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php if(Mage::helper('advancedreviews')->getSummaryBlockEnabled() && is_array($this->getSummaryBlock())):?>
+<?php if(count($this->getSummaryBlock())):?>
+<div class="advancedreviews-summary-block">
+    <?php foreach($this->getSummaryBlock() as $parametr):?>
+        <?php if($parametr['votes_qty']>0):?>
+        <table style="width:<?php echo round(100/count($this->getSummaryBlock()))?>%">
+            <tr><th colspan="3"><?php echo $parametr['name']?></th></tr>
+            <?php foreach($parametr['votes'] as $mark=>$qty):?>
+                <tr>
+                    <td class="star-name"><?php echo $mark;?> star :</td>
+                    <td class="star-line"><div class="star-bar-container"><div class="star-bar" style="width:<?php echo $qty['percent'];?>%"><?php echo $qty['percent'];?>%</div></div></td>
+                    <td class="star-count">( <?php echo $qty['qty'];?> )</td>
+                </tr>
+            <?php endforeach;?>
+        </table>
+        <?php endif;?>
+    <?php endforeach;?>
+    <div class="spacer"></div>
+    <?php if($parametr['votes_qty']>0):?>
+    <div class="advancedreviews-reviews-count">Total : <?php echo $parametr['votes_qty']?> Reviews</div>
+    <?php endif;?>
+</div>
+<?php endif;?>
+<?php endif;?>

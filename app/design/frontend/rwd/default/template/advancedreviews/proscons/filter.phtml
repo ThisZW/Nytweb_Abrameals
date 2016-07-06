@@ -1,0 +1,156 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_AdvancedReviews
+ * @version    2.3.9
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php if ( $this->canShow() ):  ?>
+<form action="<?php echo  $this->getAction() ?>" method="post" id="proscons-filter-form">
+<fieldset>
+<table border="0" style="width: 100%;">
+    <tbody>
+        <tr>
+            <td style="text-align: left; width: 50%;">
+                <h4<?php if (Mage::helper('advancedreviews')->checkVersion('1.4.0.0')){ echo ' style="color:#E26703;"'; } ?>><?php echo  $this->__('Pros') ?></h4>
+                <?php if ( $this->showPros() ):  ?>
+                    <ul>
+                    <?php $num = 1; $drawDiv = false; ?>
+                    <?php foreach( $this->getProsCollection() as $pros ): ?>
+                        <?php if ( $this->needHidePros( $num ) && (! $drawDiv ) ): ?>
+                    </ul><div style="display:<?php echo $this->isProsOpen() ? 'block' : 'none' ?>;" id="hidden_pros"><ul>
+                            <?php    $drawDiv = true; ?>
+                        <?php endif ?>
+                        <li  style="margin: 0;">
+                            <input name="proscons_items[]" id="pros-<?php echo $pros->getId() ?>" value="<?php echo $pros->getId() ?>" type="checkbox" onclick="postForm();" <?php echo $this->isChecked( $pros->getId() ) ? 'checked' : ''?>>
+                            <!--<a style="text-decoration: none;" href="#" onclick="check('pros-<?php echo $pros->getId() ?>'); postForm();" title="<?php echo  $this->__('See reviews what were marked as &quot;%s&quot;', $pros->getName() ) ?>"><?php echo $this->__( $pros->getName() ) ?></a> (<?php echo  $pros->getVoteCount() ?>)!-->
+                            <label for="pros-<?php echo $pros->getId() ?>" class="prosFilter" onclick="check('pros-<?php echo $pros->getId() ?>'); postForm();" title="<?php echo  $this->__('See reviews what were marked as &quot;%s&quot;', $pros->getName() ) ?>"><?php echo $this->__( $pros->getName() ) ?></label> (<?php echo  $pros->getVoteCount() ?>)
+                        </li>
+                        <?php $num++ ?>
+                    <?php endforeach ?>
+                    <?php echo  $drawDiv ? '</ul></div>' : '</ul>' ?>
+                    <?php if ( $this->needHidePros() ): ?>
+                    <a href="#" onclick="actionProscons('pros', 'show');return false;" id="show_pros_link" style="display:<?php echo $this->isProsOpen() ? 'none' : 'block' ?>;"><em><?php echo $this->__('see more Pros') ?></em></a>
+                    <a href="#" onclick="actionProscons('pros', 'hide');return false;" id="hide_pros_link" style="display:<?php echo $this->isProsOpen() ? 'block' : 'none' ?>;"><em><?php echo $this->__('fewer Pros') ?></em></a>
+                    <?php endif ?>
+                <?php endif ?>
+            </td>
+            <td style="text-align: left; width: 50%;">
+                <h4<?php if (Mage::helper('advancedreviews')->checkVersion('1.4.0.0')){ echo ' style="color:#E26703;"'; } ?>><?php echo  $this->__('Cons') ?></h4>
+                <?php if ( $this->showCons() ): ?>
+                    <ul>
+                    <?php $num = 1; $drawDiv = false; ?>
+                    <?php foreach( $this->getConsCollection() as $cons ): ?>
+                        <?php if ( $this->needHideCons( $num ) && (! $drawDiv ) ): ?>
+                    </ul><div style="display:<?php echo $this->isConsOpen() ? 'block' : 'none' ?>;" id="hidden_cons"><ul>
+                            <?php    $drawDiv = true; ?>
+                        <?php endif ?>
+                        <li  style="margin: 0;">
+                            <input name="proscons_items[]" id="cons-<?php echo $cons->getId() ?>" value="<?php echo $cons->getId() ?>" type="checkbox" onclick="postForm();" <?php echo $this->isChecked( $cons->getId() ) ? 'checked' : ''?>>
+                            <!--<a style="text-decoration: none;" href="#" onclick="check('cons-<?php echo $cons->getId() ?>'); postForm();" title="<?php echo  $this->__('See reviews what were marked as &quot;%s&quot;', $cons->getName() ) ?>"><?php echo $this->__( $cons->getName() ) ?></a> (<?php echo  $cons->getVoteCount() ?>)!-->
+                            <label for="cons-<?php echo $cons->getId() ?>" class="consFilter" onclick="check('cons-<?php echo $cons->getId() ?>'); postForm();" title="<?php echo  $this->__('See reviews what were marked as &quot;%s&quot;', $cons->getName() ) ?>"><?php echo $this->__( $cons->getName() ) ?></label> (<?php echo  $cons->getVoteCount() ?>)
+                        </li>
+                        <?php $num++ ?>
+                    <?php endforeach ?>
+                    <?php echo  $drawDiv ? '</ul></div>' : '</ul>' ?>
+
+                    <?php if ( $this->needHideCons() ): ?>
+                    <a href="#" onclick="actionProscons('cons', 'show');return false;" id="show_cons_link" style="display:<?php echo $this->isConsOpen() ? 'none' : 'block' ?>;"><em><?php echo $this->__('see more Cons') ?></em></a>
+                    <a href="#" onclick="actionProscons('cons', 'hide');return false;" id="hide_cons_link" style="display:<?php echo $this->isConsOpen() ? 'block' : 'none' ?>;"><em><?php echo $this->__('fewer Cons') ?></em></a>
+                    <?php endif ?>
+                <?php endif ?>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<input type="hidden" id="pros-state-id" name="pros-state" value="<?php echo $this->isProsOpen() ?>" />
+<input type="hidden" id="cons-state-id" name="cons-state" value="<?php echo $this->isConsOpen() ?>" />
+<?php if ( $this->isFilterActive() ): ?>
+    <?php if (Mage::helper('advancedreviews')->checkVersion('1.4.0.0')): ?>
+    <div style="margin-top: 3px; margin-bottom: 0px; border-top: 1px solid #E5DCC3;"></div>
+    <?php else: ?>
+    <div class="head" style="margin-top: 3px; margin-bottom: 0px;"></div>
+    <?php endif; ?>
+    <span style="display: none;">
+    <?php echo  $this->__('Results: ') ?><?php echo  $this->getFilteredCount() ?><?php echo  $this->__($this->getFilteredCount() > 1 ? ' reviews' : ' review') ?>
+    <?php if ( $this->hasPros() ): ?>
+        <?php echo  $this->__(' with the Pros') ?>
+        <?php $isFirst = true ?>
+        <?php foreach ( $this->getFilterPros() as $pros ): ?>
+            <?php echo  $isFirst ? '' : ', ' ?><a href="<?php echo  $this->getDeleteUrl( $pros->getId() ) ?>" title="<?php echo  $this->__('Remove &quot;%s&quot; from filter', $pros->getName() ) ?>"><?php echo  $this->__( $pros->getName() ) ?></a>
+            <?php $isFirst = false ?>
+        <?php endforeach ?>
+        <?php if ( $this->hasCons() ): ?>
+            <?php echo  $this->__(' and the Cons') ?>
+            <?php $isFirst = true ?>
+            <?php foreach ( $this->getFilterCons() as $cons ): ?>
+                <?php echo  $isFirst ? '' : ', ' ?><a href="<?php echo  $this->getDeleteUrl( $cons->getId() ) ?>" title="<?php echo  $this->__('Remove &quot;%s&quot; from filter', $cons->getName() ) ?>"><?php echo  $this->__( $cons->getName() ) ?></a>
+                <?php $isFirst = false ?>
+            <?php endforeach ?>
+        <?php endif ?>
+    <?php elseif ( $this->hasCons() ): ?>
+        <?php echo  $this->__(' with the Cons') ?>
+        <?php $isFirst = true ?>
+        <?php foreach ( $this->getFilterCons() as $cons ): ?>
+            <?php echo  $isFirst ? '' : ', ' ?><a href="<?php echo  $this->getDeleteUrl( $cons->getId() ) ?>" title="<?php echo  $this->__('Remove &quot;%s&quot; from filter', $cons->getName() ) ?>"><?php echo  $this->__( $cons->getName() ) ?></a>
+            <?php $isFirst = false ?>
+        <?php endforeach ?>
+    <?php endif ?><br /></span>
+    <a href="<?php echo  $this->getResetFilter() ?>"><em>Reset all filters</em></a>
+<?php endif ?>
+</fieldset>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    function actionProscons(type, action)
+    {
+        proscons = document.getElementById("hidden_" + type);
+        showlink = document.getElementById("show_" + type + "_link");
+        hidelink = document.getElementById("hide_" + type + "_link");
+        state    = document.getElementById(type + "-state-id");
+
+        if (action == "hide")
+        {
+            proscons.style.display = "none";
+            showlink.style.display  = "block";
+            hidelink.style.display  = "none";
+            state.setAttribute('value', 0);
+        }
+        if (action == "show")
+        {
+            proscons.style.display = "block";
+            showlink.style.display = "none";
+            hidelink.style.display = "block";
+            state.setAttribute('value', 1);
+        }
+    }
+    function postForm()
+    {
+        document.getElementById('proscons-filter-form').submit();
+    }
+    function check(elementId)
+    {
+        checkBox = document.getElementById(elementId);
+        checkBox.click();
+    }
+//]]>
+</script>
+<?php endif ?>

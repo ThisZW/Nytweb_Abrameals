@@ -1,0 +1,108 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_AdvancedReviews
+ * @version    2.3.9
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php if ($this->getShowReviews()): ?>
+<?php if (Mage::helper('advancedreviews')->checkVersion('1.4.0.0')): ?>
+    <div class="box-collateral box-reviews" id="customer-reviews">
+        <?php if (count($this->getCollection())):?>
+            <h2><?php echo $this->__('Customer Reviews') ?></h2>
+            <dl>
+            <?php foreach ($this->getCollection() as $_review):?>
+                <dt>
+                    <a href="<?php echo $this->getReviewUrl($_review->getId()) ?>"><?php echo $this->htmlEscape($_review->getTitle()) ?></a> <?php echo $this->__('Review by <span>%s</span>', $this->htmlEscape($_review->getNickname())) ?>
+                    <?php echo $this->getChild('advancedreviews_allmylink')->setReview($_review)->toHtml()  ?>
+                </dt>
+                <dd>
+                    <?php $_votes = $_review->getRatingVotes(); ?>
+                    <?php if (count($_votes)): ?>
+                    <table class="ratings-table">
+                        <col width="1" />
+                        <col />
+                        <tbody>
+                            <?php foreach ($_votes as $_vote): ?>
+                            <tr>
+                                <th><?php echo $_vote->getRatingCode() ?></th>
+                                <td>
+                                    <div class="rating-box">
+                                        <div class="rating" style="width:<?php echo $_vote->getPercent() ?>%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <?php endif; ?>
+                    <?php echo nl2br($this->htmlEscape($_review->getDetail())) ?>
+                    <small class="date"><?php echo $this->__('(Posted on %s)', $this->formatDate($_review->getCreatedAt(), 'long')) ?></small><br />
+                    <?php
+                        echo $this->getChild('advancedreviews_proscons_indicator')->setReviewId( $_review->getId() )->toHtml();
+                        echo $this->getChild('advancedreviews_recommend_indicator')->setReviewId( $_review->getId() )->toHtml();
+                        echo $this->getChild('advancedreviews_footer')->setReviewId( $_review->getId() )->toHtml();
+                    ?>
+                </dd>
+            <?php endforeach; ?>
+            </dl>
+        <?php endif;?>
+    </div>
+<?php else: ?>
+    <?php if (count($this->getCollection())):?>
+    <div class="collateral-box dedicated-review-box" id="customer-reviews">
+
+        <div class="head">
+            <h4><?php echo $this->__('Customer Reviews') ?></h4>
+        </div>
+        <ol style="margin-top:15px;">
+            <?php foreach ($this->getCollection() as $_review):?>
+                <li>
+                    <a href="<?php echo $this->getReviewUrl($_review->getId()) ?>"><strong><?php echo $this->htmlEscape($_review->getTitle()) ?></strong></a> <?php echo $this->__('Review by %s', $this->htmlEscape($_review->getNickname())) ?>
+                    <?php echo $this->getChild('advancedreviews_allmylink')->setReview($_review)->toHtml()  ?>
+                    <table class="ratings-list" cellspacing="0">
+                        <tbody>
+                            <?php foreach ($_review->getRatingVotes() as $_vote): ?>
+                            <tr>
+                                <td class="label"><strong><?php echo $_vote->getRatingCode() ?></strong></td>
+                                <td>
+                                    <div class="rating-box">
+                                        <div class="rating" style="width: <?php echo $_vote->getPercent() ?>%;"></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                    <p><?php echo nl2br($this->htmlEscape($_review->getDetail())) ?><?php echo $this->__('(Posted on %s)', $this->formatDate($_review->getCreatedAt(), 'long')) ?></p>
+                    <?php
+                        echo $this->getChild('advancedreviews_proscons_indicator')->setReviewId( $_review->getId() )->toHtml();
+                        echo $this->getChild('advancedreviews_recommend_indicator')->setReviewId( $_review->getId() )->toHtml();
+                        echo $this->getChild('advancedreviews_footer')->setReviewId( $_review->getId() )->toHtml();
+                    ?>
+                </li>
+            <?php endforeach; ?>
+        </ol>
+    </div>
+    <?php endif; ?>
+    <br/>
+<?php endif; ?>
+<?php endif; ?>

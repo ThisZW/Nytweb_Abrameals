@@ -1,0 +1,173 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * @author     Harshit Jain <support@cubixws.co.uk>
+ * @category   Cubix
+ * @package    Cubix_AddressLabel
+ */
+-->
+<config>
+    <tabs>
+        <cubix_modules translate="label" module="cubix_addresslabel">
+            <label>Cubix Modules</label>
+            <sort_order>500</sort_order>
+        </cubix_modules>
+    </tabs>
+    <sections>
+        <cubix translate="label" module="cubix_addresslabel">
+            <class>separator-top</class>
+            <label>Address Labels</label>
+            <tab>cubix_modules</tab>
+            <sort_order>100</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <addresslabel translate="label">
+                    <label>Label Settings</label>
+                    <frontend_type>text</frontend_type>
+                    <frontend_model>cubix_addresslabel/adminhtml_system_config_form_fieldset_modules_addressLabel</frontend_model>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <number_down translate="label">
+                            <label>Number down</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </number_down>
+                        <number_across translate="label">
+                            <label>Number across</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </number_across>
+                        <page_height translate="label comment">
+                            <label>Page Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[In inches, without any metric symbol. For eg. 8.7]]></comment>
+                        </page_height>
+                        <page_width translate="label">
+                            <label>Page Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[In inches, without any metric symbol. For eg. 6.6]]></comment>
+                        </page_width>
+                        <width translate="label">
+                            <label>Label Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[In inches, without any metric symbol. For eg. 2.95]]></comment>
+                        </width>
+                        <height translate="label">
+                            <label>Label Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[In inches, without any metric symbol. For eg. 2]]></comment>
+                        </height>
+                        <vertical_pitch translate="label">
+                            <label>Vertical pitch</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[In inches, without any metric symbol. For eg. 2.2]]></comment>
+                        </vertical_pitch>
+                        <horizontal_pitch translate="label">
+                            <label>Horizontal pitch</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>80</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[In inches, without any metric symbol. For eg. 3.2]]></comment>
+                        </horizontal_pitch>
+                        <top_margin translate="label">
+                            <label>Top margin</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[In inches, without any metric symbol. For eg. 0.1]]></comment>
+                        </top_margin>
+                        <side_margin translate="label">
+                            <label>Side margin</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[In inches, without any metric symbol. For eg. 0.3]]></comment>
+                        </side_margin>
+                        <top_padding translate="label">
+                            <label>Top padding</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>103</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[In inches, without any metric symbol. For eg. 0.1]]></comment>
+                        </top_padding>
+                        <left_padding translate="label">
+                            <label>Left padding</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>106</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[In inches, without any metric symbol. For eg. 0.1]]></comment>
+                        </left_padding>
+                        <font_size translate="label">
+                            <label>Font Size</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[For eg. 10]]></comment>
+                        </font_size>
+                        <start_from translate="label">
+                            <label>Start printing from label</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <comment><![CDATA[row,column format. Eg. To start from 2nd row 1st column enter 2,1. Leave blank to start printing from first row, first column]]></comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </start_from>
+                        <bold_name translate="label">
+                            <label>Bold customer name?</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </bold_name>
+                    </fields>
+                </addresslabel>
+            </groups>
+        </cubix>
+    </sections>
+</config>

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<config>    
+    <modules>
+        <Exinent_Autoapprovereviews>
+            <version>0.1.0</version>
+        </Exinent_Autoapprovereviews>
+    </modules>
+  <frontend>
+        <routers>
+            <autoapprovereviews>
+                <use>standard</use>
+                <args>
+                    <module>Exinent_Autoapprovereviews</module>
+                    <frontName>autoapprovereviews</frontName>
+                </args>
+            </autoapprovereviews>
+        </routers>  
+    </frontend>
+    <global>
+      <helpers>
+        <autoapprovereviews>
+            <class>Exinent_Autoapprovereviews_Helper</class>
+        </autoapprovereviews>
+      </helpers>
+     <models>
+            <autoapprovereviews>
+                <class>Exinent_Autoapprovereviews_Model</class>
+                <resourceModel>autoapprovereviews_resource</resourceModel>
+            </autoapprovereviews>
+            <autoapprovereviews_resource>
+                <class>Exinent_Autoapprovereviews_Model_Resource</class>
+            </autoapprovereviews_resource>
+        </models>
+          <!-- This rewrite rule could be added to the database instead -->
+        <rewrite>
+            <!-- This is an identifier for your rewrite that should be unique -->
+            <!-- THIS IS THE CLASSNAME IN YOUR OWN CONTROLLER -->
+            <autoapprovereviews>
+                <from><![CDATA[#^/review/product/#]]></from>
+                <!--
+                    - mymodule matches the router frontname below
+                    -  matches the path to your controller
+ 
+                    Considering the router below, "/customcontacts/index/" will be
+                    "translated" to "app/code/local/Amit/Customcontacts/controllers/IndexController.php" (?)
+                -->
+                <to>/autoapprovereviews/product/</to>
+            </autoapprovereviews>
+        </rewrite>	
+    </global>
+    
+      
+    
+
+	<adminhtml>
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <autoapprovereviews_settings>
+                                            <title>Review Settings</title>
+                                        </autoapprovereviews_settings>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+	</adminhtml>
+</config> 

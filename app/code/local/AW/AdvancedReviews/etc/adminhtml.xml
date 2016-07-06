@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <menu>
+        <catalog>
+            <children>
+                <reviews_ratings>
+                    <children>
+                        <advancedreviews module="advancedreviews" translate="title">
+                            <title>Advanced Reviews</title>
+                            <children>
+                                <abused_reviews module="advancedreviews" translate="title">
+                                    <title>Abuse reports</title>
+                                    <action>adminhtml/awadvancedreviews_abuse</action>
+                                    <sort_order>1</sort_order>
+                                </abused_reviews>
+                                <pros_menu module="advancedreviews" translate="title">
+                                    <title>Pros</title>
+                                    <action>adminhtml/awadvancedreviews_proscons/pros</action>
+                                    <sort_order>2</sort_order>
+                                </pros_menu>
+                                <cons_menu module="advancedreviews" translate="title">
+                                    <title>Cons</title>
+                                    <action>adminhtml/awadvancedreviews_proscons/cons</action>
+                                    <sort_order>3</sort_order>
+                                </cons_menu>
+                                <user_defined_menu module="advancedreviews" translate="title">
+                                    <title>User-defined Pros and Cons</title>
+                                    <action>adminhtml/awadvancedreviews_proscons/user</action>
+                                    <sort_order>4</sort_order>
+                                </user_defined_menu>
+                            </children>
+                        </advancedreviews>
+                    </children>
+                </reviews_ratings>
+            </children>
+        </catalog>
+    </menu>
+    <acl>
+        <all>
+            <title>Allow Everything</title>
+        </all>
+        <resources>
+            <admin>
+                <children>
+                    <catalog>
+                        <children>
+                            <reviews_ratings>
+                                <children>
+                                    <advancedreviews>
+                                        <title>Advanced Reviews</title>
+                                        <sort_order>33</sort_order>
+                                        <children>
+                                            <abused_reviews module="advancedreviews" translate="title">
+                                                <title>Abuse reports</title>
+                                                <sort_order>1</sort_order>
+                                            </abused_reviews>
+                                            <pros_menu module="advancedreviews" translate="title">
+                                                <title>Pros</title>
+                                                <sort_order>2</sort_order>
+                                            </pros_menu>
+                                            <cons_menu module="advancedreviews" translate="title">
+                                                <title>Cons</title>
+                                                <sort_order>3</sort_order>
+                                            </cons_menu>
+                                            <user_defined_menu module="advancedreviews" translate="title">
+                                                <title>User-defined Pros and Cons</title>
+                                                <sort_order>4</sort_order>
+                                            </user_defined_menu>
+                                        </children>
+                                    </advancedreviews>
+                                </children>
+                            </reviews_ratings>
+                        </children>
+                    </catalog>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <advancedreviews>
+                                        <title>Advanced Reviews</title>
+                                    </advancedreviews>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

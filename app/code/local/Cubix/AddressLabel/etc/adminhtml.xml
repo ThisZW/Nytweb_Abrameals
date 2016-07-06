@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <cubix translate="title" module="cubix_addresslabel">
+                                        <title>Cubix Modules Section</title>
+                                        <sort_order>60</sort_order>
+                                        <children>
+                                            <addresslabel translate="title" module="cubix_addresslabel">
+                                                <title>Cubix Address Label Section</title>
+                                                <sort_order>60</sort_order>
+                                            </addresslabel>
+                                        </children>
+                                    </cubix>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

@@ -1,0 +1,101 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_AdvancedReviews
+ * @version    2.3.9
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php
+$data = $this->getReviewsAndFilters();
+$reviews = $data['reviews'];
+$filters = $data['votes'];
+?>
+<script type="text/javascript">
+$('filteredReviews-ids').setValue('<?php echo implode(',',$reviews)?>');
+<?php if(count($reviews)):?>
+$('customer-reviews-header').setStyle({display:'block'});
+<?php endif;?>
+</script>
+<?php if(count($filters) && Mage::helper('advancedreviews')->confShowProscons()):?>
+<table class="advancereviews-filters" border="0" style="width: 100%;">
+        <tr>
+            <th><?php echo  $this->__('Pros') ?></th>
+            <th><?php echo  $this->__('Cons') ?></th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                <?php $i=0;?>
+                <?php foreach($filters as $filter):?>
+                    <?php if($filter['type']=='1'):?>
+                        <?php if($i == Mage::helper('advancedreviews')->confProsDisplayCount()):?>
+                            </ul><ul id="hiddenProsList" class="hiddenList" hidden="1">
+                        <?php endif;?>
+                        <li>
+                            <input type="checkbox" <?php echo (in_array($filter['id'], $this->getSelectedFilters())) ? 'checked' : ''?> onclick="filter('<?php echo $filter['id'] ?>');">
+                            <label for="pros-<?php echo $filter['id'] ?>" class="prosFilter" onclick="filter('<?php echo $filter['id'] ?>');" title="<?php echo  $this->__('See reviews what were marked as &quot;%s&quot;', $filter['name'] ) ?>"><?php echo $this->__( $filter['name'] ) ?></label> (<?php echo  $filter['qty'] ?>)
+                        </li>
+                        <?php $i++;?>
+                    <?php endif;?>
+                <?php endforeach;?>
+                </ul>
+                <?php if($i>Mage::helper('advancedreviews')->confProsDisplayCount()):?>
+                    <a href="#" onclick="showHideProscons('pros');return false;" id="hiddenProsListSwitcher"><?php echo $this->__( 'show more Pros' ) ?></a>
+                <?php endif;?>
+            </td>
+            <td>
+                <ul>
+                <?php $i=0;?>
+                <?php foreach($filters as $filter):?>
+                    <?php if($filter['type']=='2'):?>
+                        <?php if($i == Mage::helper('advancedreviews')->confConsDisplayCount()):?>
+                            </ul><ul id="hiddenConsList" class="hiddenList" hidden="1">
+                        <?php endif;?>
+                        <li>
+                            <input type="checkbox" <?php echo (in_array($filter['id'], $this->getSelectedFilters())) ? 'checked' : ''?> onclick="filter('<?php echo $filter['id'] ?>');">
+                            <label for="cons-<?php echo $filter['id'] ?>" class="consFilter" onclick="filter('<?php echo $filter['id'] ?>');" title="<?php echo  $this->__('See reviews what were marked as &quot;%s&quot;', $filter['name'] ) ?>"><?php echo $this->__( $filter['name'] ) ?></label> (<?php echo  $filter['qty'] ?>)
+                        </li>
+                        <?php $i++;?>
+                    <?php endif;?>
+                <?php endforeach;?>
+                </ul>
+                <?php if($i>Mage::helper('advancedreviews')->confConsDisplayCount()):?>
+                    <a href="#" onclick="showHideProscons('cons');return false;" id="hiddenConsListSwitcher"><?php echo $this->__('show more Cons') ?></a>
+                <?php endif;?>
+            </td>
+        </tr>
+</table>
+<?php endif;?>
+<div id="advancereviews-sort-reviews">
+    <?php
+    if(count($reviews))
+        echo Mage::helper('advancedreviews')->getSortBar();
+    ?>
+</div>
+<div id="advancereviews-pager-reviews">
+    <?php echo $this->getChildHtml('advancedreviews_ajax-pager'); ?>
+</div>
+<div id="advancereviews-filteredReviews">
+    <?php echo $this->getChildHtml('advancedreviews_ajax-reviews'); ?>
+</div>
+<div id="advancereviews-pager-reviews-footer">
+    <?php echo $this->getChildHtml('advancedreviews_ajax-pager'); ?>
+</div>

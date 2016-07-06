@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Cubix_AddressLabel>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Cubix_AddressLabel>
+    </modules>
+</config>

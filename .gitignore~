@@ -1,0 +1,8 @@
+phpunit*.phar
+media
+var/cache
+var/log
+var/tmp
+*.png
+*.jpg
+*.gif

@@ -1,0 +1,60 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_AdvancedReviews
+ * @version    2.3.9
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php if (Mage::helper('advancedreviews')->confShowOrdering()): ?>
+<?php if (Mage::helper('advancedreviews')->confOrderingItemsAnyoneSelected()): ?>
+    <?php if (Mage::helper('advancedreviews')->checkVersion('1.4.0.0')): ?>
+    <div class="pager">
+        <div style="float: right;">
+        <?php echo $this->__('Sort by:') ?>
+            <select onchange="setLocation(this.value)" style="width:120px;">
+            <?php foreach(Mage::helper('advancedreviews')->confOrderingItemsArray() as $item): ?>
+                <option value="<?php echo $this->getOptionUrl($item['value']) ?>"<?php if($this->isCurrentOrdering($item['value'])): ?> selected="selected"<?php endif ?>>
+                    <?php echo $this->__($item['label']) ?>
+                </option>
+            <?php endforeach ?>
+            </select>
+            <a href="<?php echo $this->getNextSortUrl() ?>"><img src="<?php echo $this->getSkinUrl('advancedreviews/images/sort_'.$this->getSort().'_arrow.gif') ?>" alt="<?php echo $this->__($this->getNextDescription()) ?>" style="margin-top: 3px;"></a>
+        </div>
+    </div>
+    <?php else: ?>
+    <table class="pager">
+        <tr>
+            <td class="a-right">
+                <?php echo $this->__('Sort by:') ?>
+                    <select onchange="setLocation(this.value)" style="width:120px;">
+                    <?php foreach(Mage::helper('advancedreviews')->confOrderingItemsArray() as $item): ?>
+                        <option value="<?php echo $this->getOptionUrl($item['value']) ?>"<?php if($this->isCurrentOrdering($item['value'])): ?> selected="selected"<?php endif ?>>
+                            <?php echo $this->__($item['label']) ?>
+                        </option>
+                    <?php endforeach ?>
+                    </select>
+                <a href="<?php echo $this->getNextSortUrl() ?>"><img src="<?php echo $this->getSkinUrl('advancedreviews/images/sort_'.$this->getSort().'_arrow.gif') ?>" alt="<?php echo $this->__($this->getNextDescription()) ?>"></a>
+            </td>
+        </tr>
+    </table>
+    <?php endif; ?>
+<?php endif ?>
+<?php endif; ?>

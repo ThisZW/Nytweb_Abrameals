@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <abrameal_weeklycron>
+            <version>0.1.0</version>    <!-- Version number of your module -->
+        </abrameal_weeklycron>
+    </modules>
+    <frontend>
+        <routers>
+            <abrameal_weeklycron>
+                <use>standard</use>
+                <args>
+                    <module>abrameal_weeklycron</module>
+                    <frontName>abrameal_weeklycron</frontName>
+                </args>
+            </abrameal_weeklycron>
+        </routers>
+    </frontend>
+</config>

@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Invitereferrals_Campaign extension
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the MIT License
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/mit-license.php
+ * 
+ * @category       Invitereferrals
+ * @package        Invitereferrals_Campaign
+ * @copyright      Copyright (c) 2014
+ * @license        http://opensource.org/licenses/mit-license.php MIT License
+ */
+--> 
+<config>
+    <sections>
+        <general>
+            <groups>
+                <Invitereferrals_campaign translate="label" module="campaign">
+                    <label>InviteReferrals Customer Referral Program</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>0</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <active translate="label">
+                            <label>Enable Campaign</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </active>
+						<brandid translate="label comment">
+                            <label>Brand ID</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[First create an account with <a href="http://www.invitereferrals.com/campaign/brand/register" target="_blank">This Link</a> to get brandid and Encrypted Key]]></comment>
+                        </brandid>
+                        <apikey translate="label comment">
+                            <label>Encrypted Key</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment><![CDATA[Log into Invitereferrals account and get Brandid and Encrypted Key <a href="http://www.Invitereferrals.com" target="_blank">From Here</a>]]></comment>
+                        </apikey>
+					</fields>
+                </Invitereferrals_campaign>
+            </groups>
+        </general>
+    </sections>
+</config>

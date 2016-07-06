@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<config>
+   <sections>
+        <autoapprovereviews_settings translate="label" module="autoapprovereviews">
+            <label>Product Review Settings</label>
+            <tab>catalog</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>120</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <autoapprovegroup translate="label">
+                    <label>Review Settings for logged in Users</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <autoapprove_enabled translate="label">
+                            <label>Enabled</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </autoapprove_enabled>    
+			 <login_review>
+                            <label>Require Activation for Groups</label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>autoapprovereviews/adminhtml_system_multiselect</source_model>
+                            <sort_order>12</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </login_review>
+                    </fields>
+                </autoapprovegroup>
+            </groups>
+        </autoapprovereviews_settings>
+    </sections>
+</config>

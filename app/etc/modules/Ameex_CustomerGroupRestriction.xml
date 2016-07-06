@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Ameex_CustomerGroupRestriction>
+			<codePool>local</codePool>
+			<active>true</active>
+		</Ameex_CustomerGroupRestriction>
+	</modules>
+</config>

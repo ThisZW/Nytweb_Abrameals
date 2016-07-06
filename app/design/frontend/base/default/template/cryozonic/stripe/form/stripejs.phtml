@@ -1,0 +1,184 @@
+<?php
+$store = Mage::getModel('cryozonic_stripe/standard')->getStore();
+if ($store->getConfig('payment/cryozonic_stripe/stripe_js'))
+{
+    $mode = $store->getConfig('payment/cryozonic_stripe/stripe_mode');
+    $path = "payment/cryozonic_stripe/stripe_{$mode}_pk";
+    $publishableKey = $store->getConfig($path);
+
+    // Also get the customer address when AVS is enabled
+    if (Mage::getStoreConfig('payment/cryozonic_stripe/avs'))
+    {
+        $billingAddress = Mage::helper('cryozonic_stripe')->getBillingAddress();
+
+        if (!empty($billingAddress))
+        {
+            $address_line1 = $billingAddress['address_line1'];
+            $address_zip = $billingAddress['address_zip'];
+        }
+    }
+
+    // Sanitization
+    if (!empty($address_line1))
+    {
+        $address_line1 = preg_replace("/\r|\n/", " ", $address_line1);
+        $address_line1 = addslashes($address_line1);
+    }
+?>
+<script type="text/javascript">
+    initStripe('<?php echo $publishableKey; ?>');
+
+    avs_enabled = <?php echo (Mage::getStoreConfig('payment/cryozonic_stripe/avs') ? 'true' : 'false') ?>;
+    <?php if (!empty($address_line1)): ?>
+    // These are intendedly global variables
+    avs_address_line1 = '<?php echo $address_line1; ?>';
+    avs_address_zip = '<?php echo $address_zip; ?>';
+    <?php endif; ?>
+
+    var form = document.getElementById('payment_form_cryozonic_stripe');
+    if (form) form.onclick = enableInputs;
+
+    // Front end bindings
+    if (typeof IWD != "undefined" && typeof IWD.OPC != "undefined")
+    {
+        // IWD OnePage Checkout override, which is a tad of a mess
+        var placeOrder = function()
+        {
+            if (typeof $j == 'undefined') // IWD 4.0.4
+                $j = $j_opc; // IWD 4.0.8
+
+            var form = $j('#co-payment-form').serializeArray();
+            IWD.OPC.Checkout.xhr = $j.post(IWD.OPC.Checkout.config.baseUrl + 'onepage/json/savePayment',form, IWD.OPC.preparePaymentResponse,'json');
+        };
+
+        IWD.OPC.savePayment = function()
+        {
+            if (IWD.OPC.Checkout.xhr!=null)
+                IWD.OPC.Checkout.xhr.abort();
+
+            IWD.OPC.Checkout.lockPlaceOrder();
+            if (payment.currentMethod == 'cryozonic_stripe')
+                createStripeToken(placeOrder);
+            else
+                placeOrder();
+        }
+    }
+    else if ($('onestepcheckout-form') && typeof $('onestepcheckout-form').proceed == 'undefined')
+    {
+        // Idev OneStepCheckout 4.1.4
+        $('onestepcheckout-form').proceed = $('onestepcheckout-form').submit;
+        $('onestepcheckout-form').submit = function(e)
+        {
+            if (payment.currentMethod != 'cryozonic_stripe')
+                return $('onestepcheckout-form').proceed();
+
+            createStripeToken(function(err)
+            {
+                if (err)
+                    alert(err);
+                else
+                    $('onestepcheckout-form').proceed();
+            });
+        };
+    }
+    else if (typeof AWOnestepcheckoutForm != 'undefined' &&
+        typeof AWOnestepcheckoutForm.prototype.__sendPlaceOrderRequest == 'undefined')
+    {
+        // AheadWorks OneStepCheckout 1.3.5
+        AWOnestepcheckoutForm.prototype.__sendPlaceOrderRequest = AWOnestepcheckoutForm.prototype._sendPlaceOrderRequest;
+        AWOnestepcheckoutForm.prototype._sendPlaceOrderRequest = function()
+        {
+            if (payment.currentMethod != 'cryozonic_stripe')
+                return this.__sendPlaceOrderRequest();
+
+            var me = this;
+            createStripeToken(function(err)
+            {
+                if (err)
+                    alert(err);
+                else
+                    me.__sendPlaceOrderRequest();
+            });
+        };
+        AWOnestepcheckoutPayment.prototype._savePayment = AWOnestepcheckoutPayment.prototype.savePayment;
+        AWOnestepcheckoutPayment.prototype.savePayment = function() {
+            if (payment.currentMethod == 'cryozonic_stripe')
+                return;
+            else
+                return this._savePayment();
+        };
+    }
+    // FireCheckout 3.2.0
+    else if ($('firecheckout-form') && typeof $('firecheckout-form').proceed == 'undefined')
+    {
+        window.addEventListener("load", function()
+        {
+            var btnCheckout = document.getElementsByClassName('btn-checkout')[0];
+            if (btnCheckout)
+            {
+                $('firecheckout-form').proceed = btnCheckout.onclick;
+                btnCheckout.onclick = function()
+                {
+                    if (payment.currentMethod != 'cryozonic_stripe')
+                        return $('firecheckout-form').proceed();
+
+                    createStripeToken(function(err)
+                    {
+                        if (err)
+                            alert(err);
+                        else
+                            $('firecheckout-form').proceed();
+                    });
+                };
+            }
+        });
+    }
+    else
+    {
+        // Default Magento Onepage checkout
+        var btn = document.getElementById('payment-buttons-container');
+        if (btn) btn = btn.getElementsByTagName('button');
+        if (btn && btn[0]) btn = btn[0];
+        if (btn)
+        {
+            btn.onclick = function()
+            {
+                if (payment.currentMethod != 'cryozonic_stripe')
+                    return payment.save();
+
+                createStripeToken(function(err)
+                {
+                    if (err)
+                        alert(err);
+                    else
+                        payment.save();
+                });
+            };
+        }
+    }
+
+    // Multi-shipping payment form
+    window.addEventListener("load", initMultiShippingForm);
+
+    // Back end
+    setTimeout(function(){
+        btn = document.getElementById('order-totals');
+        if (btn) btn = btn.getElementsByTagName('button');
+        if (btn && btn[0]) btn = btn[0];
+        if (btn) btn.onclick = function()
+        {
+            var radioButton = document.getElementById('p_method_cryozonic_stripe');
+            if (radioButton && !radioButton.checked)
+                return order.submit();
+
+            createStripeToken(function(err)
+            {
+                if (err)
+                    alert(err)
+                else
+                    order.submit();
+            });
+        };
+    }, 1000);
+</script>
+<?php } ?>

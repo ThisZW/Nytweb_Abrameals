@@ -1,0 +1,43 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_AdvancedReviews
+ * @version    2.3.9
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><div style="display:block; float:right; text-align:left; margin-bottom:4px;">
+    <?php if ($this->canShowHelpfulnessLink()): ?>
+        <?php if (!Mage::helper('advancedreviews')->isHelpfulnessRegistered($this->getReviewId())): ?>
+            <div>
+                <?php echo $this->__('Do you find this review helpful?') ?>&nbsp;
+                <div style="display:inline-block;">
+                    <strong><a class="helpful-link" onclick="makeHelpful(this)" link="<?php echo $this->getAction('Yes') ?>" style="color: green;"><?php echo $this->__('Yes') ?></a></strong>
+                    <strong><a class="helpful-link" onclick="makeHelpful(this)" link="<?php echo $this->getAction('No') ?>" style="color: red;"><?php echo $this->__('No') ?></a></strong>
+                </div>
+            </div>
+        <?php endif; ?>
+    <?php endif; ?>
+    <?php if ($this->getAllCount()): ?>
+        <div style="text-align: left;">
+            (<strong><?php echo $this->getYesCount() ?></strong><?php echo $this->__(' of ') ?><strong><?php echo $this->getAllCount() ?></strong><?php echo $this->__(' people found this review helpful') ?>)
+        </div>
+    <?php endif ?>
+</div>

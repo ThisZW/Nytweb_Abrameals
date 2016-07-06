@@ -1,0 +1,193 @@
+<?php
+//7-5-2016 by Chris.
+//Custom Startup Page.
+if(Mage::getSingleton('customer/session')->isLoggedIn()){
+	//$customer = Mage::getSingleton('customer/session')->getCustomer();
+	//print_r ($customer);
+	$products = Mage::getModel('catalog/category')->load(3)->getProductCollection()->addAttributeToSelect();
+	//($products);
+	$product_model = Mage::getModel('catalog/product');
+?>
+<div class="startup-container">
+	<h1>Let's Get Started!</h1>
+	<div class="step-title">
+		Step1:
+	</div>
+	<form method="post" action="<?php echo Mage::getBaseUrl(); ?>checkout/cart/startuppagesubmit">
+		<fieldset id="subscription-plans">
+			<div class="step1-container">
+				<div class="subscription-3-meals col-sm-6">
+					<div class="sub-block" id="sel-3meal>
+						<div class="best-value-row"></div>
+						<div class="plan-title">3-Meal Plan</div>
+						<div class="plan-img"><img src=""/></div>
+						<div class="price-per-serving">($11.66 Per Serving)</div>
+						<div class="price-per-week">$69.96 Weekly</div>
+						<div class="plan-shipping">100% Free Shipping</div>
+						<input type="radio" id="radio-3m" class="radio-btn" name="subscription-plans" value="3-per-week">
+					</div>
+				</div>
+				<div class="subscription-5-meals col-sm-6">
+					<div class="sub-block" id="sel-5meal">
+						<div class="best-value-row">Best Value!</div>
+						<div class="plan-title">5-Meal Plan</div>
+						<div class="plan-img"><img src=""/></div>
+						<div class="price-per-serving">($9.99 Per Serving)</div>
+						<div class="price-per-week">$99.9 Weekly</div>
+						<div class="plan-shipping">100% Free Shipping</div>
+						<input type="radio" id="radio-5m" class="radio-btn" name="subscription-plans" value="5-per-week">
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset id="membership-or-buy-pot">
+			<div class="step-title">
+				Step2:  Membership or buy a pot?
+			</div>
+			<div class="step2-container">
+				<div class="membership col-sm-6">
+					<div class="membership-block" id="sel-membership">
+						<div>Membership contents here...</div>
+						<input type="radio" class="radio-btn" name="membership-or-pot" value="membership">
+					</div>
+				</div>
+				<div class="pot col-sm-6">
+					<div class="pot-block" id="sel-pot">
+						<div>Pot contents here...</div>
+						<input type="radio" class="radio-btn" name="membership-or-pot" value="pot">
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		<fieldset id="customer-preference">
+			<div class="step-title">
+				Step3:
+			</div>
+			<div class="customer-preference">
+				<?php	$attributes = Mage::getModel('customer/entity_attribute_collection');
+						foreach ($attributes as $attr){
+							if (strpos($attr->getAttributeCode(), 'preference_') !== False ):
+							//this will output all attribute with prefix preference?>
+								<input type="checkbox" class="customer-preference-block" name="customer-preference[]" value="<?php print_r ($attr->getAttributeCode()); ?>">
+							<?php print_r ($attr->getFrontendLabel()); 
+						endif; }?>
+						</div>
+		</fieldset>
+		<fieldset>
+			<div class="meals-container">
+			<?php foreach ($products as $product){
+				/******************Image resizer*******************/
+				$baseUrl = Mage::getBaseUrl('media') . 'catalog/product/';
+				$baseDir = Mage::getBaseDir('media') . '/catalog/product';
+				$_file_name = $product_model->load($product->getId())->getImage();
+				$org_file_dir = $baseDir . $_file_name;
+				$file_dir = preg_replace('/.*\//', '', $_file_name);
+				$cache_file_Dir = $baseDir. '/startup_cache' . $_file_name;
+				$cache_file_Url = $BaseUrl. 'startup_cache' . $_file_name;
+				echo 'baseurl ' . $baseUrl . '<br>';
+				echo 'baseDir ' . $baseDir . '<br>';
+				echo '_file_name ' . $_file_name . '<br>';
+				echo 'org_file_dir ' . $org_file_dir . '<br>';
+				echo 'cache_file_Dir ' . $cache_file_Dir . '<br>';
+				echo 'cache_file_Url ' . $cache_file_Url . '<br>';
+				echo 'filedir ' . $file_dir;
+				
+				//print_r('<pre>');
+				//print_r($product_model->load($product->getId()));
+				//print_r('</pre>');
+				die;
+				
+				if (file_exists($cahce_file_Dir)){
+					$imgurl = $cache_file_Url;
+				} //else if (file_exists($org_file_dir){
+				//}
+				//***********************end**********************/
+				$name = $product_model->load($product->getId())->getName();
+				//echo '<br>'; ?>
+			<div class="col-sm-4 col-md-3 col-xs-6">
+				<div class="meals">
+					<img class="meal-img" style="height:100%;width:100%" src="<?php echo $imgurl ?>" />
+					<div class="meal-name"> <?php echo $name ?> </div>
+					<div class="meal-inputs">
+						<input type="number" class="meal-qty-selector" name="qty-selector-<?php echo $product->getId(); ?>" value="1">
+						<input type="checkbox" class="meal-checkbox" name="meals[]" value="<?php echo $product->getId(); ?>">
+					</div>
+				</div>	
+			</div>
+			<?php } ?>
+		</fieldset>
+		<button type="submit" title="submit" class="button"><span><span>submit</span></span></button>
+	</form>
+</div>
+<style>
+.topCartContent{
+	display:block !important;
+}
+</style>
+<script type="text/javascript">
+
+
+$("#sel-3meal").click(function(){
+	$("#sel-3meal").css({"border-width":"3px", "border-style":"solid","border-color":"green"});
+  	$("#sel-5meal").css({"border-width":"", "border-style":"","border-color":""});
+	$("#radio-3m").prop("checked",true);
+});
+
+$("#sel-5meal").click(function(){
+	$("#sel-5meal").css({"border-width":"3px", "border-style":"solid","border-color":"green"});
+  	$("#sel-3meal").css({"border-width":"", "border-style":"","border-color":""});
+	$("#radio-5m").prop("checked",true);
+});
+
+
+
+
+
+
+
+</script>
+
+
+<?php } else { ?>
+<div class="startup-not-logged-in">
+	<div class="not-logged-in-message">
+	You have to log in/ register in order to start.
+	<form name="redirect">
+		<b>You will be redirected to the customer/account page in
+		<input type="text" size="1" name="redirect2" style="border:none; width:10px">
+	</form>seconds</b>
+</div>
+
+<script>
+<!--
+
+	/*
+	Count down then redirect script
+	By JavaScript Kit (http://javascriptkit.com)
+	Over 400+ free scripts here!
+	*/
+
+	//change below target URL to your own
+	var targetURL="http://www.abrameals.com/customer/account/login/"
+	//change the second to start counting down from
+	var countdownfrom=5;
+
+
+	var currentsecond=document.redirect.redirect2.value=countdownfrom+1
+	function countredirect(){
+		if (currentsecond!=1){
+			currentsecond-=1
+			document.redirect.redirect2.value=currentsecond
+		}
+		else{
+			window.location=targetURL
+		return
+		}
+		setTimeout("countredirect()",1000)
+	}
+
+	countredirect()
+	//-->
+</script>
+</div>
+<?php } ?>

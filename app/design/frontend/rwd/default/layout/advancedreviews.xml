@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<layout>
+    <!-- Magento 1.2.* controller override fix start -->
+    <advancedreviews_product_list>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+        </reference>
+        <reference name="head">
+            <action method="addJs"><script>varien/product.js</script></action>
+        </reference>
+        <reference name="content">
+            <block type="review/product_view" name="product.info" template="catalog/product/view.phtml">
+                <block type="catalog/product_view_media" name="product.info.media" as="media" template="catalog/product/view/media.phtml">
+                    <action method="disableGallery"/>
+                </block>
+                <block type="catalog/product_view" name="product.info.addto" as="addto" template="catalog/product/view/addto.phtml"/>
+                <block type="catalog/product_view" name="product.info.addtocart" as="addtocart" template="catalog/product/view/addtocart.phtml"/>
+                <block type="catalog/product_view" name="product.tierprices" as="tierprices" template="catalog/product/view/tierprices.phtml"/>
+                <block type="core/template" name="product.info.other" as="other" template="review/product/view/other.phtml"/>
+                <block type="page/html_pager" name="product_review_list.toolbar" />
+                <block type="core/template" name="product_review_list.count" template="review/product/view/count.phtml" />
+                <block type="review/product_view_list" name="product.info.product_additional_data" as="product_additional_data" template="review/product/view/list.phtml">
+                    <block type="review/form" name="product.review.form" as="review_form"/>
+                </block>
+                <block type="advancedreviews/product_view_list" name="product.info.advancedreviews_product_additional_data" as="advancedreviews_product_additional_data" template="advancedreviews/review/product/view/list.phtml">
+                    <block type="advancedreviews/recommend_indicator" name="aw.advancedreviews.recommend.indicator" as="advancedreviews_recommend_indicator" template="advancedreviews/recommend/indicator.phtml" />
+                    <block type="advancedreviews/proscons_indicator" name="aw.advancedreviews.proscons.indicator" as="advancedreviews_proscons_indicator" template="advancedreviews/proscons/indicator.phtml" />
+                    <block type="advancedreviews/proscons_filter" name="aw.advancedreviews.proscons.filter" as="advancedreviews_proscons_filter" template="advancedreviews/proscons/filter.phtml" />
+                    <block type="advancedreviews/ordering" name="aw.advancedreviews.ordering" as="advancedreviews_ordering" />
+                    <block type="core/template" name="aw.advancedreviews.login" as="advancedreviews_login" template="advancedreviews/login.phtml" />
+                    <block type="core/template" name="aw.advancedreviews.needbuy" as="advancedreviews_needbuy" template="advancedreviews/needbuy.phtml" />
+                    <block type="advancedreviews/footer" name="aw.advancedreviews.footer" as="advancedreviews_footer" template="advancedreviews/footer.phtml">
+                        <block type="advancedreviews/helpfulness" name="aw.advancedreviews.helpfulness" as="advancedreviews_helpfulness" template="advancedreviews/helpfulness.phtml" />
+                        <block type="advancedreviews/reportabuse" name="aw.advancedreviews.reportabuse" as="advancedreviews_reportabuse" template="advancedreviews/reportabuse.phtml" />
+                        <block type="advancedreviews/socialshare" name="aw.advancedreviews.socialshare" as="advancedreviews_socialshare" template="advancedreviews/socialshare.phtml" />
+                    </block>
+                    <block type="advancedreviews/product_form" name="product.review.form" as="review_form">
+                        <block type="advancedreviews/proscons_checker" name="aw.advancedreviews.proscons.checker" as="advancedreviews_proscons_checker" template="advancedreviews/proscons/checker.phtml" />
+                        <block type="advancedreviews/recommend_field" name="aw.advancedreviews.recommend.field" as="advancedreviews_recommend_field" template="advancedreviews/recommend/field.phtml" />
+                    </block>
+                    <block type="advancedreviews/allmylink" name="aw.advancedreviews.allmylink" as="advancedreviews_allmylink" template="advancedreviews/allmylink.phtml" />
+                    <block type="advancedreviews/form" name="aw.advancedreviews.form" as="advancedreviews_form">
+                        <action method="awShowReviewFormEvent"></action>
+                    </block>
+                    <action method="disableNativeReviews" />
+                </block>
+            </block>
+        </reference>
+    </advancedreviews_product_list>
+    <advancedreviews_product_view>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="review/view" name="review_view"/>
+            <block type="advancedreviews/view" name="advancedreviews_view">
+                <block type="advancedreviews/recommend_indicator" name="aw.advancedreviews.recommend.indicator" as="advancedreviews_recommend_indicator" template="advancedreviews/recommend/indicator.phtml" />
+                <block type="advancedreviews/proscons_indicator" name="aw.advancedreviews.proscons.indicator" as="advancedreviews_proscons_indicator" template="advancedreviews/proscons/indicator.phtml" />
+                <block type="advancedreviews/footer" name="aw.advancedreviews.footer" as="advancedreviews_footer" template="advancedreviews/footer.phtml">
+                    <block type="advancedreviews/helpfulness" name="aw.advancedreviews.helpfulness" as="advancedreviews_helpfulness" template="advancedreviews/helpfulness.phtml" />
+                    <block type="advancedreviews/reportabuse" name="aw.advancedreviews.reportabuse" as="advancedreviews_reportabuse" template="advancedreviews/reportabuse.phtml" />
+                    <block type="advancedreviews/socialshare" name="aw.advancedreviews.socialshare" as="advancedreviews_socialshare" template="advancedreviews/socialshare.phtml" />
+                </block>
+                <block type="advancedreviews/allmylink" name="aw.advancedreviews.allmylink" as="advancedreviews_allmylink" template="advancedreviews/allmylink.phtml" />
+                <action method="disableNativeView"></action>
+            </block>
+        </reference>
+    </advancedreviews_product_view>
+    <!-- Magento 1.2.* controller override fix end -->
+    <review_product_list>
+        <reference name="content">
+            <block type="core/template" name="advancedreviews.notify" template="advancedreviews/ajax/notify.phtml" before="-"/>
+        </reference>
+        <reference name="product.info">
+            <block type="advancedreviews/ajax_content" name="product.info.advancedreviews_product_additional_data" as="advancedreviews_product_additional_data" template="advancedreviews/ajax/content.phtml">
+                <block type="advancedreviews/summary" name="advancedreviews.summary_reviews" as="advancedreviews_summary_reviews" template="advancedreviews/summary.phtml"/>
+                <block type="advancedreviews/ajax_filter" name="advancedreviews.ajax-content-filter" as="advancedreviews_ajax-content-filter" template="advancedreviews/ajax/filter.phtml">
+                    <block type="advancedreviews/ajax_proscons" name="advancedreviews.ajax_proscons" as="advancedreviews_ajax-proscons" template="advancedreviews/ajax/proscons.phtml">
+                        <block type="advancedreviews/ajax_pager" name="advancedreviews.ajax_pager" as="advancedreviews_ajax-pager" template="advancedreviews/ajax/pager.phtml"/>
+                        <block type="advancedreviews/ajax_reviews" name="advancedreviews.ajax_reviews" as="advancedreviews_ajax-reviews" template="advancedreviews/ajax/reviews.phtml"/>
+                    </block>
+                </block>
+                <block type="advancedreviews/product_form" name="product.review.form" as="review_form">
+                    <block type="advancedreviews/proscons_checker" name="aw.advancedreviews.proscons.checker" as="advancedreviews_proscons_checker" template="advancedreviews/proscons/checker.phtml" />
+                    <block type="advancedreviews/recommend_field" name="aw.advancedreviews.recommend.field" as="advancedreviews_recommend_field" template="advancedreviews/recommend/field.phtml" />
+                </block>
+                <block type="core/template" name="aw.advancedreviews.login" as="advancedreviews_login" template="advancedreviews/login.phtml" />
+                <block type="core/template" name="aw.advancedreviews.needbuy" as="advancedreviews_needbuy" template="advancedreviews/needbuy.phtml" />
+                <block type="advancedreviews/allmylink" name="aw.advancedreviews.allmylink" as="advancedreviews_allmylink" template="advancedreviews/allmylink.phtml" />
+                <block type="advancedreviews/form" name="aw.advancedreviews.form" as="advancedreviews_form">
+                    <action method="awShowReviewFormEvent"></action>
+                </block>
+                <action method="disableNativeReviews" />
+            </block>
+        </reference>
+    </review_product_list>
+    <review_product_view>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="core/template" name="advancedreviews.notify" template="advancedreviews/ajax/notify.phtml" before="-"/>
+            <block type="advancedreviews/view" name="advancedreviews_view">
+                <block type="advancedreviews/recommend_indicator" name="aw.advancedreviews.recommend.indicator" as="advancedreviews_recommend_indicator" template="advancedreviews/recommend/indicator.phtml" />
+                <block type="advancedreviews/proscons_indicator" name="aw.advancedreviews.proscons.indicator" as="advancedreviews_proscons_indicator" template="advancedreviews/proscons/indicator.phtml" />
+                <block type="advancedreviews/footer" name="aw.advancedreviews.footer" as="advancedreviews_footer" template="advancedreviews/footer.phtml">
+                    <block type="advancedreviews/helpfulness" name="aw.advancedreviews.helpfulness" as="advancedreviews_helpfulness" template="advancedreviews/helpfulness.phtml" />
+                    <block type="advancedreviews/reportabuse" name="aw.advancedreviews.reportabuse" as="advancedreviews_reportabuse" template="advancedreviews/reportabuse.phtml" />
+                    <block type="advancedreviews/socialshare" name="aw.advancedreviews.socialshare" as="advancedreviews_socialshare" template="advancedreviews/socialshare.phtml" />
+                </block>
+                <block type="advancedreviews/allmylink" name="aw.advancedreviews.allmylink" as="advancedreviews_allmylink" template="advancedreviews/allmylink.phtml" />
+                <action method="disableNativeView"></action>
+            </block>
+        </reference>
+    </review_product_view>
+    <advancedreviews_allmy_list>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-right.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="core/template" name="advancedreviews.notify" template="advancedreviews/ajax/notify.phtml" before="-"/>
+            <block type="advancedreviews/ajax_content" name="aw.advancedreviews.customerreviews.container" as="advancedreviews_customerreviews" template="advancedreviews/ajax/customerreviews.phtml">
+                <block type="advancedreviews/ajax_filter" name="advancedreviews.ajax-content-filter" as="advancedreviews_ajax-content-filter" template="advancedreviews/ajax/filter.phtml">
+                    <block type="advancedreviews/ajax_proscons" name="advancedreviews.ajax_proscons" as="advancedreviews_ajax-proscons" template="advancedreviews/ajax/proscons.phtml">
+                        <block type="advancedreviews/ajax_pager" name="advancedreviews.ajax_pager" as="advancedreviews_ajax-pager" template="advancedreviews/ajax/pager.phtml"/>
+                        <block type="advancedreviews/ajax_reviews" name="advancedreviews.ajax_reviews" as="advancedreviews_ajax-reviews" template="advancedreviews/ajax/reviews.phtml"/>
+                    </block>
+                </block>
+            </block>
+         </reference>
+    </advancedreviews_allmy_list>
+    <advancedreviews_rss_index>
+        <block type="advancedreviews/rss" output="toHtml" name="aw.advancedreviews.rss"/>
+    </advancedreviews_rss_index>
+    <default>
+        <reference name="head">
+            <action method="addJs"><script>advancedreviews/ajax-reviews.js</script></action>
+            <action method="addCss"><name>advancedreviews/css/advancedreviews.css</name></action>
+        </reference>
+        <block type="advancedreviews/addrss" name="aw.advancedreviews.addrss"/>
+    </default>
+    <catalog_product_view>
+        <reference name="content">
+            <block type="core/template" name="advancedreviews.notify" template="advancedreviews/ajax/notify.phtml" before="-"/>
+        </reference>
+        <reference name="product.info">
+            <block type="advancedreviews/ajax_content" name="product.info.advancedreviews_product_additional_data_tab" as="advancedreviews_product_additional_data" template="advancedreviews/ajax/content.phtml" after="additional">
+                <block type="advancedreviews/summary" name="advancedreviews.summary_reviews" as="advancedreviews_summary_reviews" template="advancedreviews/summary.phtml"/>
+                <block type="advancedreviews/ajax_filter" name="advancedreviews.ajax-content-filter" as="advancedreviews_ajax-content-filter" template="advancedreviews/ajax/filter.phtml">
+                    <block type="advancedreviews/ajax_proscons" name="advancedreviews.ajax_proscons" as="advancedreviews_ajax-proscons" template="advancedreviews/ajax/proscons.phtml">
+                        <block type="advancedreviews/ajax_pager" name="advancedreviews.ajax_pager" as="advancedreviews_ajax-pager" template="advancedreviews/ajax/pager.phtml"/>
+                        <block type="advancedreviews/ajax_reviews" name="advancedreviews.ajax_reviews" as="advancedreviews_ajax-reviews" template="advancedreviews/ajax/tab/reviews.phtml"/>
+                    </block>
+                </block>
+                <block type="advancedreviews/product_form" name="product.review.form" as="review_form">
+                    <block type="advancedreviews/proscons_checker" name="aw.advancedreviews.proscons.checker" as="advancedreviews_proscons_checker" template="advancedreviews/proscons/checker.phtml" />
+                    <block type="advancedreviews/recommend_field" name="aw.advancedreviews.recommend.field" as="advancedreviews_recommend_field" template="advancedreviews/recommend/field.phtml" />
+                </block>
+                <block type="core/template" name="aw.advancedreviews.login" as="advancedreviews_login" template="advancedreviews/login.phtml" />
+                <block type="core/template" name="aw.advancedreviews.needbuy" as="advancedreviews_needbuy" template="advancedreviews/needbuy.phtml" />
+                <block type="advancedreviews/allmylink" name="aw.advancedreviews.allmylink" as="advancedreviews_allmylink" template="advancedreviews/allmylink.phtml" />
+                <block type="advancedreviews/form" name="aw.advancedreviews.form" as="advancedreviews_form">
+                    <action method="awShowReviewFormEvent"></action>
+                </block>
+                <action method="disableNativeReviewsTab" />
+                <action method="addToParentGroup"><group>detailed_info</group></action>
+                <action method="setTitle" translate="value"><value>Reviews</value></action>
+            </block>
+        </reference>
+    </catalog_product_view>
+</layout>

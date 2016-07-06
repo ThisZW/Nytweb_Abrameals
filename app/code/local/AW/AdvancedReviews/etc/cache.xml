@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <placeholders>
+        <advancedreviews_ajax_content_tab>
+            <block>advancedreviews/ajax_content</block>
+            <name>product.info.advancedreviews_product_additional_data_tab</name>
+            <template>advancedreviews/ajax/content.phtml</template>
+            <placeholder>AWAdvancedReviewsModelCachingBlockAjaxTabContent</placeholder>
+            <container>AW_AdvancedReviews_Model_Caching_Block_Ajax_Tab_Content</container>
+            <cache_lifetime>86400</cache_lifetime>
+        </advancedreviews_ajax_content_tab>
+    </placeholders>
+</config>

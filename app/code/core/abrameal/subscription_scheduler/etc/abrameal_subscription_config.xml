@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+ 
+<config>
+    <modules>
+        <Abrameal_SubscriptionScheduler>
+            <version>0.1.0</version>
+        </Abrameal_SubscriptionScheduler>
+    </modules>
+	<frontend>
+        <routers>
+            <Abrameal_SubscriptionScheduler_RouteDefault>
+                <use>standard</use>
+                <args>
+                    <module>Abrameal_SubscriptionScheduler</module>
+                    <frontName>Abrameal_SubscriptionScheduler</frontName>
+                </args>
+            </Abrameal_SubscriptionScheduler_RouteDefault>
+        </routers>
+    </frontend>    
+</config>

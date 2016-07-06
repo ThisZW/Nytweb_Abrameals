@@ -1,0 +1,151 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_AdvancedReviews
+ * @version    2.3.9
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><?php if($this->getCollection()->getSize()): ?>
+    <?php if (Mage::helper('advancedreviews')->checkVersion('1.4.0.0')): ?>
+        <?php if($this->getUseContainer()): ?>
+        <div class="pager">
+        <?php endif ?>
+
+        <?php if($this->getShowAmounts()): ?>
+        <p class="amount">
+            <?php if($this->getLastPageNum()>1): ?>
+                <?php echo $this->__('Items %s to %s of %s total', $this->getFirstNum(), $this->getLastNum(), $this->getTotalNum()) ?>
+            <?php else: ?>
+                <strong><?php echo $this->__('%s Item(s)', $this->getTotalNum()) ?></strong>
+            <?php endif; ?>
+        </p>
+        <?php endif ?>
+
+        <?php if($this->getShowPerPage()): ?>
+        <div class="limiter">
+            <label><?php echo $this->__('Show') ?></label>
+            <select onchange="updatePagerLimit(this.value)">
+            <?php foreach ($this->getAvailableLimit() as  $_key=>$_limit): ?>
+                <option value="<?php echo $_limit?>"<?php if($this->isLimitCurrent($_key)): ?> selected="selected"<?php endif ?>>
+                    <?php echo $_limit ?>
+                </option>
+            <?php endforeach; ?>
+            </select> <?php echo $this->__('per page') ?>
+        </div>
+        <?php endif ?>
+
+        <?php if($this->getLastPageNum()>1): ?>
+        <div class="pages">
+            <strong><?php echo $this->__('Page:') ?></strong>
+            <ol>
+            <?php if (!$this->isFirstPage()): ?>
+                <li>
+                    <a class="previous i-previous" onclick="updatePagerPage('<?php echo $this->getPreviousPageUrl() ?>')" name="page<?php echo $this->getPreviousPageUrl()?>" href="#page<?php echo $this->getPreviousPageUrl()?>" title="<?php echo $this->__('Previous') ?>">
+                        <?php echo $this->__('Previous') ?>
+                    </a>
+                </li>
+            <?php endif;?>
+
+            <?php if ($this->canShowFirst()): ?>
+                <li><a class="first" onclick="updatePagerPage('<?php echo $this->getFirstPageUrl() ?>')" name="page<?php echo $this->getFirstPageUrl()?>" href="#page<?php echo $this->getFirstPageUrl()?>">1</a></li>
+            <?php endif;?>
+
+            <?php if ($this->canShowPreviousJump()): ?>
+                <li><a class="previous_jump" title="" onclick="updatePagerPage('<?php echo $this->getPreviousJumpUrl() ?>')" name="page<?php echo $this->getPreviousJumpUrl()?>" href="#page<?php echo $this->getPreviousJumpUrl()?>">...</a></li>
+            <?php endif;?>
+
+            <?php foreach ($this->getFramePages() as $_page): ?>
+                <?php if ($this->isPageCurrent($_page)): ?>
+                    <li class="current"><?php echo $_page ?></li>
+                <?php else: ?>
+                    <li><a onclick="updatePagerPage('<?php echo $_page ?>')" name="page<?php echo $_page?>" href="#page<?php echo $_page?>"><?php echo $_page?></a></li>
+                <?php endif;?>
+            <?php endforeach;?>
+
+
+            <?php if ($this->canShowNextJump()): ?>
+                <li><a class="next_jump" title="" onclick="updatePagerPage('<?php echo $this->getNextJumpUrl() ?>')" name="page<?php echo $this->getNextJumpUrl()?>" href="#page<?php echo $this->getNextJumpUrl()?>">...</a></li>
+            <?php endif;?>
+
+            <?php if ($this->canShowLast()): ?>
+              <li><a class="last" onclick="updatePagerPage('<?php echo $this->getLastPageUrl() ?>')" name="page<?php echo $this->getLastPageUrl()?>" href="#page<?php echo $this->getLastPageUrl()?>"><?php echo $this->getLastPageNum() ?></a></li>
+            <?php endif;?>
+
+            <?php if (!$this->isLastPage()): ?>
+                <li>
+                    <a class="next i-next" onclick="updatePagerPage('<?php echo $this->getNextPageUrl() ?>')" name="page<?php echo $this->getNextPageUrl()?>" href="#page<?php echo $this->getNextPageUrl()?>" title="<?php echo $this->__('Next') ?>">
+                        <?php echo $this->__('Next') ?>
+                    </a>
+                </li>
+            <?php endif;?>
+            </ol>
+
+        </div>
+        <?php endif; ?>
+
+        <?php if($this->getUseContainer()): ?>
+        </div>
+        <?php endif ?>
+    <?php else: ?>
+        <table class="pager" cellspacing="0">
+            <tr>
+                <td>
+                <?php if($this->getLastPageNum()>1): ?>
+                    <?php echo $this->__('Items %s to %s of %s total', $this->getFirstNum(), $this->getLastNum(), $this->getTotalNum()) ?>
+                <?php else: ?>
+                    <strong><?php echo $this->__('%s Item(s)', $this->getTotalNum()) ?></strong>
+                <?php endif; ?>
+                </td>
+                <?php if($this->getLastPageNum()>1): ?>
+                <td class="pages">
+                    <strong><?php echo $this->__('Page:') ?></strong>
+                    <ol>
+                    <?php if (!$this->isFirstPage()): ?>
+                        <li><a onclick="updatePagerPage('<?php echo $this->getPreviousPageUrl() ?>')" name="page<?php echo $this->getPreviousPageUrl()?>" href="#page<?php echo $this->getPreviousPageUrl()?>" title="<?php echo $this->__('Previous') ?>"> <img src="<?php echo $this->getSkinUrl('images/pager_arrow_left.gif') ?>" alt="<?php echo $this->__('Previous Page') ?>" /></a></li>
+                    <?php endif ?>
+                    <?php foreach ($this->getPages() as $_page): ?>
+                        <?php if ($this->isPageCurrent($_page)): ?>
+                            <li><span class="on"><?php echo $_page ?></span></li>
+                        <?php else: ?>
+                            <li><a onclick="updatePagerPage('<?php echo $_page ?>')" name="page<?php echo $_page?>" href="#page<?php echo $_page?>"><?php echo $_page ?></a></li>
+                        <?php endif ?>
+                    <?php endforeach;; ?>
+                    <?php if (!$this->isLastPage()): ?>
+                        <li><a class="next" onclick="updatePagerPage('<?php echo $this->getNextPageUrl() ?>')" name="page<?php echo $this->getNextPageUrl()?>" href="#page<?php echo $this->getNextPageUrl()?>" title="<?php echo $this->__('Next') ?>"><img src="<?php echo $this->getSkinUrl('images/pager_arrow_right.gif') ?>" alt="<?php echo $this->__('Next Page') ?>"/></a></li>
+                    <?php endif ?>
+                    </ol>
+                </td>
+                <?php endif; ?>
+                <?php if($this->getShowPerPage()): ?>
+                <td class="a-right">
+                    <?php echo $this->__('Show') ?> <select onchange="updatePagerLimit(this.value)">
+                    <?php foreach ($this->getAvailableLimit() as  $_key=>$_limit): ?>
+                        <option value="<?php echo $_limit?>"<?php if($this->isLimitCurrent($_key)): ?> selected="selected"<?php endif ?>>
+                            <?php echo $_limit ?>
+                        </option>
+                    <?php endforeach; ?>
+                    </select> <?php echo $this->__('per page') ?>
+                </td>
+                <?php endif ?>
+            </tr>
+        </table>
+    <?php endif ?>
+<?php endif ?>

@@ -1,0 +1,56 @@
+<?php
+/**
+ * aheadWorks Co.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ *
+ * =================================================================
+ *                 MAGENTO EDITION USAGE NOTICE
+ * =================================================================
+ * This software is designed to work with Magento community edition and
+ * its use on an edition other than specified is prohibited. aheadWorks does not
+ * provide extension support in case of incorrect edition use.
+ * =================================================================
+ *
+ * @category   AW
+ * @package    AW_AdvancedReviews
+ * @version    2.3.9
+ * @copyright  Copyright (c) 2010-2012 aheadWorks Co. (http://www.aheadworks.com)
+ * @license    http://ecommerce.aheadworks.com/AW-LICENSE.txt
+ */
+?><!-- AW_AdvancedReviews_CustimerReviews Block start -->
+<?php
+$dSort = Mage::helper('advancedreviews')->confOrderingItemsArray();
+$dSort = reset($dSort);
+$dSort = $dSort['value'];
+?>
+<div id="customer-reviews" class="box-collateral box-reviews">
+<input type="hidden" id="filteredReviews-product" value="<?php echo $this->getRequest()->getParam('id');?>">
+<input type="hidden" id="filteredReviews-customer" value="<?php echo $this->getRequest()->getParam('customerId');?>">
+<input type="hidden" id="filteredReviews-ids">
+<input type="hidden" id="filteredReviews-pagelimit" value="10">
+<input type="hidden" id="filteredReviews-page" value="1">
+<input type="hidden" id="filteredReviews-type" value="<?php echo $dSort?>">
+<input type="hidden" id="filteredReviews-dir" value="DESC">
+
+<script type="text/javascript">
+    var getFilteredAction = '<?php echo $this->getFilteredAction()?>';
+    var getUpdatePagerAction = '<?php echo $this->getUpdatePagerAction()?>';
+    var getFilteredReviewsAction = '<?php echo $this->getFilteredReviewsAction()?>';
+    //document.observe("dom:loaded", function() {getFiltered();});
+</script>
+<div class="product-info-box">
+    <div class="product-collateral">
+		<div class="head">
+			<h2 id="customer-reviews-header" style="display:none;"><?php echo $this->__('All my Reviews') ?></h2>
+		</div>
+        <?php echo  $this->getChildHtml('advancedreviews_ajax-content-filter'); ?>
+    </div>
+</div>
+</div>
+<!-- AW_AdvancedReviews_CustimerReviews Block end -->

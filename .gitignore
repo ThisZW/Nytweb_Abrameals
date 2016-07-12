@@ -5,3 +5,4 @@ var
 *.jpg
 *.gif
 *.pdf
+error_log

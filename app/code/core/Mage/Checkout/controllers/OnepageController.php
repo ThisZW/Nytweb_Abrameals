@@ -186,7 +186,7 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
      * Checkout page
      */
     public function indexAction()
-    {
+    {   //7-11 by Chris
         if (!Mage::helper('checkout')->canOnepageCheckout()) {
             Mage::getSingleton('checkout/session')->addError($this->__('The onepage checkout is disabled.'));
             $this->_redirect('checkout/cart');
@@ -195,13 +195,19 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         $quote = $this->getOnepage()->getQuote();
 		$quote_qty = $quote->getItemsQty();
 		$weekly_meals_left = Mage::getSingleton('customer/session')->getCustomer()->getWeeklyMealsLeft();
-		$validator = True;
-		if ($weekly_meals_left < $quote_qty) $validator = False;
-        if (!$quote->hasItems() || $quote->getHasError() || !$validator) {
-			Mage::getSingleton('checkout/session')->addError($this->__('The Meal quantity you selected exceeds your subscription plan. Total amount left: '. $weekly_meals_left));
-            $this->_redirect('checkout/cart');
-            return;
-        }
+		//echo $weekly_meals_left;
+		//echo $quote_qty;
+		$group_id = Mage::getSingleton('customer/session')->getCustomerGroupId();
+		if(Mage::getSingleton('customer/session')->isLoggedIn() and ($group_id == 4)){
+			if (($weekly_meals_left < $quote_qty)){
+			//if (!$quote->hasItems() || $quote->getHasError() ) {
+				Mage::getSingleton('checkout/session')->addError($this->__('The Meal quantity you 	selected exceeds your subscription plan. Total amount left: '. $weekly_meals_left));
+				$this->_redirect('menu.html');
+            //$this->_redirect('checkout/cart');
+            //return;
+			//}
+			}
+		} 
         if (!$quote->validateMinimumAmount()) {
             $error = Mage::getStoreConfig('sales/minimum_order/error_message') ?
                 Mage::getStoreConfig('sales/minimum_order/error_message') :

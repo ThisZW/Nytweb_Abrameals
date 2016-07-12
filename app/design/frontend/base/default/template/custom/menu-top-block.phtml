@@ -1,0 +1,14 @@
+
+<?php if( Mage::getSingleton('customer/session')->isLoggedIn() and !Mage::getSingleton('customer/session')->getCustomer()->getCustomerGroupId() == 4){  ?>
+	<div class="step-title">
+				Step4: </div> <div class="title-description" >Contents... </div>
+	<?php   $pref_str = $_GET['pref'];
+			if ($pref_str != 'none'){
+				$pref = explode(",", $pref_str);
+				print_r ($pref);
+				}  ?>
+	<?php } else { ?>
+	
+	
+	
+	<?php } ?>

@@ -301,6 +301,7 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
                 $customer->save();
                 $this->_dispatchRegisterSuccess($customer);
                 $this->_successProcessRegistration($customer);
+				$this->_redirect('get-started.html');
                 return;
             } else {
                 $this->_addSessionError($errors);

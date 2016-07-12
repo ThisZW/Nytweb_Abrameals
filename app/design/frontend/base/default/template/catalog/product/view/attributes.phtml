@@ -40,15 +40,18 @@
         <col width="25%" />
         <col />
         <tbody>
-        <?php foreach ($_additional as $_data): ?>
+		<?php $_id_iterator = 0 ?>
+        <?php foreach ($_additional as $_data):?>
 			<!-- 6/10 by Ron attributes with null values will not be displayed on the product pages-->
 			<?php $_attribute = $_product->getResource()->getAttribute($_data['code']);
 			if (!is_null($_product->getData($_attribute->getAttributeCode())) && ((string)$_attribute->getFrontend()->getValue($_product) != '')) { ?>
             <tr>
-                <th class="label"><?php echo $this->escapeHtml($this->__($_data['label'])) ?></th>
-                <td class="data"><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']) ?></td>
+                <th class="label"><?php $_label = $this->escapeHtml($this->__($_data['label'])); echo $_label?>
+				</th>
+			<td class="data" id="<?php $_id_iterator?>" style="<?php if ($_id_iterator > 0){echo "display:none";} ?>"><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code'])?></td> 
+            <?php } ?>
             </tr>
-			<?php } ?>
+		<?php $_id_iterator++?>
         <?php endforeach; ?>
         </tbody>
     </table>

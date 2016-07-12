@@ -94,8 +94,8 @@ if(!Mage::getSingleton('customer/session')->isLoggedIn() || ($group_id != 4)): ?
                             </tr>
                             </tfoot>
                             <tbody>
-                            <?php //make subscription first.   #  array_reverse
-							foreach(array_reverse($this->getItems()) as $_item): ?>
+                            <?php //make subscription first.  
+							foreach($this->getItems() as $_item): ?>
                                 <?php echo $this->getItemHtml($_item) ?>
                             <?php endforeach ?>
                             </tbody>

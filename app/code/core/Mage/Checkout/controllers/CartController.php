@@ -37,7 +37,17 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
      * @var array
      */
     protected $_cookieCheckActions = array('add');
-
+	
+	/**
+	 * Make some protected variable for membership/pot ids.
+	 * 
+	 * @var int (4)
+	 */
+	protected $plan_5 = 41;
+	protected $plan_3 = 3;
+	protected $membership_id = 43;
+	protected $pot_id = 44;
+	 
     /**
      * Retrieve shopping cart model object
      *
@@ -691,37 +701,54 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
 		
 	*/
 	public function startupPageSubmitAction(){
-		//customer object
+		//cart object
+		$cart   = $this->_getCart()->truncate();
+		//die;
 		$customer = Mage::getSingleton('customer/session')->getCustomer();
 		//get cart obj
-		$cart   = $this->_getCart();
+		
 
 		$subscription_plan = $_POST["subscription-plans"];
+		var_dump($subscription_plan);
 		switch($subscription_plan){
 			case '5-per-week' :
-				$plan_id = 41;
+				$plan_id = $this->plan_5;
 				$limit = 5;
+				break;
 			case '3-per-week' :
-				$plan_id = 3;
-				$limit = 5;
+				$plan_id = $this->plan_3;
+				$limit = 3;
+				break;
 		}
-		
+		echo $plan_id;
 		$membership_or_pot = $_POST["membership-or-pot"];
 		switch($membership_or_pot){
 			case 'membership' :
-				$mem_id = 43;
+				$mem_id = $this->membership_id;
+				break;
 			case 'pot' :
-				$mem_id = 44;
+				$mem_id = $this->pot_id;
+				break;
 		}
 		
 		$customer_preference = $_POST["customer-preference"];
+		//print_r ($customer_preference);
+		//die;
+		$array_pref = array();
 		foreach($customer_preference as $pref){
 			$customer->setData($pref, 1)->save();
+			array_push($array_pref, $pref);
 		}
-		$ids = array($plan_id, $mem_id);
+		$get_pref = 'none';
+		if($customer_preference){
+			$get_pref = implode(',',$array_pref);
+		}
+		$ids = array();
+		
+		array_push($ids, $mem_id, $plan_id);
 		
 		//$cart->addProductsByIds(array($plan_id,$mem_id))->save();
-		$meals_id = $_POST["meals"];
+		/*$meals_id = $_POST["meals"];
 		$counter = 0;
 		foreach($meals_id as $meal_id){
 			$meals_qty = $_POST["qty-selector-" . $meal_id];
@@ -730,13 +757,14 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
 			for($x = 0; $x < $meals_qty; $x++ ){
 				array_push($ids, $meal_id);
 			}
-		}
-		if($counter <= $limit){
+		}*/
+		if($mem_id && $plan_id){
 			$cart->addProductsByIds(array_reverse($ids))->save();
-			$this->_goBack();
+			$this->_redirect('menu.html?pref='. $get_pref);
 		} else {
-			$this->_getSession()->addError('amount exceeded');
+			$this->_getSession()->addError('error');
 			$this->_goBack();
 		}
+	
 	}
 }

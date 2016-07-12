@@ -22,10 +22,11 @@
                     <ol class="mini-products-list">
 					<?php $hasItem = True; ?>
 					<?php $item_price_total = 0; ?>
-                        <?php foreach($_items as $_item): ?>
+                        <?php 	$_items = array_reverse($_items);
+								foreach($_items as $_item): ?>
                             <?php echo $this->getItemHtml($_item);
 								//TODO: 
-							//echo $item_price_total += $_item->getBasePrice();
+							 $item_price_total += $_item->getBasePrice();
 							?>
                         <?php endforeach; ?>
                     </ol>
@@ -39,9 +40,12 @@
 						</span>
                     </div>
                     <div class="actions">
-                        <a class="btn btn-default" href="<?php echo $this->getUrl('checkout/cart'); ?>"><i class="icon-basket"></i><?php echo $this->__('View Cart') ?></a>
-                <?php if($_cartQty && $this->isPossibleOnepageCheckout()): ?>
-                        <a class="btn btn-default" href="<?php echo $this->getCheckoutUrl(); ?>"><i class="icon-right-thin"></i><?php echo $this->__('Checkout') ?></a>
+                       <!-- <a class="btn btn-default" href="<?php echo $this->getUrl('checkout/cart'); ?>"><i class="icon-basket"></i><?php echo $this->__('View Cart') ?></a>  -->
+					   <?php if($_cartQty && $this->isPossibleOnepageCheckout()): ?>
+                        <a style="text-align:center
+						" id="btn-checkout-confirm" class="btn btn-default" href="#<?php //echo $this->getCheckoutUrl(); ?>"><i class="icon-right-thin"></i><?php echo $this->__('Checkout') ?></a>
+						<div class="checkout-fail-notice">
+						amount exceed</div>
                 <?php endif; ?>
                         <div class="clearer"></div>
                     </div>
@@ -64,13 +68,15 @@
             return false;
         });
     });
-	*/  
-	
+	*/ 
 	var hasItem = <?php if ($hasItem == True){echo 1;}
 						else{ echo 0;}		?>;
 	
 	//hide on all other than membership,subscription and menu pages by Ron 6/14/2016
 	jQuery(function($){
+
+
+	
 		if (( $('.category-subscription-plans').length > 0 || $('.category-menu').length > 0 )&& hasItem == 1)  {
 			$('.topCartContent').show();
 			$('.collapse').show();

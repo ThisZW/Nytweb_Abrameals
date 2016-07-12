@@ -7,7 +7,12 @@
     $aspect_ratio = Mage::getStoreConfig("porto_settings/category/aspect_ratio",$code);
     $ratio_width = Mage::getStoreConfig("porto_settings/category/ratio_width",$code);
     $ratio_height = Mage::getStoreConfig("porto_settings/category/ratio_height",$code);
-    
+	//customers has to log in to add plans
+    if(Mage::getSingleton('customer/session')->isLoggedIn()){
+	$is_logged_in = 1;
+	}
+	
+
     if(!$ratio_width)
         $ratio_width = 300;
     if(!$ratio_height)
@@ -430,7 +435,15 @@ var i = 0;
                         <?php endif; ?>
                         <?php if($product->isSaleable()): ?>
                             <?php  if ( !($product->getTypeInstance(true)->hasOptions($product)/*$_product->getData('has_options')*/ || $product->isGrouped()) ) :  ?>
-                                <a href="<?php if(!Mage::getStoreConfig("ajaxcart/addtocart/enablecategory", $code) && !Mage::getStoreConfig("porto_settings/category/qty_field", $code)): ?><?php echo $this->getAddToCartUrl($_product) ?><?php else: ?>javascript:void(0)<?php endif; ?>" class="addtocart" title="<?php echo $this->__('Add to Cart') ?>" <?php if(Mage::getStoreConfig("ajaxcart/addtocart/enablecategory", $code)):?>onclick="setLocationAjax(this,'<?php echo $this->getAddToCartUrl($_product) ?>','<?php echo $_product->getId(); ?>')"<?php elseif(Mage::getStoreConfig("porto_settings/category/qty_field", $code)): ?>onclick="document.getElementById('addtocart_form_<?php echo $_product->getId(); ?>').submit()"<?php endif; ?>><i class="icon-cart"></i><span>&nbsp;<?php echo $this->__('Add to Cart') ?></span></a>
+							<?php if ($is_logged_in){ ?>
+									<a href="<?php if(!Mage::getStoreConfig("ajaxcart/addtocart/enablecategory", $code) && !Mage::getStoreConfig("porto_settings/category/qty_field", $code)): ?><?php echo $this->getAddToCartUrl($_product) ?><?php else: ?>javascript:void(0)<?php endif; ?>" class="addtocart" title="<?php echo $this->__('Add to Cart') ?>" <?php if(Mage::getStoreConfig("ajaxcart/addtocart/enablecategory", $code)):?>
+									onclick=" if (validateLimit() == true){ setLocationAjax(this,'<?php echo $this->getAddToCartUrl($_product) ?>','<?php echo $_product->getId(); ?>')} else { alert('Amount exceed, if you want more, please switch to another plan.') }"
+									<?php elseif(Mage::getStoreConfig("porto_settings/category/qty_field", $code)): 
+									?>onclick="document.getElementById('addtocart_form_<?php echo $_product->getId(); ?>').submit()"<?php endif; ?>><i class="icon-cart"></i><span>&nbsp;<?php echo $this->__('Add to Cart') ?></span></a>
+								<?php } else { ?>
+									<a href="javascript:void(0);" class="addtocart outofstock" title="<?php echo $this->__('Sign in to add plans') ?>"><?php echo $this->__('Sign in to add plans') ?></span></a>
+								<?php } ?>
+								
                             <?php else : ?>
                                 <a href="<?php if(Mage::getStoreConfig("ajaxcart/addtocart/enablecategory", $code)):?>javascript:showOptions('<?php echo $_product->getId()?>')<?php else: ?><?php echo $this->getAddToCartUrl($_product) ?><?php endif; ?>" class="addtocart" title="<?php echo $this->__('Add to Cart') ?>"><i class="icon-cart"></i><span>&nbsp;<?php echo $this->__('Add to Cart') ?></span></a>
                                 <a href='<?php echo $this->getUrl('ajaxcart/index/options',array('product_id'=>$_product->getId()));?>' class='fancybox' id='fancybox<?php echo $_product->getId()?>' style='display:none'>Options</a>
@@ -449,6 +462,29 @@ var i = 0;
         <?php endforeach ?>
         </ul>
         <script type="text/javascript">
+		//$('.button.btn-cart').click(function(){
+		function validateLimit(){
+			var qty = 0;
+			var limit = 0;
+			jQuery('.inner-wrapper> .mini-products-list li').each(function(i,e){
+				if (typeof jQuery(e).data('qty') !== "undefined"){ 
+					qty += (jQuery(e).data('qty'));
+				}
+			});
+			jQuery('.inner-wrapper> .mini-products-list li').each(function(i,e){
+				if (typeof jQuery(e).data('planLimit') !== "undefined"){ 
+					limit += (jQuery(e).data('planLimit'));
+				}
+			});
+			console.log(qty+' '+limit);
+			if ( (qty+1) > limit) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+		//});
+		
             jQuery('.col-main .products-grid li:nth-child(2n)').addClass('nth-child-2n');
             jQuery('.col-main .products-grid li:nth-child(2n+1)').addClass('nth-child-2np1');
             jQuery('.col-main .products-grid li:nth-child(3n)').addClass('nth-child-3n');

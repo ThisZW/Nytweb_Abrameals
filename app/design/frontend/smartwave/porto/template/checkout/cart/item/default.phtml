@@ -34,7 +34,9 @@ $_product = Mage::getModel('catalog/product')->load($item_id);
 $ids = $_product->getCategoryIds();
 //print_r($ids);
 if (in_array(4 , $ids)) //sub plan cat id 4
-$is_subscription = True;
+	$is_subscription = True;
+if (in_array(5 , $ids))
+	$is_mem_or_pot = True;
 $isVisibleProduct = $_item->getProduct()->isVisibleInSiteVisibility();
 $canApplyMsrp = Mage::helper('catalog')->canApplyMsrp($_item->getProduct(), Mage_Catalog_Model_Product_Attribute_Source_Msrp_Type::TYPE_BEFORE_ORDER_CONFIRM);
 
@@ -43,7 +45,9 @@ $code  = $store->getCode();
 $aspect_ratio = Mage::getStoreConfig("porto_settings/category/aspect_ratio",$code);
 $ratio = ($aspect_ratio || (!$aspect_ratio && Mage::getStoreConfig("porto_settings/category/ratio_width",$code) == 0))?1:(Mage::getStoreConfig("porto_settings/category/ratio_height",$code)/Mage::getStoreConfig("porto_settings/category/ratio_width",$code));
 ?>
-<tr <?php if($is_subscription) echo "class=\"subscription-shopping-cart\""?>>
+<tr <?php if($is_subscription) echo "class=\"subscription-shopping-cart\""?>
+	<?php if($is_mem_or_pot) echo "class=\"membership-or-pot-shopping-cart\""?>	
+	data-product-id="<?php echo $i; ?>">
     <td class="action-td"><a href="<?php echo $this->getDeleteUrl()?>" title="<?php echo $this->__('Remove item')?>" class="btn-remove btn-remove2"></a></td>
     <td class="pr-img-td"><?php if ($this->hasProductUrl()):?><a href="<?php echo $this->getProductUrl() ?>" title="<?php echo $this->htmlEscape($this->getProductName()) ?>" class="product-image"><?php endif;?><img src="<?php echo $this->getProductThumbnail()->resize(80,80*$ratio); ?>" width="80" height="<?php echo 80*$ratio ?>" alt="<?php echo $this->htmlEscape($this->getProductName()) ?>" /><?php if ($this->hasProductUrl()):?></a><?php endif;?></td>
     <td class="product-name-td">
@@ -189,7 +193,8 @@ $ratio = ($aspect_ratio || (!$aspect_ratio && Mage::getStoreConfig("porto_settin
         <?php endif; ?>
     <?php endif; ?>
     <td>
-		<?php if(!$is_subscription): //don't show this column if sub type?>
+		<?php if(!$is_subscription & !$is_mem_or_pot): //don't show this column if sub type & membership or pot
+		?>
         <div class="qty-holder">
             <a href="javascript:void(0)" class="table_qty_dec">-</a><input name="cart[<?php echo $_item->getId() ?>][qty]" data-cart-item-id="<?php echo $this->jsQuoteEscape($_item->getSku()) ?>" value="<?php echo $this->getQty() ?>" size="4" title="<?php echo $this->__('Qty') ?>" class="input-text qty" maxlength="12" /><a href="javascript:void(0)" class="table_qty_inc">+</a>
             <?php if ($isVisibleProduct): ?>

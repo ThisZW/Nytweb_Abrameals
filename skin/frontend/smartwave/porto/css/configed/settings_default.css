@@ -1,6 +1,6 @@
 /**
  * WARNING: Do not change this file. Your changes will be lost.
- * 2016-07-02 16:12:10 */
+ * 2016-07-11 19:00:11 */
 
 @media (max-width: 480px) {
     .category-products .products-grid li.item {
@@ -115,8 +115,11 @@ color:black;
 .product-name-td > .item-options > dt:nth-of-type(1){display:none}
 .product-name-td > .item-options > dd:nth-of-type(1){display:none}
 /*shopping cart first row modification */
-.subscription-shopping-cart {
-border:3px solid #848484;}
+.subscription-shopping-cart{
+ border-bottom:2px solid black !important;
+}
+.membership-or-pot-shopping-cart{
+ border-bottom:2px solid green !important;}
 .subscription-shopping-cart > .action-td > a  {
 display:none;}
 

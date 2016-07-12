@@ -13,14 +13,15 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()){
 	<div class="step-title">
 		Step1:
 	</div>
-	<form method="post" action="<?php echo Mage::getBaseUrl(); ?>checkout/cart/startuppagesubmit">
+	<div class="title-description" >Choose your weekly plans here! </div>
+	<form method="post" action="<?php echo Mage::getBaseUrl(); ?>checkout/cart/startuppagesubmit">	<!-- <form method="post" action="<?php echo Mage::getBaseUrl(); ?>menu.html"> -->
 		<fieldset id="subscription-plans">
 			<div class="step1-container">
 				<div class="subscription-3-meals col-sm-6">
-					<div class="sub-block" id="sel-3meal>
+					<div class="sub-block" id="sel-3meal">
 						<div class="best-value-row"></div>
 						<div class="plan-title">3-Meal Plan</div>
-						<div class="plan-img"><img src=""/></div>
+						<div class="plan-img"><img src="http://www.abrameals.com/media/catalog/product/i/m/img_0734_1.jpg"/></div>
 						<div class="price-per-serving">($11.66 Per Serving)</div>
 						<div class="price-per-week">$69.96 Weekly</div>
 						<div class="plan-shipping">100% Free Shipping</div>
@@ -31,7 +32,7 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()){
 					<div class="sub-block" id="sel-5meal">
 						<div class="best-value-row">Best Value!</div>
 						<div class="plan-title">5-Meal Plan</div>
-						<div class="plan-img"><img src=""/></div>
+						<div class="plan-img"><img src="http://www.abrameals.com/media/catalog/product/i/m/img_0733_1.jpg"/></div>
 						<div class="price-per-serving">($9.99 Per Serving)</div>
 						<div class="price-per-week">$99.9 Weekly</div>
 						<div class="plan-shipping">100% Free Shipping</div>
@@ -42,38 +43,49 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()){
 		</fieldset>
 		<fieldset id="membership-or-buy-pot">
 			<div class="step-title">
-				Step2:  Membership or buy a pot?
-			</div>
+				Step2: </div> <div class="title-description" >Membership or buy a pot? </div>
+			
 			<div class="step2-container">
 				<div class="membership col-sm-6">
-					<div class="membership-block" id="sel-membership">
+					<div class="membership-block sub-block" id="sel-member">
 						<div>Membership contents here...</div>
-						<input type="radio" class="radio-btn" name="membership-or-pot" value="membership">
+						<input type="radio" class="radio-btn" id="member-btn" name="membership-or-pot" value="membership">
 					</div>
 				</div>
 				<div class="pot col-sm-6">
-					<div class="pot-block" id="sel-pot">
+					<div class="pot-block sub-block" id="sel-pot">
 						<div>Pot contents here...</div>
-						<input type="radio" class="radio-btn" name="membership-or-pot" value="pot">
+						<input type="radio" class="radio-btn" id="pot-btn" name="membership-or-pot" value="pot">
 					</div>
 				</div>
 			</div>
 		</fieldset>
-		<fieldset id="customer-preference">
+		<fieldset id="customer-preference" >
 			<div class="step-title">
 				Step3:
 			</div>
+			<div class="title-description" >Choose your self preferences!</div>
 			<div class="customer-preference">
-				<?php	$attributes = Mage::getModel('customer/entity_attribute_collection');
+				<?php	$attcount = 0;
+						$attributes = Mage::getModel('customer/entity_attribute_collection');
 						foreach ($attributes as $attr){
 							if (strpos($attr->getAttributeCode(), 'preference_') !== False ):
+							$attcount++;
 							//this will output all attribute with prefix preference?>
-								<input type="checkbox" class="customer-preference-block" name="customer-preference[]" value="<?php print_r ($attr->getAttributeCode()); ?>">
-							<?php print_r ($attr->getFrontendLabel()); 
-						endif; }?>
+							<div class="customer-preference-block-outer"><span class="customer-preference-block">	<input type="checkbox" class="customer-preference-input" name="customer-preference[]"  value="<?php print_r ($attr->getAttributeCode()); ?>">
+							<?php print_r ($attr->getFrontendLabel());  ?></span></div>
+					<?php endif; }?>
 						</div>
-		</fieldset>
-		<fieldset>
+						<style>
+						 .customer-preference{
+							 width : <?php echo $attcount * 103;?>px;
+						 }
+						 </style>
+		</fieldset><!--
+		<fieldset id="meals-selection" class="hide-first">
+			<div class="step-title">
+				Step4:
+			</div>
 			<div class="meals-container">
 			<?php foreach ($products as $product){
 				/******************Image resizer*******************/
@@ -81,42 +93,55 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()){
 				$baseDir = Mage::getBaseDir('media') . '/catalog/product';
 				$_file_name = $product_model->load($product->getId())->getImage();
 				$org_file_dir = $baseDir . $_file_name;
-				$file_dir = preg_replace('/.*\//', '', $_file_name);
+				preg_match('/.*\//', $_file_name, $file_dir);
+				$full_file_dir = preg_replace('/\/\//','/',$baseDir.$file_dir[0]);
 				$cache_file_Dir = $baseDir. '/startup_cache' . $_file_name;
-				$cache_file_Url = $BaseUrl. 'startup_cache' . $_file_name;
-				echo 'baseurl ' . $baseUrl . '<br>';
+				$cache_file_Url = $baseUrl. 'startup_cache' . $_file_name;
+				$imgurl = $cache_file_Url;
+
+				if (file_exists($cahce_file_Dir)){
+					continue;
+				} else if (!file_exists($cache_file_Dir)){
+					if (!is_dir($full_file_dir)){
+						mkdir($full_file_dir);
+					}
+					try{
+						//echo '2333';
+						$image = new Varien_Image($org_file_dir);
+						$image->constrainOnly(true);
+						$image->keepAspectRatio(true);
+						$image->backgroundColor(array(255,255,255));
+						$image->resize(600,400);
+						$image->save($cache_file_Dir);
+					}  catch ( Exception $e) {
+						echo $e;
+					}
+				/* echo 'baseurl ' . $baseUrl . '<br>';
 				echo 'baseDir ' . $baseDir . '<br>';
 				echo '_file_name ' . $_file_name . '<br>';
 				echo 'org_file_dir ' . $org_file_dir . '<br>';
 				echo 'cache_file_Dir ' . $cache_file_Dir . '<br>';
 				echo 'cache_file_Url ' . $cache_file_Url . '<br>';
-				echo 'filedir ' . $file_dir;
+				echo 'filedir ' . $full_file_dir;
+				*/
 				
-				//print_r('<pre>');
-				//print_r($product_model->load($product->getId()));
-				//print_r('</pre>');
-				die;
-				
-				if (file_exists($cahce_file_Dir)){
-					$imgurl = $cache_file_Url;
-				} //else if (file_exists($org_file_dir){
-				//}
+				}
 				//***********************end**********************/
 				$name = $product_model->load($product->getId())->getName();
 				//echo '<br>'; ?>
-			<div class="col-sm-4 col-md-3 col-xs-6">
+			<div class="col-sm-4 col-md-3 col-xs-6 sel-meal">
 				<div class="meals">
 					<img class="meal-img" style="height:100%;width:100%" src="<?php echo $imgurl ?>" />
-					<div class="meal-name"> <?php echo $name ?> </div>
 					<div class="meal-inputs">
-						<input type="number" class="meal-qty-selector" name="qty-selector-<?php echo $product->getId(); ?>" value="1">
+						<div class="meal-name col-md-10"> <?php echo $name ?> </div>
+						<input type="number" min="0" class="meal-qty-selector" name="qty-selector-<?php echo $product->getId(); ?>" value="1">
 						<input type="checkbox" class="meal-checkbox" name="meals[]" value="<?php echo $product->getId(); ?>">
 					</div>
 				</div>	
 			</div>
 			<?php } ?>
 		</fieldset>
-		<button type="submit" title="submit" class="button"><span><span>submit</span></span></button>
+		<button type="submit" title="submit" id="submit-btn" class="button hide-first"><span><span>submit</span></span></button>-->		<button type="submit" title="submit" id="submit-btn" class="button hide-first"><span><span>continue</span></span></button>
 	</form>
 </div>
 <style>
@@ -126,24 +151,91 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()){
 </style>
 <script type="text/javascript">
 
-
+jQuery(function($){
+	
 $("#sel-3meal").click(function(){
 	$("#sel-3meal").css({"border-width":"3px", "border-style":"solid","border-color":"green"});
-  	$("#sel-5meal").css({"border-width":"", "border-style":"","border-color":""});
+  	$("#sel-5meal").css({"border-width":"3px", "border-style":"solid","border-color":"rgba(128, 128, 128, 0.2)"});
 	$("#radio-3m").prop("checked",true);
+	
+	if (($("#member-btn:checked").val()||$("#pot-btn:checked").val()) && ($("#radio-3m:checked").val()||$("#radio-5m:checked").val())){
+	//$(".hide-first").css("display","block");
+		$(".hide-first").slideDown("slow", function() {
+    // Animation complete.
+  });}
 });
 
 $("#sel-5meal").click(function(){
 	$("#sel-5meal").css({"border-width":"3px", "border-style":"solid","border-color":"green"});
-  	$("#sel-3meal").css({"border-width":"", "border-style":"","border-color":""});
+  	$("#sel-3meal").css({"border-width":"3px", "border-style":"solid","border-color":"rgba(128, 128, 128, 0.2)"});
 	$("#radio-5m").prop("checked",true);
+	
+	if (($("#member-btn:checked").val()||$("#pot-btn:checked").val()) && ($("#radio-3m:checked").val()||$("#radio-5m:checked").val())){
+	//$(".hide-first").css("display","block");
+	
+	$(".hide-first").slideDown("slow", function() {
+    // Animation complete.
+  });}
+});
+$("#sel-member").click(function(){
+	$("#sel-member").css({"border-width":"3px", "border-style":"solid","border-color":"green"});
+  	$("#sel-pot").css({"border-width":"3px", "border-style":"solid","border-color":"rgba(128, 128, 128, 0.2)"});
+	$("#member-btn").prop("checked",true);
+	
+	if (($("#member-btn:checked").val()||$("#pot-btn:checked").val()) && ($("#radio-3m:checked").val()||$("#radio-5m:checked").val())){
+	//$(".hide-first").css("display","block");
+	
+	$(".hide-first").slideDown("slow", function() {
+    // Animation complete.
+  });}
+});
+
+$("#sel-pot").click(function(){
+	$("#sel-pot").css({"border-width":"3px", "border-style":"solid","border-color":"green"});
+  	$("#sel-member").css({"border-width":"3px", "border-style":"solid","border-color":"rgba(128, 128, 128, 0.2)"});
+	$("#pot-btn").prop("checked",true);
+	
+	if (($("#member-btn:checked").val()||$("#pot-btn:checked").val()) && ($("#radio-3m:checked").val()||$("#radio-5m:checked").val())){
+	//$(".hide-first").css("display","block");
+	
+	$(".hide-first").slideDown("slow", function() {
+    // Animation complete.
+  });}
 });
 
 
 
 
+$("#submit-btn").click(function(){
+	if (!(($("#member-btn:checked").val()||$("#pot-btn:checked").val()) && ($("#radio-3m:checked").val()||$("#radio-5m:checked").val()))){
+		alert("You must select your meal plan and/or membership/pot");
+	}});
 
+$(".customer-preference-block").on("click",function(){
+	if (typeof($(this).find("input:checked").val())=="undefined"){
+		$(this).find("input").prop("checked",true);
+		$(this).css("border-color","green");
+	}
+	else{
+		$(this).find("input").prop("checked",false);
+		$(this).css("border-color","rgba(128, 128, 128, 0.2)");
+	}
+});
 
+$(".sel-meal").click(function(){
+if (typeof($(this).find(".meal-checkbox:checked").val())=="undefined"){
+$(this).find(".meal-checkbox").prop("checked",true);
+$(this).find(".meal-qty-selector").css("display","block");
+$(this).css("border-color","green");
+}
+else{
+$(this).find(".meal-checkbox").prop("checked",false);
+$(this).find(".meal-qty-selector").css("display","none");
+$(this).css("border-color","white");
+}
+});
+
+});
 
 </script>
 

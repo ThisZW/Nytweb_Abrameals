@@ -2,13 +2,30 @@
 <?php if( Mage::getSingleton('customer/session')->isLoggedIn() and !Mage::getSingleton('customer/session')->getCustomer()->getCustomerGroupId() == 4){  ?>
 	<div class="step-title">
 				Step4: </div> <div class="title-description" >Contents... </div>
-	<?php   $pref_str = $_GET['pref'];
-			if ($pref_str != 'none'){
+				
+	<h4>
+	<?php $pref_str = $_GET['pref']; ?>
+	<?php if ($pref_str != ''){ ?>
+	According to your preference: 
+	<?php 	if ($pref_str != 'none'){
 				$pref = explode(",", $pref_str);
-				print_r ($pref);
-				}  ?>
-	<?php } else { ?>
+				//print_r ($pref); 
+				foreach($pref as $p){
+					 $p = preg_replace("/\//","",$p);
+					 $attr = Mage::getResourceModel('eav/entity_attribute_collection') 
+						->setCodeFilter($p)->getFirstItem()->getData('frontend_label');
+					 
+					print_r($attr);
+					print_r( ', ');
+				}
+			}		
+				?>
+				these meals are available to you: &nbsp;&nbsp;
+				<a href="/menu.html?&pref=none" >Show All Meals </a>
+	</h4>
+	<?php 	}
+		} else { ?>
 	
 	
 	
-	<?php } ?>
+<?php } ?>

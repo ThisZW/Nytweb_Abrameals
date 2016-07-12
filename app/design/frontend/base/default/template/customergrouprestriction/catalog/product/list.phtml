@@ -1,5 +1,26 @@
 <?php
-    $_productCollection=$this->getLoadedProductCollection();
+//7-12-2016 by Chris
+	if( Mage::getSingleton('customer/session')->isLoggedIn() ){ 
+		$is_logged_in = 1;
+		$_productCollection=$this->getLoadedProductCollection();
+		$pref_str = $_GET['pref'];
+			if ($pref_str && $pref_str != 'none'){
+				$pref = explode(",", $pref_str);
+				//print_r ($pref);
+				}  
+				foreach($pref as $p){
+					 $p = preg_replace("/\//","",$p);
+					 $_productCollection->addAttributeToFilter($p, 0);
+					echo $p;
+					}
+				//print_r ('<pre>');
+				//print_r ($_productCollection);
+				//print_r ('</pre');
+				//die;
+	} else {
+		$_productCollection=$this->getLoadedProductCollection();
+		//print_r(getLoadedProductCollection);
+	}
     $_helper = $this->helper('catalog/output');
 	$_image_helper = $this->helper('catalog/image');
     $store = Mage::app()->getStore();
@@ -7,12 +28,7 @@
     $aspect_ratio = Mage::getStoreConfig("porto_settings/category/aspect_ratio",$code);
     $ratio_width = Mage::getStoreConfig("porto_settings/category/ratio_width",$code);
     $ratio_height = Mage::getStoreConfig("porto_settings/category/ratio_height",$code);
-	//customers has to log in to add plans
-    if(Mage::getSingleton('customer/session')->isLoggedIn()){
-	$is_logged_in = 1;
-	}
-	
-
+    
     if(!$ratio_width)
         $ratio_width = 300;
     if(!$ratio_height)

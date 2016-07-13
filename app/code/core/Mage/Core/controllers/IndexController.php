@@ -29,6 +29,26 @@ class Mage_Core_IndexController extends Mage_Core_Controller_Front_Action {
 
     function indexAction()
     {
-        $this->_forward('noRoute');
+        //$this->_forward('noRoute');
     }
+	
+	//tester
+	
+		/**
+	 * This will send emails weekly and dynamically to customers with their last week meals as well as filtered meals by their preference for next week. 
+	 * 6-29-2016 by Chris
+	 * *Cron Job
+	 */
+	 
+	 public function testAction(){
+		 //customer collection object
+		 $collection = Mage::getModel('customer/customer')->getCollection();
+		 //customer emails
+		 echo 'hi';
+		 //
+		 
+	 }
+	
+	
+	
 }

@@ -84,8 +84,38 @@ class Mage_Catalog_Block_Product_List extends Mage_Catalog_Block_Product_Abstrac
                     $this->addModelTags($category);
                 }
             }
-            $this->_productCollection = $layer->getProductCollection();
+			//7-13-2016 by Chris
+            $productCollectionHandler = $layer->getProductCollection();
+			
+			if( !Mage::getSingleton('customer/session')->isLoggedIn()){
+				$pref_str = $_GET['pref'];
+				if ($pref_str!='' && $pref_str != 'none'){
+					$pref = explode(",", $pref_str); 
+					//echo $pref;
+					foreach($pref as $p){
+						 $p = preg_replace("/\//","",$p);
+						 $productCollectionHandler->addAttributeToFilter($p, array( 'neq' => 1));
+						}
+				}
+			}
+			$customer = Mage::getSingleton('customer/session')->getCustomer();
+			$groupId = $customer->getGroupId();
 
+			if( Mage::getSingleton('customer/session')->isLoggedIn() and $groupId == 4){ 
+				foreach ($customer->getData() as $k => $v){
+					
+					if (strpos($k, 'preference_') !== False){
+						if ($v == 1){//echo $k . ' ' . $v . '<br>';
+							$productCollectionHandler->addAttributeToFilter($k, array( 'neq' => 1));
+						}
+					}
+				}
+			}
+			
+			
+			
+			$this->_productCollection = $productCollectionHandler;
+			
             $this->prepareSortableFieldsByCategory($layer->getCurrentCategory());
 
             if ($origCategory) {

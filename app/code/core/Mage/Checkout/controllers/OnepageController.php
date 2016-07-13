@@ -293,11 +293,14 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
 
         $lastQuoteId = $session->getLastQuoteId();
         $lastOrderId = $session->getLastOrderId();
+		//
 		$quote = Mage::getModel('sales/quote')->load($lastQuoteId);
 		$items_qty = $quote->getItemsQty();
 		$customer = Mage::getSingleton('customer/session')->getCustomer();
-		$customer->setWeeklyMealsLeft($customer->getWeeklyMealsLeft() - $items_qty);
-		$customer->save();
+		if($customer->getGroupId() == 4){
+			$customer->setWeeklyMealsLeft($customer->getWeeklyMealsLeft() - $items_qty);
+			$customer->save();
+		}
         $lastRecurringProfiles = $session->getLastRecurringProfileIds();
         if (!$lastQuoteId || (!$lastOrderId && empty($lastRecurringProfiles))) {
             $this->_redirect('checkout/cart');

@@ -758,13 +758,26 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
 				array_push($ids, $meal_id);
 			}
 		}*/
+		//echo $get_pref;
+		//die;
 		if($mem_id && $plan_id){
 			$cart->addProductsByIds(array_reverse($ids))->save();
-			$this->_redirect('menu.html?pref='. $get_pref);
+			$this->_redirectUrl('/menu.html?pref='. $get_pref);
 		} else {
 			$this->_getSession()->addError('error');
 			$this->_goBack();
 		}
 	
 	}
+	
+		 
+	 public function testAction(){
+		 //customer collection object
+		 $collection = Mage::getModel('customer/customer')->getCollection();
+		 //customer emails
+		 echo 'hi';
+		 //
+		 return 0;
+	 }
+	
 }

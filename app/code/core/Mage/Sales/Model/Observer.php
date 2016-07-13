@@ -622,8 +622,24 @@ class Mage_Sales_Model_Observer
 				$total += $limit;
 				Mage::log('total:'.$total, null, 'crontest.log', true);
 			}
-			$customer->setWeeklyMealsLeft($total)->save();
+			$customer->setWeeklyMealsLeft($total)->setCurrentPlanPerWeek($total)->save();
 		}
 	}
+	
+	/**
+	 * This will send emails weekly and dynamically to customers with their last week meals as well as filtered meals by their preference for next week. 
+	 * 6-29-2016 by Chris
+	 * *Cron Job
+	 test file code/core/Mage/checkout/cartcontroller.php
+	 */
+	 
+	 public function cronJobSendWeeklyEmails(){
+		 //customer collection object
+		 $collection = Mage::getModel('customer/customer')->getCollection();
+		 //customer emails
+		 
+		 //
+		 
+	 }
 	
 }

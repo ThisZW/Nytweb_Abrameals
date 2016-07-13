@@ -1,6 +1,6 @@
 /**
  * WARNING: Do not change this file. Your changes will be lost.
- * 2016-07-11 19:00:11 */
+ * 2016-07-13 20:25:10 */
 
 @media (max-width: 480px) {
     .category-products .products-grid li.item {
@@ -63,27 +63,16 @@ top:-11px;
 }
 
 .collapse{
-    cursor: pointer;
-    display: none;
+    background: #7aa93c;
+    width: 60px;
     position: fixed;
-    z-index: 300;
-    right: 135px;
-    top: 0px;
-    width: 0;
-    height: 0;
-    border-left: 20px solid transparent;
-    border-right: 20px solid transparent;
-    border-top: 20px solid #7aa93c;
+    right: 0;
+    top: 50%;
+    height: 40px;
+    color: white;
+    border-radius: 60px 0px 0px 60px;
 }
-.collapse + input{
-  display: none; /* hide the checkboxes */
-}
-.collapse + input + div{
-  display:block;
-}
-.collapse + input:checked + div{
-  display:none;
-}
+
 .cms-index-index .header-container.type1, .header-container.type1{
 background-color:rgba(117, 138, 148, 0.9)
 }

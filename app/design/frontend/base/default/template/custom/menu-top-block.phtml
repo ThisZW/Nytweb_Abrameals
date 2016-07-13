@@ -1,31 +1,48 @@
 
-<?php if( Mage::getSingleton('customer/session')->isLoggedIn() and !Mage::getSingleton('customer/session')->getCustomer()->getCustomerGroupId() == 4){  ?>
+<?php $customer = Mage::getSingleton('customer/session')->getCustomer();
+$groupId = $customer->getGroupId();
+
+if( Mage::getSingleton('customer/session')->isLoggedIn() and $groupId != 4){ ?>
+
 	<div class="step-title">
 				Step4: </div> <div class="title-description" >Contents... </div>
 				
 	<h4>
 	<?php $pref_str = $_GET['pref']; ?>
 	<?php if ($pref_str != ''){ ?>
+	
+	<?php 	if ($pref_str != 'none' && $pref_str != 'none/'){ ?>
 	According to your preference: 
-	<?php 	if ($pref_str != 'none'){
-				$pref = explode(",", $pref_str);
+	<?php	$pref = explode(",", $pref_str);
 				//print_r ($pref); 
 				foreach($pref as $p){
 					 $p = preg_replace("/\//","",$p);
-					 $attr = Mage::getResourceModel('eav/entity_attribute_collection') 
-						->setCodeFilter($p)->getFirstItem()->getData('frontend_label');
+					 $attr = $attr_model->setCodeFilter($p)->getFirstItem()->getData('frontend_label');
 					 
 					print_r($attr);
 					print_r( ', ');
 				}
-			}		
+					
 				?>
 				these meals are available to you: &nbsp;&nbsp;
 				<a href="/menu.html?&pref=none" >Show All Meals </a>
 	</h4>
-	<?php 	}
-		} else { ?>
-	
-	
-	
+	<?php 	} else { ?>
+	<h4> You might want to go back to choose your preferences if you wish <a href="/get-started.html">Click Here</a></h4>
+	<?php }}
+	} elseif ($groupId == 4)  { ?>
+
+	<h4> The following meals are filtered by your account preference:
+		
+<?php		foreach ($customer->getData() as $k => $v){
+				//echo $k . ' ' . $v . '<br>';
+				if (strpos($k, 'preference_') !== False){
+					if ($v == 1){
+						echo Mage::getResourceModel('eav/entity_attribute_collection')->setCodeFilter($k)->getFirstItem()->getData('frontend_label') . ', ';
+						//array_push($customer_pref, $k);
+					}
+				}
+			}
+			//print_r ($customer_pref);
+		?>if you want to change it  <a href="/customer/account/edit/">Click Here</a></h4>
 <?php } ?>

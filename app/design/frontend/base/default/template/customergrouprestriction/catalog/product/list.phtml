@@ -6,17 +6,12 @@
 		$pref_str = $_GET['pref'];
 			if ($pref_str && $pref_str != 'none'){
 				$pref = explode(",", $pref_str);
-				//print_r ($pref);
 				}  
 				foreach($pref as $p){
 					 $p = preg_replace("/\//","",$p);
 					 $_productCollection->addAttributeToFilter($p, 0);
-					echo $p;
+					 
 					}
-				//print_r ('<pre>');
-				//print_r ($_productCollection);
-				//print_r ('</pre');
-				//die;
 	} else {
 		$_productCollection=$this->getLoadedProductCollection();
 		//print_r(getLoadedProductCollection);
@@ -34,6 +29,7 @@
     if(!$ratio_height)
         $ratio_height = 400;
 ?>
+
 <?php
 $_coreHelper = $this->helper('core');
 ?>
@@ -272,6 +268,7 @@ var i = 0;
     <?php $_columnCount = Mage::getStoreConfig("porto_settings/category_grid/columns",$code); ?>
     <ul class="products-grid <?php if(Mage::getStoreConfig("porto_settings/category_grid/flex_grid",$code)):?>flex-grid<?php endif; ?> columns<?php echo $_columnCount; ?><?php if(!Mage::getStoreConfig("porto_settings/category_grid/show_addtolinks", $code)):?> hide-addtolinks<?php endif; ?><?php if(!Mage::getStoreConfig("porto_settings/category_grid/show_addtocart", $code)):?> hide-addtocart<?php endif; ?><?php if(Mage::getStoreConfig("porto_settings/category_grid/move_actions", $code)):?> move-action<?php endif; ?>">
     <?php $i=0; foreach ($_productCollection as $_product): ?>
+	
 	<?php $product = Mage::getModel('catalog/product')->load($_product->getId()); ?>
             <li class="item"><div class="item-area">
             <div class="product-image-area">

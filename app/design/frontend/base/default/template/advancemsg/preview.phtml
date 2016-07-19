@@ -1,0 +1,32 @@
+<?php 
+/**
+ * @category    Zalw
+ * @package     Zalw_Mssgext
+ * @author      Zalw
+ * @use	   	This .phtml file shows the preview of new send message at admin side
+ */
+$data = $this->getFormData(); ?>
+<?php if(isset($data['styles'])): 
+    $html = "<style type=\"text/css\">\n%s\n</style>";
+    echo sprintf($html, $data['styles']);
+endif; ?>
+<?php if(isset($data['title'])): ?>
+    <h2><?php echo $data['title']; ?></h2>
+<?php endif; ?>
+<h5>Added at:&nbsp;
+<?php
+$datetime = Zend_Date::now();
+//admin controls this output through configuration
+$datetime->setLocale(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_LOCALE))
+         ->setTimezone(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE));
+echo $datetime->get(Zend_Date::DATETIME_MEDIUM);
+?>
+</h5>
+<?php if(isset($data['link'])): ?>
+<span><a href="<?php echo $data['link']; ?>" target="_blank"><?php echo $this->__('Additional Link'); ?></a></span>
+<?php endif; ?>
+<?php if(isset($data['template_text'])) { echo $data['template_text']; } ?>
+<?php if(isset($data['text'])) { echo $data['text']; } ?>
+<p>
+<?php if(isset($data['messagetext'])) { echo $data['messagetext']; } ?>
+</p>

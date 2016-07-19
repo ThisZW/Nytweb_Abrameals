@@ -33,6 +33,9 @@
  */
 class Mage_Core_Model_Encryption
 {
+	//7-19-2016 by Chris, Encryption model from https://aftabnaveed.wordpress.com/2011/08/26/decrypt-magento-data-using-custom-key/
+	protected $_key = null;
+	
     /**
      * @var Varien_Crypt_Mcrypt
      */
@@ -154,4 +157,12 @@ class Mage_Core_Model_Encryption
     {
         return $this->_getCrypt($key);
     }
+	
+	//7-19-2016 by Chris, Encryption model from https://aftabnaveed.wordpress.com/2011/08/26/decrypt-magento-data-using-custom-key/
+	public function setKey($key)
+    {
+        $this->_key = $key;
+        return $this;
+    }
+
 }

@@ -1,6 +1,6 @@
 /**
  * WARNING: Do not change this file. Your changes will be lost.
- * 2016-07-13 20:25:10 */
+ * 2016-07-18 17:39:38 */
 
 @media (max-width: 480px) {
     .category-products .products-grid li.item {
@@ -63,13 +63,13 @@ top:-11px;
 }
 
 .collapse{
-    background: #7aa93c;
+    background: green;
     width: 60px;
     position: fixed;
-    right: 0;
-    top: 50%;
     height: 40px;
     color: white;
+    top: 45%;
+    right: 0;
     border-radius: 60px 0px 0px 60px;
 }
 
@@ -167,11 +167,17 @@ max-width:100%;
 margin:0 auto}
 .start-abra-title{
 font-size:3em;}
+
+
 	}
 @media(min-width:769px){
 .top-banner-text{
 max-width:100% !important; color: black;
-}}
+}
+         .shade-black-home{
+                display:none;
+        }
+}
 
 @media(max-width:420px){
       .start-abra-today > .container {
@@ -190,7 +196,7 @@ background-position:50% top;
 }}
 
 .button-solid{
-background-color:green;
+background:green  !important;;
 border: 2px solid green;
 color:white;
 font-size:16px; 
@@ -201,7 +207,7 @@ margin: 25px;
 }
 
 .button-solid:hover{
-background-color:#007000;
+background:#007000 !important;
 color:#EEE;
 }
 
@@ -211,7 +217,7 @@ color:#EEE;
 margin:25px;   
 height: 50px;
 width:200px;
-background-color:white;
+background: white !important;
 color:green;
 border: 2px solid green;
 font-size:16px; 
@@ -219,6 +225,47 @@ border-radius: 8px;
 }
 
 .button-blank:hover{
-background-color:green;
+background: green !important;
 color:white;
+}
+
+.customer-preference{
+    text-align: center;
+    width: auto !important;
+}
+
+#tab_additional_tabbed, #tab_tags_tabbed, #tab_static_block_tab_1{
+display:none;
+}
+
+.middle-insert-text{
+    margin: 16px 0;
+    color: #000;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+#food-warning-message{
+}
+
+#ingredient-listing-message{
+}
+
+.ingredient-listing-class{
+    display:table !important;
+    border:none !important;
+    margin: 2px 0;
+}
+
+
+.hide-border{
+    border:none !important;
+    font-weight: normal !important;
+}
+#top-banner{
+       background-position:0 top;
+}
+
+.no_pref_img{
+    width:30px;
 }

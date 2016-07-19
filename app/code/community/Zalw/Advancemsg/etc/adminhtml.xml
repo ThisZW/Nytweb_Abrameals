@@ -1,0 +1,41 @@
+<?xml version="1.0" ?>
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <advancemsg translate="title" module="advancemsg">
+                            <title>Advance Message</title>
+                            <sort_order>150</sort_order>
+                            <children>
+                                <index translate="title" module="advancemsg">
+                                    <title>Send New Messages</title>
+                                     <sort_order>1</sort_order>
+				                </index>
+                                <log translate="title" module="advancemsg">
+                                    <title>My Message Box</title>
+                                     <sort_order>2</sort_order>
+                                </log>
+                                <template translate="title" module="advancemsg">
+                                    <title>Message Templates</title>
+                                     <sort_order>3</sort_order>
+                                </template>
+                            </children>
+                    </advancemsg>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <advancemsg_section translate="title" module="advancemsg">
+                                        <title>Advance Messaging Section</title>
+                                        <sort_order>120</sort_order>
+                                    </advancemsg_section>
+                                </children>
+                            </config>
+                        </children>
+                    </system>					
+                 </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

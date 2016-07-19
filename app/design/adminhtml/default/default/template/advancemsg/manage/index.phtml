@@ -1,0 +1,162 @@
+<div class="content-header">
+   <h3><?php echo $this->getHeaderText() ?></h3>
+   <p class="content-buttons form-buttons">
+                <?php echo $this->getBackButtonHtml(); ?>
+                <?php echo $this->getResetButtonHtml(); ?>
+                <?php echo $this->getPreviewButtonHtml(); ?>
+                <?php echo $this->getSaveButtonHtml(); ?>
+    </p>
+</div>
+<form action="<?php echo $this->getSendUrl(); ?>" method="post" id="advancemsg_template_send_form" enctype="multipart/form-data">
+    <?php echo $this->getBlockHtml('formkey')?>
+    <div class="no-display">
+        <input type="hidden" id="change_flag_element" name="_change_type_flag" value="" />
+        <input type="hidden" id="checked_string" name="checked_string" value="" />
+        <input type="hidden" id="save_as_flag" name="_save_as_flag" value="<?php echo $this->getSaveAsFlag() ?>" />
+    </div>
+    <div>
+    <?php echo $this->getForm() ?>
+    <div class="entry-edit"><div class="entry-edit-head"><h4><?php echo Mage::helper('advancemsg')->__('Choose Customer'); ?></h4></div></div>
+    <?php echo $this->getChildHtml('grid') ?>
+    </div>
+</form>
+<form action="<?php echo $this->getPreviewUrl() ?>" method="post" id="advancemsg_template_preview_form" target="_blank" name="advancemsg_template_preview_form">
+    <?php echo $this->getBlockHtml('formkey')?>
+    <div class="no-display">
+    	<input type="hidden" id="preview_id" name="id" value="" />
+        <input type="hidden" id="preview_title" name="title" value="" />
+        <input type="hidden" id="preview_link" name="link" value="" />
+        <input type="hidden" id="preview_text" name="template_text" value="" />
+        <input type="hidden" id="preview_styles" name="styles" value="" />
+	<input type="hidden" id="preview_messagetext" name="messagetext" value="" />
+    </div>
+</form>
+<script type="text/javascript">
+//<![CDATA[
+    var messageForm = new varienForm('advancemsg_template_send_form');
+    var messagePreviewForm = new varienForm('advancemsg_template_preview_form');
+	
+    var messageControl = {
+
+        unconvertedText: '',
+        typeChange: false,
+        id: 'text',
+        save: function() {
+            if (this.typeChange) {
+                $('change_flag_element').value = '1';
+            }
+			if ($$('input.massaction-checkbox:checked').length==0) {
+            	 if ($('title').value == '' || $('template_id') == '') {
+					alert('<?php echo Mage::helper('advancemsg')->__('Please select required fields and choose customer.') ?>');
+					
+				}
+				else{
+					alert('<?php echo Mage::helper('advancemsg')->__('Please select customer.') ?>');
+					 return false;
+				}
+				
+            }
+            $('checked_string').value = customerGrid_massactionJsObject.checkedString;
+            messageForm.submit();
+            return false;
+        },
+        preview: function() {
+			$('preview_text').value='';
+			$('preview_title').value ='';
+        	if ($('title').value != '') {
+                $('preview_title').value = $('title').value;
+            }
+            if ($('link').value != '') {
+                $('preview_link').value = $('link').value;
+            }
+            if ($('template_id').value != '') {
+                $('preview_id').value = $('template_id').value;
+            }
+	     if ($('message_text').value != '') {
+                $('preview_messagetext').value = $('message_text').value;
+            }
+            if ($('title').value == '' || $('template_id') == '') {
+            	alert('<?php echo Mage::helper('advancemsg')->__('Please set message title and select template.') ?>');
+            	return false;
+            }
+						
+			var myVariable = $('preview_link').value;
+			if(myVariable!=''){
+			var s=	validateURL(myVariable);
+			if(s!=true)
+				return s;
+			}
+
+            if ($('template_id') != '') {
+                //ajax get template styles and text
+                params = {};
+                params.id = $('template_id').value;
+                url = '<?php echo $this->getAjaxUrl(); ?>';
+				var ajax = new XMLHttpRequest();
+				new Ajax.Request(url, {
+		            parameters:  params,
+		            method: 'post',
+		            evalScripts: true,
+		            onSuccess: function(transport) {
+		                try {
+		                    if (transport.responseText.isJSON()) {
+		                        var response = transport.responseText.evalJSON();
+		                        var needUpdate = true;
+		                        if (response.error) {
+		                            needUpdate = false;
+		                        }
+		                        if(response.ajaxExpired && response.ajaxRedirect) {
+		                            setLocation(response.ajaxRedirect);
+		                            needUpdate = false;
+		                        }
+		                        if (needUpdate){
+		                            if (response.text){
+					     $('preview_text').value = response.text;
+				                    }
+		                            if (response.styles){
+										
+		                                $('preview_styles').value = response.styles;
+		                            }
+										
+		                        }
+		                    }
+		                }
+		                catch (e) {
+		                    alert('<?php echo Mage::helper('advancemsg')->__('Please try again.') ?>');
+		                }
+			       }
+					
+            	});
+					if (document.getElementById("advancemsg_template_send_form")) {
+						setTimeout("submitForm()", 3000); // set timout 
+				   }
+				
+        	}
+            
+            return false;
+        },
+    };
+//]]>
+
+
+
+	function submitForm() { // submits form
+	 //alert($(advancemsg_template_preview_form).serialize());
+	 
+		messagePreviewForm.submit();
+		}
+		
+		
+	function validateURL (szURL) 
+	{
+			var bValid = /^(http|https|ftp):\/\/([\w]*)\.([\w]*)\.(com|net|org|biz|info|mobi|us|cc|bz|tv|ws|name|co|me)(\.[a-z]{1,3})?$/.test(szURL);
+			if (bValid == false) {
+				alert("Please enter a valid URL.");
+				return false;
+			} else {
+				return true;
+				
+			}
+	}
+
+</script>

@@ -48,12 +48,14 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()){
 			<div class="step2-container">
 				<div class="membership col-sm-6">
 					<div class="membership-block sub-block" id="sel-member">
+					    <div class="plan-img"><img src="skin/shutterstock_408470188.jpg"/></div>
 						<div>Membership contents here...</div>
 						<input type="radio" class="radio-btn" id="member-btn" name="membership-or-pot" value="membership">
 					</div>
 				</div>
 				<div class="pot col-sm-6">
 					<div class="pot-block sub-block" id="sel-pot">
+						<div class="plan-img"><img src="skin/shutterstock_193584815.jpg"/></div>
 						<div>Pot contents here...</div>
 						<input type="radio" class="radio-btn" id="pot-btn" name="membership-or-pot" value="pot">
 					</div>
@@ -72,7 +74,7 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()){
 							if (strpos($attr->getAttributeCode(), 'preference_') !== False ):
 							$attcount++;
 							//this will output all attribute with prefix preference?>
-							<div class="customer-preference-block-outer"><span class="customer-preference-block">	<input type="checkbox" class="customer-preference-input" name="customer-preference[]"  value="<?php print_r ($attr->getAttributeCode()); ?>">
+							<div class="customer-preference-block-outer"><span class="customer-preference-block">	<img class="no_pref_img" src="skin/preferences/<?php echo $attcount?>.jpg" /><input type="checkbox" class="customer-preference-input" name="customer-preference[]"  value="<?php print_r ($attr->getAttributeCode()); ?>">
 							<?php print_r ($attr->getFrontendLabel());  ?></span></div>
 					<?php endif; }?>
 						</div>

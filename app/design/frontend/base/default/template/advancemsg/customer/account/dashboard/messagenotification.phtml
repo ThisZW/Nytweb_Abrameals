@@ -1,0 +1,14 @@
+<?php
+$advancemsgCheck = Mage::getStoreConfig('advancemsg_section/advancemsg_group/enabled');
+if ( $advancemsgCheck == '1'){ ?>
+<?php if($this->getNewMessageNotification()){?>
+        <ul class="messages">
+          <li class="notice-msg">
+              <span style="color:#eb5e00;">
+                  <strong>Advance Message Notification : </strong>
+              </span>
+              <?php echo $this->getNewMessageNotification();?>
+                <a href="<?php echo Mage::getBaseUrl() ?>advancemsg/manage/">Click here</a> to view.
+          </li>
+        </ul>
+<?php } } ?>

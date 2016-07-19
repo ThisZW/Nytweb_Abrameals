@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<layout>
+    
+<!--    <default>
+        <reference name="root">
+            <block type="advancemsg/adminhtml_notification_toolbar_messageNotification" name="notification_toolbar" as="notification_toolbar"
+                   template="advancemsg/notification/toolbar/messagenotification.phtml">
+		<block type="adminhtml/notification_toolbar" name="real_notification_toolbar"
+			   as="real_notification_toolbar" acl="system/adminnotification/show_toolbar"
+			   template="notification/toolbar.phtml">
+		</block>
+            </block>
+        </reference>
+    </default>-->
+    
+<!--        <default>
+        <reference name="notification_toolbar">-->
+           <!-- <block type="adminhtml/notification_toolbar" name="notification_toolbar" as="notification_toolbar"
+                   template="advancemsg/notification/toolbar.phtml">-->
+<!--		 <action method="setTemplate"><template>advancemsg/notification/toolbar.phtml</template></action>
+		<block type="advancemsg/adminhtml_notification_toolbar_messageNotification" name="advance_message_notification_admin"
+			   as="messagenotificationadmin" acl="system/adminnotification/show_toolbar"
+			   template="advancemsg/notification/toolbar/messagenotification.phtml">
+		</block>-->
+          <!--  </block>-->
+<!--        </reference>
+    </default>
+    -->
+    <advancemsg_adminhtml_template_edit>
+        <update handle="editor"/>
+        <reference name="content">
+            <block type="advancemsg/adminhtml_template_edit" name="advancemsg_template_edit" template="advancemsg/template/edit.phtml" />
+        </reference>
+    </advancemsg_adminhtml_template_edit>
+    
+    <advancemsg_adminhtml_template_new>
+        <update handle="editor"/>
+        <reference name="content">
+            <block type="advancemsg/adminhtml_template_edit" name="advancemsg_template_new" template="advancemsg/template/edit.phtml" />
+        </reference>
+    </advancemsg_adminhtml_template_new>
+    
+    <advancemsg_adminhtml_customermsg_index>
+        <reference name="content">
+            <block type="advancemsg/adminhtml_customermsg" name="admin.customermsg" />
+        </reference>
+    </advancemsg_adminhtml_customermsg_index>	
+	
+    <advancemsg_adminhtml_manage_grid>
+	<block type="core/text_list" name="root" output="toHtml">
+	    <block type="advancemsg/adminhtml_manage_customer_grid" name="customerGrid"/>
+	</block>
+    </advancemsg_adminhtml_manage_grid>
+	
+    <advancemsg_adminhtml_manage_new>
+	<reference name="head">
+	    <action method="addJs"><script>advancemsg/jquery/validation.js</script></action>
+        </reference>
+    </advancemsg_adminhtml_manage_new>
+	
+    <advancemsg_adminhtml_customermsg_edit>
+        <update handle="editor"/>
+	<reference name="head">
+		<action method="addCss" ifconfig="advancemsg_section/advancemsg_group/enabled">
+			<stylesheet>advancemsg/css/adminmssgext.css</stylesheet>
+		</action>	
+	</reference>
+        <reference name="content">
+            <block type="advancemsg/adminhtml_template_edit" name="advancemsg_customermsg_edit" template="advancemsg/customermsg/edit.phtml" />
+        </reference>
+    </advancemsg_adminhtml_customermsg_edit>
+	
+    <advancemsg_manage_index>
+	<reference name="head">
+	    <action method="addItem"><type>js_css</type><name>calendar/calendar-win2k-1.css</name><params></params></action>
+	    <action method="addItem"><type>js</type><name>calendar/calendar.js</name></action>
+	    <action method="addItem"><type>js</type><name>calendar/calendar-setup.js</name></action>
+	    <block type="core/html_calendar" name="head.calendar" as="calendar" template="page/js/calendar.phtml"></block>
+	</reference>
+    </advancemsg_manage_index>	
+	
+	<advancemsg_adminhtml_manage_log>
+		<reference name="head">
+			<action method="addCss" ifconfig="advancemsg_section/advancemsg_group/enabled">
+				<stylesheet>advancemsg/css/adminmssgext.css</stylesheet>
+			</action>	
+		</reference>
+    </advancemsg_adminhtml_manage_log>
+
+    <advancemsg_adminhtml_manage_adminlogview>
+	<reference name="head">
+		<action method="addCss" ifconfig="advancemsg_section/advancemsg_group/enabled">
+			<stylesheet>advancemsg/css/adminmssgext.css</stylesheet>
+		</action>	
+	</reference>
+	<reference name="content">
+            <block type="advancemsg/adminhtml_log" name="advancemsg_adminhtml_log_reply" template="advancemsg/log/logreply.phtml" />
+        </reference>
+    </advancemsg_adminhtml_manage_adminlogview>
+	
+    <advancemsg_adminhtml_manage_adminlogreply>
+	<reference name="head">
+		<action method="addCss" ifconfig="advancemsg_section/advancemsg_group/enabled">
+			<stylesheet>advancemsg/css/adminmssgext.css</stylesheet>
+		</action>	
+	</reference>
+	<reference name="content">
+            <block type="advancemsg/adminhtml_log" name="advancemsg_adminhtml_log_reply" template="advancemsg/log/logreply.phtml" />
+        </reference>
+    </advancemsg_adminhtml_manage_adminlogreply>
+    
+    <advancemsg_adminhtml_customermsg_reply>
+	<reference name="head">
+		<action method="addCss" ifconfig="advancemsg_section/advancemsg_group/enabled">
+			<stylesheet>advancemsg/css/adminmssgext.css</stylesheet>
+		</action>	
+	</reference>
+        <reference name="content">
+            <block type="advancemsg/adminhtml_customermsg" name="advancemsg_customermsg_reply" template="advancemsg/customermsg/edit.phtml" />
+        </reference>
+    </advancemsg_adminhtml_customermsg_reply>
+	
+</layout>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<report translate="title" module="reports">
+			<children>
+				<memberchurnreport translate="title" module="memberchurnreport">
+                    <title>MemberChurnReport</title>
+                    <action>memberchurnreport/adminhtml_memberchurnreport</action>
+                </memberchurnreport>
+			</children>
+		</report>
+	</menu>
+    <acl>
+        <resources>
+			<all>
+				<title>Allow Everything</title>
+			</all>
+            <admin>
+                <children>
+                    <report translate="title" module="reports">
+                        <children>
+                            <memberchurnreport translate="title" module="memberchurnreport">
+                                <title>MemberChurnReport</title>
+                                <action>memberchurnreport/adminhtml_memberchurnreport</action>
+                            </memberchurnreport>
+                        </children>
+                    </report>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

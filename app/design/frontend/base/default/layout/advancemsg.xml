@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<layout version="1.0.0">
+
+	<default>
+		<reference name="head">
+		<action method="addCss" ifconfig="advancemsg_section/advancemsg_group/enabled"><stylesheet>css/advancemsg/mssgext.css</stylesheet></action>	
+		</reference>	
+	</default>
+	
+	<customer_account>
+		<reference name="customer_account_navigation">
+			<action method="addLink" translate="label" module="advancemsg" ifconfig="advancemsg_section/advancemsg_group/enabled">
+				<name>advancemsg.navigator.inbox</name>
+				<path>advancemsg/manage</path>
+				<label>My Message Box</label>
+			</action>
+			<action method="addLink" translate="label" module="advancemsg" ifconfig="advancemsg_section/advancemsg_group/enabled">
+				<name>advancemsg.navigator.send</name>
+				<path>advancemsg/manage/customermsg</path>
+				<label>Send New Message</label>
+			</action>						
+		</reference>
+	</customer_account>
+		
+	<advancemsg_manage_index>
+		<update handle="customer_account" />		
+		<reference name="content">			
+			<block type="advancemsg/inbox" name="advancemsg.test" template="advancemsg/list.phtml" />
+		</reference>
+	</advancemsg_manage_index>
+
+	<advancemsg_manage_view>
+		<reference name="root">
+		    <action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+		
+		<reference name="content">
+			<block type="advancemsg/view" name="advancemsg.view" template="advancemsg/view.phtml"/>
+		</reference>
+	</advancemsg_manage_view>
+	
+	<advancemsg_manage_preview>
+		<reference name="root">
+		    <action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+		
+		<reference name="content">
+			<block type="advancemsg/preview" name="advancemsg.preview" template="advancemsg/preview.phtml"/>
+		</reference>
+	</advancemsg_manage_preview>
+	
+	<advancemsg_manage_customermsg>
+		<reference name="head">	
+			<action method="addJs"><script>advancemsg/jquery/jquery.js</script></action>
+			<action method="addJs"><script>advancemsg/jquery/jquery.validate.js</script></action>
+			<action method="addJs"><script>advancemsg/jquery/message.js</script></action>
+			<action method="addJs"><script>advancemsg/jquery/jquery.validity.js</script></action>
+		</reference>
+		
+		<update handle="customer_account" />	
+	    	<reference name="content">
+	         <block type="advancemsg/customermsg" name="advancemsg.customermsg" template="advancemsg/customermsg.phtml"></block>
+	    	</reference>
+	</advancemsg_manage_customermsg>
+
+	<advancemsg_manage_messagegrid>
+		<reference name="root">			
+			<block type="advancemsg/messagegrid" name="root" template="advancemsg/messagegrid.phtml" />
+		</reference>
+	</advancemsg_manage_messagegrid>
+
+	<advancemsg_manage_grid>
+		<reference name="root">			
+			<block type="advancemsg/grid" name="root" template="advancemsg/grid.phtml" />
+		</reference>
+	</advancemsg_manage_grid>
+	
+	<advancemsg_manage_customersentview>	
+		<reference name="root">
+		    <action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+		
+		<reference name="content">
+			<block type="advancemsg/Customersentview" name="advancemsg.view" template="advancemsg/customersentview.phtml"/>
+		</reference>
+	</advancemsg_manage_customersentview>
+	
+	<advancemsg_manage_customersentreply>	
+		<reference name="root">
+		    <action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+		
+		<reference name="content">
+			<block type="advancemsg/Customersentview" name="advancemsg.customerview" template="advancemsg/customersentview.phtml"/>
+		</reference>
+	</advancemsg_manage_customersentreply>
+	
+	<advancemsg_manage_customerreply>	
+		<reference name="root">
+		    <action method="setTemplate"><template>page/1column.phtml</template></action>
+		</reference>
+		
+		<reference name="content">
+			<block type="advancemsg/view" name="advancemsg.view" template="advancemsg/view.phtml"/>
+		</reference>
+	</advancemsg_manage_customerreply>
+	
+	<customer_account_index>
+            <reference name="customer_account_dashboard">
+                <action method="setTemplate"><template>advancemsg/customer/account/dashboard.phtml</template></action>
+                <block type="advancemsg/customer_account_dashboard_messageNotification" name="customer_account_dashboard_messagenotification" as="messagenotification" template="advancemsg/customer/account/dashboard/messagenotification.phtml"/> 
+            </reference>
+        </customer_account_index>
+
+</layout>

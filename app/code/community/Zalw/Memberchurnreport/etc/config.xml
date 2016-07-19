@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * @category   Zalw
+ * @package    Zalw_MemberChurnReport
+ * @author     Damian Alberto Pastorini
+ */
+ -->
+<config>
+    <modules>
+        <Zalw_Memberchurnreport>
+            <version>0.1.0</version>
+        </Zalw_Memberchurnreport>
+    </modules>
+    <adminhtml>
+        <layout>
+            <updates>
+                <memberchurnreport>
+                    <file>memberchurnreport.xml</file>
+                </memberchurnreport>
+            </updates>
+        </layout>
+    </adminhtml>
+   <!-- <admin>
+        <routers>
+            <mymodule>
+                <use>admin</use>
+                <args>
+                    <module>Mycompany_Mymodule</module>
+                    <frontName>mymodule</frontName>
+                </args>
+            </mymodule>
+        </routers>
+    </admin> -->
+    <admin>
+        <routers>
+            <memberchurnreport>
+                <use>admin</use>
+                <args>
+                    <module>Zalw_Memberchurnreport</module>
+                    <frontName>memberchurnreport</frontName>
+                </args>
+            </memberchurnreport>
+        </routers>
+    </admin>
+    <global>
+        <blocks>
+            <memberchurnreport>
+                <class>Zalw_Memberchurnreport_Block</class>
+            </memberchurnreport>
+        </blocks>
+        <helpers>
+            <memberchurnreport>
+                <class>Zalw_Memberchurnreport_Helper</class>
+            </memberchurnreport>
+        </helpers>
+        <models>
+            <memberchurnreport>
+                <class>Zalw_Memberchurnreport_Model</class>
+                <resourceModel>memberchurnreport_mysql4</resourceModel>
+            </memberchurnreport>
+            <memberchurnreport_mysql4>
+                <class>Zalw_Memberchurnreport_Model_Mysql4</class>
+                <entities>
+                    <order><table>sales_flat_order_item</table></order>
+                </entities>             
+            </memberchurnreport_mysql4>
+        </models>
+        <!-- <resources>
+            <memberchurnreport_setup>
+                <setup>
+                    <module>Zalw_Memberchurnreport</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </memberchurnreport_setup>
+            <memberchurnreport_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </memberchurnreport_write>
+            <memberchurnreport_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </memberchurnreport_read>
+        </resources> -->
+    </global>
+</config>

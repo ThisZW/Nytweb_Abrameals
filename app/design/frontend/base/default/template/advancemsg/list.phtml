@@ -1,0 +1,13 @@
+<?php
+/**
+ * @category    Zalw
+ * @package     Zalw_Mssgext
+ * @author      Zalw
+ * @use	   	This .phtml file shows the count of customer messages and shows the grid of customer's inbox messages.
+ */
+?>
+<div class="page-title">
+    <h1><?php echo $this->__('My Message Box'). " (" .$this->getCountOfMessages(). ")"; ?></h1>
+</div>
+<?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+<?php echo $this->getChildHtml('grid') ?>

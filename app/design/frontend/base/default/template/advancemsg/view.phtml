@@ -1,0 +1,166 @@
+<?php
+/**
+ * @category    Zalw
+ * @package     Zalw_Mssgext
+ * @author      Zalw
+ * @use	   	This .phtml file shows the message details on frontend.
+ */ 
+	$message = $this->getDetail();
+	$this->markMessageAsRead($message->getMessageId());
+?>
+<?php if($message->getTemplateId()): 
+$html = "<style type=\"text/css\">\n%s\n</style>";
+        echo sprintf($html, $this->getTemplateStyles($message->getTemplateId()));
+endif; ?>
+<div class="page-title">
+    <h1><?php echo $this->__('Message Detail') ?></h1>
+</div>
+
+<div class="template_section">
+<?php if ($message): ?>
+
+<h2 class="template_title"><strong><?php echo $message->getMessageTitle(); ?></strong></h2>
+<h5>Added at:&nbsp;
+<?php
+$datetime = new Zend_Date($message->getAddedAt());
+//admin controls this output through configuration
+$datetime->setLocale(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_LOCALE))
+         ->setTimezone(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE));
+echo $datetime->get(Zend_Date::DATETIME_MEDIUM);
+?>
+</h5>
+<?php echo $message->getMessageContent(); ?>
+
+<span><?php if($message->getMessageLink()): ?>&nbsp;&nbsp;<a href="<?php echo $message->getMessageLink(); ?>" target="_blank"><?php echo $this->__('Additional Link'); ?></a></span>&nbsp;&nbsp;<?php endif; ?>
+<?php if($message->getMessageLink() && $message->getFileName()):?>&nbsp;&nbsp;<span>|</span>&nbsp;&nbsp; <?php endif; ?>
+<span>
+<?php if($message->getFileName()): ?><a href="<?php echo Mage::getBaseUrl('media') . 'advancemsg' . DS . $message->getFileName(); ?>" target="_blank" alt="Attachment File"><?php echo $this->__('Attachment File'); ?></a><?php endif; ?>
+</span>
+</div>
+<!-- Reply Link -->
+<h4 class="reply_btn"><span id="reply_link" onclick="showReplyBox()"><a><?php echo $this->__('Reply')?></a></span></h4>
+<!-- Reply Form-->  
+<div class="send-message customer_msgs_reply" id="customer_message_reply" style="display: none;">
+    <form action="<?php echo $this->getUrl('*/*/customerreply/id/'.$this->getRequest()->getParam('id'))?>" method="post" id="customer-message-reply-form">
+        <div class="fieldset">
+	    <div class="field">
+	     <?php echo $this->__('Message') ?><label class="required" for="subject"><em>*</em></label>
+		 <div class="input-box">
+		 <textarea class="input-text required-entry validate-length maximum-length-250 message" id="message" name="message" rows=3 cols=80></textarea>	
+		 </div>
+	     </div>
+	     </br>
+	     <div class="buttons-set comment_btn">
+		 <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+		 <button type="submit" title="<?php echo $this->__('Submit') ?>" class="button"><span><span><?php echo $this->__('Submit') ?></span></span></button>
+	     </div>
+        </div>
+    </form>
+</div>
+
+
+
+<?php else: ?>
+<p><?php echo $this->__('Sorry,you can not view this message.'); ?></p>
+<?php endif; ?>
+<?php
+    $id =  $this->getRequest()->getParam('id');
+    $result = Mage::getModel('advancemsg/content')->getCollection()
+        ->addFieldToFilter("parent_id", array("eq" => $id))
+        ->setOrder('message_id', 'DESC')
+        ->load();
+	
+foreach($result as $key=>$object)
+    {
+        echo "<div style='border-top:1px dashed #ccc; margin-top:2%;width:100%'>";
+        echo "<table cellspacing='0' class='form-list msg_new_table'>";
+        echo "<tbody>";
+	
+        echo "<tr>";
+	
+	echo"<td class='first_td'>";
+	echo "<strong>";
+	if($object['sender_type'] == 'admin'){
+	//$admin = Mage::getModel('admin/user')->load($object['sender_id']);
+	//echo $admin['firstname']." ".$admin['lastname'];
+	echo "Admin";
+	} if($object['sender_type'] == 'customer') {
+	$customer = Mage::getModel('customer/customer')->load($object['sender_id']);
+	echo $customer['firstname']." ".$customer['lastname'];
+	}
+	echo "</strong>";
+	echo "</td>";
+	
+	echo "<td class='second_td'>";
+	$datetime = new Zend_Date($object['added_at']);
+	//admin controls this output through configuration
+	$datetime->setLocale(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_LOCALE))
+         	 ->setTimezone(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE));
+	echo "Replied at:&nbsp;".$datetime->get(Zend_Date::DATETIME_MEDIUM);
+	echo "</td>";
+	
+	echo"</tr>";
+	
+	echo "<tr><td class='third_td'>";
+	echo nl2br($object['message_text']);
+        echo "</td></tr>";
+       
+        echo "</tbody>";
+        echo "</table>";
+        echo "</div>"; 
+    }
+ ?>
+
+<div style='border-top:1px dashed #ccc; margin-top:2%;width:100%'>
+<table cellspacing='0' class='form-list msg_new_table'>
+<tbody>
+<tr>
+<td class='first_td'>
+<strong>
+	<?php
+	if($message->getSenderType() == 'admin'){
+	//$admin = Mage::getModel('admin/user')->load($message->getSenderId());
+	//echo $admin['firstname']." ".$admin['lastname'];
+	echo "Admin";
+	}
+	if ($message->getSenderType() == 'customer') {
+	$customer = Mage::getModel('customer/customer')->load($message->getSenderId());
+	echo $customer['firstname']." ".$customer['lastname'];
+	}?>
+	
+<strong>
+</td>
+<td class='second_td'> 
+Added at:&nbsp;
+<?php
+$datetime = new Zend_Date($message->getAddedAt());
+//admin controls this output through configuration
+$datetime->setLocale(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_LOCALE))
+         ->setTimezone(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE));
+echo $datetime->get(Zend_Date::DATETIME_MEDIUM);
+?>
+</td>
+</tr> 
+<tr>
+<td class='third_td'>
+<?php echo nl2br($message->getMessageText()); ?>
+</td>
+</tr>       
+</tbody>
+</table>
+</div>
+
+
+
+
+<script>
+    function showReplyBox()
+    {
+        document.getElementById('customer_message_reply').style.display = "inline-block";   
+    }
+</script>
+<script type="text/javascript">
+//<![CDATA[
+    var salesagentForm = new VarienForm('customer-message-reply-form', true);
+//]]>
+</script>

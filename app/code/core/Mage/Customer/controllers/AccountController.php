@@ -184,6 +184,69 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
         $this->_loginPostRedirect();
     }
 
+	  /**
+     * Login fromEmail action
+     */
+    public function loginFromEmailAction()
+    {
+		//no need to validate via the email.
+        if (!$this->_validateFormKey()) {
+        //    $this->_redirect('*/*/');
+        //    return;
+        }
+		
+
+        if ($this->_getSession()->isLoggedIn()) {
+            $this->_redirect('*/*/');
+            return;
+        }
+        $session = $this->_getSession();
+		
+		$token = $_GET['token'];
+		$username = $_GET['username'];
+		
+		$customer = Mage::getModel("customer/customer")->setWebsiteId(Mage::app()->getWebsite()->getId())->loadByEmail($username);
+		
+		$token_validate = $customer->getData('customer_login_token');
+		
+		$data = array(
+			"username"	=> $username,
+			"token"		=> $token
+		);
+		
+		if (!empty($data['username']) && !empty($data['token']) && ($token == $token_validate)) {
+			try {
+				$session->setCustomerAsLoggedIn($customer)->renewSession();
+				if ($session->getCustomer()->getIsJustConfirmed()) {
+					$this->_welcomeCustomer($session->getCustomer(), true);
+				}
+			} catch (Mage_Core_Exception $e) {
+				switch ($e->getCode()) {
+					case Mage_Customer_Model_Customer::EXCEPTION_EMAIL_NOT_CONFIRMED:
+						$value = $this->_getHelper('customer')->getEmailConfirmationUrl($data['username']);
+						$message = $this->_getHelper('customer')->__('This account is not confirmed. <a href="%s">Click here</a> to resend confirmation email.', $value);
+						break;
+					case Mage_Customer_Model_Customer::EXCEPTION_INVALID_EMAIL_OR_PASSWORD:
+						$message = $e->getMessage();
+						break;
+					default:
+						$message = $e->getMessage();
+				}
+				$session->addError($message);
+				$session->setUsername($data['username']);
+			} catch (Exception $e) {
+				// Mage::logException($e); // PA DSS violation: this exception log can disclose customer password
+			}
+		} else {
+			$session->addError($this->__('Token required to login from email'));
+		}
+        
+		//temporary direct page.
+		
+        $this->_redirectUrl('/sales/order/history/');
+    }
+
+	
     /**
      * Define target URL and redirect customer after logging in
      */

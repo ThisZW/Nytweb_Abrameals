@@ -1,0 +1,130 @@
+<?php
+/**
+ * @category    Zalw
+ * @package     Zalw_Mssgext
+ * @author      Zalw
+ * @use	   	This .phtml file shows the message details on frontend.
+ */ 
+	$message = $this->getDetail(); 
+	//$this->markMessageAsRead($message->getMessageId());
+?>
+
+<div class="page-title">
+    <h1><?php echo $this->__('Message Detail') ?></h1>
+</div>
+
+<div class="template_section">
+<?php if ($message): ?>
+
+<h2 class="template_title"><strong><?php echo $message->getMessagetitle(); ?></strong></h2>
+<h5><?php if($message->getMessageLink()): ?>&nbsp;&nbsp;<a href="<?php echo $message->getMessageLink(); ?>" target="_blank"><?php echo $this->__('Additional Link'); ?></a><?php endif; ?></h5>
+
+
+<?php if($message->getFileName()): ?>&nbsp;&nbsp;<a href="<?php echo Mage::getBaseUrl('media') . 'advancemsg' . DS . $message->getFileName(); ?>" target="_blank" alt="Attachment File"><?php echo $this->__('Attachment File'); ?></a><?php endif; ?>
+
+</div>
+<!-- Reply Link -->
+<!--<h4><span id="reply_link" onclick="showReplyBox()"><a><?php echo $this->__('Reply')?></a></span></h4>
+-->
+<!-- Reply Link -->
+<h4 class="reply_btn"><span id="reply_link" onclick="showReplyBox()"><a><?php echo $this->__('Reply')?></a></span></h4>
+
+
+<!--send messag form-->   
+<div class="send-message customer_msgs_reply" id="customer_message_reply" style="display: none;">
+    <form action="<?php echo $this->getUrl('*/*/customersentreply/id/'.$this->getRequest()->getParam('id'))?>" method="post" id="customer-sent-reply-form">
+        <div class="fieldset">
+	    <div class="field">
+	     <?php echo $this->__('Message') ?><label class="required" for="subject"><em>*</em></label>
+		 <div class="input-box">
+		<!-- <textarea class="input-text required-entry message" id="message" name="message" rows=3 cols=80></textarea>-->	
+		 <textarea class="input-text required-entry validate-length maximum-length-250 message" id="message" name="message" rows=3 cols=80></textarea>
+		 </div>
+	     </div>
+	     </br>
+	     <div class="buttons-set comment_btn">
+		 <p class="required"><?php echo $this->__('* Required Fields') ?></p>
+		 <button type="submit" title="<?php echo $this->__('Submit') ?>" class="button"><span><span><?php echo $this->__('Submit') ?></span></span></button>
+	     </div>
+        </div>
+    </form>
+</div>
+
+
+<?php else: ?>
+<p><?php echo $this->__('Sorry,you can not view this message.'); ?></p>
+<?php endif; ?>
+<script>
+    function showReplyBox()
+    {
+        document.getElementById('customer_message_reply').style.display = "inline-block";   
+    }
+</script>
+
+
+<?php
+    $id =  $this->getRequest()->getParam('id');
+     $result = Mage::getModel('advancemsg/customermsg')->getCollection()
+        ->addFieldToFilter("parent_id", array("eq" => $id))
+        ->setOrder('message_id', 'DESC')
+        ->load();
+    
+     foreach($result as $key=>$object)
+    {
+        echo "<div style='border-top:1px dashed #ccc; margin-top:2%;width:100%'>";
+        echo "<table cellspacing='0' class='form-list msg_new_table'>";
+        echo "<tbody>";
+	
+        echo "<tr>";
+	
+	echo"<td class='first_td'>";
+	echo "<strong>";
+	echo $object['name'];
+	echo "</strong>";
+	echo "</td>";
+	
+	echo "<td class='second_td'>";
+	$replyDate = Mage::helper('core')->formatDate($object['date'], 'medium',TRUE);
+	echo "Replied at:&nbsp;".$replyDate;
+	//echo "Replied at:&nbsp;".$object['date'];
+	echo "</td>";
+	
+	echo"</tr>";
+	
+	echo "<tr><td class='third_td'>";
+	echo $object['message'];
+        echo "</td></tr>";
+       
+        echo "</tbody>";
+        echo "</table>";
+        echo "</div>"; 
+    }
+
+    ?>
+<div style='border-top:1px dashed #ccc; margin-top:2%;width:100%'>
+<table cellspacing='0' class='form-list msg_new_table'>
+<tbody>
+<tr>
+<td class='first_td'>
+<strong><?php echo $message->getName(); ?><strong>
+</td>
+<td class='second_td'>
+Added at:&nbsp;
+<?php $messageDate = Mage::helper('core')->formatDate($message->getDate(), 'medium',TRUE);
+//echo $message->getDate();
+echo $messageDate;?>
+</td>
+</tr> 
+<tr>
+<td class='third_td'>
+<?php echo $message->getMessage(); ?>
+</td>
+</tr>       
+</tbody>
+</table>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    var salesagentForm = new VarienForm('customer-sent-reply-form', true);
+//]]>
+</script>

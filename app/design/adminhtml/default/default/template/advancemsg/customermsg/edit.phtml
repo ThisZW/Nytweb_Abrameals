@@ -1,0 +1,124 @@
+<?php 
+$id =  $this->getRequest()->getParam('id');
+?>
+<div class="main-col-inner">
+    <div class="content-header">
+		<h3 class="icon-head head-adminhtml-customermsg"><?php echo Mage::helper('advancemsg')->__('Inbox Messages'); ?></h3> 
+		<p class="form-buttons"><button style="" onclick="setLocation('<?php echo Mage::helper("adminhtml")->getUrl('advancemsg/adminhtml_customermsg/index');?>')" class="scalable back" type="button" title="Back" id="id_0e0a9174e3ef21d6576df357d57361dd"><span><span><span><?php echo Mage::helper('advancemsg')->__('Back'); ?></span></span></span></button>
+		<button style="" class="scalable reply" type="button" title="Reply To Message" onclick="showReplyBox()" id="replybutton"><span><span><span><?php echo Mage::helper('advancemsg')->__('Reply'); ?></span></span></span></button>
+		<button style="" onclick="deleteConfirm('Are you sure you want to do this?', '<?php echo Mage::helper("adminhtml")->getUrl('advancemsg/adminhtml_customermsg/delete/', array('id' => $id)); ?>')" class="scalable delete" type="button" title="Delete Message" id="id_a72ece5d3208fbf2c5a0fb512b83a9fc"><span><span><span><?php echo Mage::helper('advancemsg')->__('Delete Message'); ?></span></span></span></button>
+		</p>
+    </div>
+<div id ="newdiv"></div>    
+    
+    <?php
+    $id =  $this->getRequest()->getParam('id');
+    $result = Mage::getModel('advancemsg/customermsg')->getCollection()
+        ->addFieldToFilter("parent_id", array("eq" => $id))
+        ->setOrder('message_id', 'DESC')
+        ->load();
+	
+    foreach($result as $key=>$object)
+    {?>
+	
+    <div class="entry-edit">
+	<form enctype="multipart/form-data" method="post" action="" id="edit_form">
+            <div><input type="hidden" value="" name="form_key"></div>
+                <div style="" id="customermsg_tabs_form_section_content">
+		    <div class="entry-edit fieldset">
+			<div class="entry-edit-head remove_bg_area ">
+			<span>
+			    <h4 class="icon-head head-edit-form fieldset-legend title_pg"><?php echo $object['name']?></h4>
+			</span>
+			<span>
+			    
+			   <h4 class="icon-head head-edit-form fieldset-legend date_details">Replied at:&nbsp<?php echo Mage::helper('core')->formatDate($object['date'], 'medium',TRUE);?></h4>
+			
+			    <!--<h4 class="icon-head head-edit-form fieldset-legend date_details">Replied at:&nbsp--><?php //echo $object['date']?><!--</h4>-->
+			</span>
+			</div>
+			<div id="customermsg_form" class="msg_start">
+			<div class="hor-scroll">
+			<!--<div id="customermsg_form" class="fieldset ">-->
+			    <div class="hor-scroll">
+			
+        <table cellspacing="0" class="form-list">
+        <tbody>
+	<tr><td>
+	<?php echo $object['message'];?>
+        </td></tr>
+       
+        </tbody>
+        </table>
+			   <!-- </div>-->
+			  </div>
+			</div>
+		    </div>
+		</div>
+	</form>
+    </div>
+   <?php }
+    ?>
+ 
+    <div class="entry-edit">
+	<form enctype="multipart/form-data" method="post" action="" id="edit_form">
+            <div><input type="hidden" value="" name="form_key"></div>
+                <div style="" id="customermsg_tabs_form_section_content">
+		    <div class="entry-edit">
+		    <?php $collection = Mage::getModel('advancemsg/customermsg')->load($id);
+		      $customerName = $collection->getName();
+		      $messageTitle = $collection->getmessagetitle();
+		      $message = $collection->getMessage();
+		   //  $date = $collection->getDate();
+		      $date = Mage::helper('core')->formatDate($collection->getDate(), 'medium',TRUE);
+                    ?>
+		      
+			<div class="entry-edit-head">
+			<span>   
+			    <h4 class="icon-head head-edit-form fieldset-legend"><?php echo $customerName;?></h4>
+			</span>
+			<span>
+			    <h4 class="icon-head head-edit-form fieldset-legend">Added at:&nbsp<?php echo $date;?></h4>
+			</span>
+			</div>
+		    
+			<div id="customermsg_form" class="fieldset ">
+			    <div class="hor-scroll">
+				<table cellspacing="0" class="form-list">
+                                    <tbody>
+				    <tr>
+					<td class="label"><label for="messagetitle"><?php echo Mage::helper('advancemsg')->__('Subject'); ?></label></td>
+					<td class="value"><?php echo $messageTitle;?></td>
+				    </tr>
+				    <tr>
+					<td class="label"><label for="message"><?php echo Mage::helper('advancemsg')->__('Message'); ?></label></td>
+					<td class="value"><?php echo $message;?></td>
+				    </tr>
+                                    </tbody>
+				</table>
+			    </div>
+			</div>
+		    </div>
+		</div>
+	</form>
+
+    </div>
+	<div id="reply_form">
+        <div id="reply_form_header">
+	    <div id="reply_form_content">
+          
+<script>
+    editForm = new varienForm('edit_form', '');				
+   
+    function showReplyBox()
+    {
+        document.getElementById('reply_form_content').style.display = "block";
+	var show = document.getElementById("reply_form_content");
+        var elements = document.getElementById("newdiv");
+        elements.innerHTML += show.innerHTML;
+        document.getElementById("reply_form_content").innerHTML = "";
+    }
+</script>
+
+
+

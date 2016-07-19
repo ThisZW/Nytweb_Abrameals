@@ -36,21 +36,30 @@
 ?>
 <?php if($_additional = $this->getAdditionalData()): ?>
     <h2><?php echo $this->__('Additional Information') ?></h2>
-    <table class="data-table" id="product-attribute-specs-table">
+    <table class="data-table hide-border" id="product-attribute-specs-table">
         <col width="25%" />
         <col />
         <tbody>
 		<?php $_id_iterator = 0 ?>
-        <?php foreach ($_additional as $_data):?>
-			<!-- 6/10 by Ron attributes with null values will not be displayed on the product pages-->
+        <?php foreach ($_additional as $_data): ?>
 			<?php $_attribute = $_product->getResource()->getAttribute($_data['code']);
 			if (!is_null($_product->getData($_attribute->getAttributeCode())) && ((string)$_attribute->getFrontend()->getValue($_product) != '')) { ?>
-            <tr>
-                <th class="label"><?php $_label = $this->escapeHtml($this->__($_data['label'])); echo $_label?>
+            <tr class="hide-border">
+                <th class="label hide-border <?php if ($_id_iterator > 0){ echo "ingredient-listing-class";} else {echo "cooking-time-col-width";} ?>"  > <?php $_label = $this->escapeHtml($this->__($_data['label'])); echo $_label?>
 				</th>
-			<td class="data" id="<?php $_id_iterator?>" style="<?php if ($_id_iterator > 0){echo "display:none";} ?>"><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code'])?></td> 
+			<td class="data hide-border" id="<?php $_id_iterator?>" <?php if ($_id_iterator > 0){ ?> style="display:none" <?php } ?>><?php echo $_helper->productAttribute($_product, $_data['value'], $_data['code']); if ($_id_iterator ==0){echo " minutes";} ?></td> 
             <?php } ?>
             </tr>
+<?php if ($_id_iterator == 0){ ?>
+		</tbody>
+	</table>
+	<div class="middle-insert-text" id="food-warning-message">Our food may contain nuts, dairy, egg, wheat or shellfish products, please check the ingredients below.</div>
+	<div class="middle-insert-text" id="ingredient-listing-message">This dish contains the following ingredients:</div>
+	<table class="data-table hide-border" id="product-attribute-specs-table">
+        <col width="25%" />
+        <col />
+        <tbody>
+	<?php } ?>
 		<?php $_id_iterator++?>
         <?php endforeach; ?>
         </tbody>

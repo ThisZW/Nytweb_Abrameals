@@ -1,0 +1,160 @@
+<?php 
+$id =  $this->getRequest()->getParam('id');
+?>
+<div class="main-col-inner">
+    
+    <div class="content-header">
+	<h3 class="icon-head head-adminhtml-customermsg"><?php echo Mage::helper('advancemsg')->__('My Message Box'); ?></h3> 
+	<p class="form-buttons"><button style="" onclick="setLocation('<?php echo Mage::helper("adminhtml")->getUrl('advancemsg/adminhtml_manage/log');?>')" class="scalable back" type="button" title="Back" id="id_0e0a9174e3ef21d6576df357d57361dd"><span><span><span><?php echo Mage::helper('advancemsg')->__('Back'); ?></span></span></span></button>
+	<button style="" class="scalable reply" type="button" title="Reply To Message" onclick="showReplyBox()" id="replybutton"><span><span><span><?php echo Mage::helper('advancemsg')->__('Reply'); ?></span></span></span></button>
+	</p>
+    </div>
+
+    <div class="template_section">
+	<?php $collection = Mage::getModel('advancemsg/content')->load($id);
+			    $senderId = $collection->getSenderId();
+			    $senderType = $collection->getSenderType();
+			    $messageTitle = $collection->getMessageTitle();
+			    $message = $collection->getMessageContent();
+			    $messageText = $collection->getMessageText();
+			    $date = $collection->getAddedAt(); ?>
+        <h3><?php //echo $messageTitle; ?></h3>
+        <?php if($collection->getTemplateId()): 
+	    $html = "<style type=\"text/css\">\n%s\n</style>";
+			echo sprintf($html, $this->getTemplateStyles($collection->getTemplateId()));
+		endif; ?>
+	
+		<h3><?php //echo $messageTitle; ?></h3>
+		<?php if ($collection->getMessageId()): ?>
+		
+		<h2 class="template_title"><strong><?php echo $collection->getMessageTitle(); ?></strong></h2>
+		<h5>Added at:&nbsp;
+			<?php
+			$datetime = new Zend_Date($collection->getAddedAt());
+			//admin controls this output through configuration
+			$datetime->setLocale(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_LOCALE))
+				 ->setTimezone(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE));
+			echo $datetime->get(Zend_Date::DATETIME_MEDIUM);
+			?>
+		</h5>
+		<?php echo $collection->getMessageContent(); ?>
+		
+		<span><?php if($collection->getMessageLink()): ?>&nbsp;&nbsp;<a href="<?php echo $collection->getMessageLink(); ?>" target="_blank"><?php echo $this->__('Additional Link'); ?></a></span>&nbsp;&nbsp;<?php endif; ?>
+		<?php if($collection->getMessageLink() && $collection->getFileName()):?>&nbsp;&nbsp;<span>|</span>&nbsp;&nbsp; <?php endif; ?>
+		<span>
+		<?php if($collection->getFileName()): ?><a href="<?php echo Mage::getBaseUrl('media') . 'advancemsg' . DS . $collection->getFileName(); ?>" target="_blank" alt="Attachment File"><?php echo $this->__('Attachment File'); ?></a><?php endif; ?>
+		</span>
+	</div>
+    
+    <div id ="newdiv"></div>
+	
+	<?php else: ?>
+    <p><?php echo $this->__('Sorry,you can not view this message.'); ?></p>
+    <?php endif; ?>
+    
+    <?php
+    $id =  $this->getRequest()->getParam('id');
+    $result = Mage::getModel('advancemsg/content')->getCollection()
+        ->addFieldToFilter("parent_id", array("eq" => $id))
+        ->setOrder('message_id', 'DESC')
+        ->load();
+	
+    foreach($result as $key=>$object){?>
+    <div class="entry-edit">
+	<div class="entry-edit fieldset">
+	    <div class="entry-edit-head remove_bg_area">
+		<span>
+		    <h4 class="icon-head head-edit-form fieldset-legend title_pg">
+		    <?php
+		    if($object['sender_type'] == 'admin'){
+		    //$admin = Mage::getModel('admin/user')->load($object['sender_id']);
+		    //echo $admin['firstname']." ".$admin['lastname'];
+			echo "Admin";
+		    } if($object['sender_type'] == 'customer') {
+		    $customer = Mage::getModel('customer/customer')->load($object['sender_id']);
+		    echo $customer['firstname']." ".$customer['lastname'];
+		    }?>
+		    </h4>
+		</span>
+		<span>
+		    <h4 class="icon-head head-edit-form fieldset-legend date_details">Replied at:&nbsp
+			<?php
+			$datetime = new Zend_Date($object['added_at']);
+			//admin controls this output through configuration
+			$datetime->setLocale(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_LOCALE))
+				 ->setTimezone(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE));
+			echo $datetime->get(Zend_Date::DATETIME_MEDIUM);
+			?>
+		   </h4>
+		</span>
+	    </div>
+	    <div id="customermsg_form" class="msg_start">
+		    <table cellspacing="0" class="form-list">
+		    <tbody>
+		    <tr>
+		    <td><?php echo nl2br($object['message_text']);?></td>
+		    </tr>
+		    </tbody>
+		    </table>
+	    </div>
+	</div>
+    </div>
+    <?php } ?>
+      
+    <div class="entry-edit">
+	<div class="entry-edit fieldset">
+	    <div class="entry-edit-head remove_bg_area">
+		<span>
+		    <h4 class="icon-head head-edit-form fieldset-legend title_pg">
+		    <?php
+		    if($senderType == 'admin'){
+		    //$admin = Mage::getModel('admin/user')->load($senderId);
+		    //echo $admin['firstname']." ".$admin['lastname'];
+			echo "Admin";
+		    }
+		    if ($senderType == 'customer') {
+		    $customer = Mage::getModel('customer/customer')->load($senderId);
+		    echo $customer['firstname']." ".$customer['lastname'];
+		    }?>
+		    </h4>
+		</span>
+		<span>
+		   <h4 class="icon-head head-edit-form fieldset-legend date_details">Added at:&nbsp
+			<?php
+			$datetime = new Zend_Date($date);
+			//admin controls this output through configuration
+			$datetime->setLocale(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_LOCALE))
+				 ->setTimezone(Mage::getStoreConfig(Mage_Core_Model_Locale::XML_PATH_DEFAULT_TIMEZONE));
+			echo $datetime->get(Zend_Date::DATETIME_MEDIUM);
+			?>
+		   </h4>
+		</span>
+	    </div>
+                       
+	    <div id="customermsg_form" class="msg_start">
+		<table cellspacing="0" class="form-list">
+		    <tbody>
+			<tr>
+			    <td class="value"><?php echo nl2br($messageText);?></td>
+			</tr>
+		    </tbody>
+		</table>
+	    </div>
+	</div>
+    </div>
+
+    
+    <div id="reply_form">
+        <div id="reply_form_header">
+	    <div id="reply_form_content">
+
+<script>
+    function showReplyBox()
+    {
+        document.getElementById('reply_form_content').style.display = "block";
+        var show = document.getElementById("reply_form_content");
+        var elements = document.getElementById("newdiv");
+        elements.innerHTML += show.innerHTML;
+        document.getElementById("reply_form_content").innerHTML = "";
+    }    
+</script>

@@ -61,7 +61,7 @@ FREEZE NOTIFICATION-->
 		<button type="button" title="<?php echo $this->quoteEscape($this->__('Switch a Plan')) ?>" class="button" onclick="if( confirm('<?php echo $this->getConfirmationMessage() ?>') ) { window.location.href = '<?php echo $this->getRedirectToUpdateUrl() ?>'; } return false;"><span><span><?php echo $this->__('Switch a Plan') ?></span></span></button>
     <?php endif; ?>
     <?php if ($this->getCanSuspend()): ?>
-       <button type="button" title="<?php echo $this->quoteEscape($this->__('Suspend')) ?>" class="button" onclick="if( confirm('<?php echo $this->getConfirmationMessage() ?>') ) { window.location.href = '<?php echo $this->getSuspendUrl() ?>?s=6-8-2016&e=6-14-2016'; } return false;"><span><span><?php echo $this->__('Suspendtesttest') ?></span></span></button>   
+       <!-- <button type="button" title="<?php echo $this->quoteEscape($this->__('Suspend')) ?>" class="button" onclick="if( confirm('<?php echo $this->getConfirmationMessage() ?>') ) { window.location.href = '<?php echo $this->getSuspendUrl() ?>?s=6-8-2016&e=6-14-2016'; } return false;"><span><span><?php echo $this->__('Suspendtesttest') ?></span></span></button>   -->
 		
 		<!-- 6-28 by Chris , call custom js fucntion-->
 		<button type="button" id="schedule_freeze_buttom" title="<?php echo $this->quoteEscape($this->__('Suspend')) ?>" class="button" onclick="showCalendar()"><span><span><?php echo $this->__('Schedule to Freeze') ?></span></span></button>

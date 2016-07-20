@@ -201,9 +201,18 @@ a.tooltip-close{position:absolute;right:10px;top:10px;color:#fff}
 	display:none;
 }
 .product-name {
-	 padding-right:10%;
+	padding-right:10%;
  }
  
+.order-img-container{
+	max-height:150px;
+	overflow:hidden;
+}
+.order-img-container > img{
+	top:-30px;
+	position:relative;
+}
+
  .mini-products-list > .item > .product-details >  .btn-remove {
 	 text-indent:0 !important;
 	 height:auto;

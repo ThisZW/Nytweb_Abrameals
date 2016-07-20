@@ -91,7 +91,7 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 	}
 	
 	public function sendmessageAction()
-	{
+	{	
 		// if the customer session is not set then redirect the user to login page
 		if(!Mage::getSingleton('customer/session')->getCustomer()->getId())	$this->_redirect('customer/account/login');	
 		$this->loadLayout();
@@ -100,6 +100,9 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 						
 		$message=$this->getRequest()->getParam('message');		
 		$messagetitle=$this->getRequest()->getParam('messagetitle');		
+		$fileFlag = true;
+		$fileName = '';
+		$successmessage='';
 		if(Mage::getSingleton('customer/session')->isLoggedIn()){		
 			$name=Mage::getSingleton('customer/session')->getCustomer()->getName();
 			$customerId=Mage::getSingleton('customer/session')->getCustomer()->getId();
@@ -111,7 +114,6 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 			$name='Guest';
 		}
 		try{
-		//stores if message is not null		
 		if($message!='')
 		{
 		$obj=Mage::getModel('advancemsg/content')
@@ -125,18 +127,68 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 			->setSenderType('customer')
 			->setSentByUsername($customerName)
 			->setReceiverId('1')
-			->setReceiverType('admin')
-			->save();
+			->setReceiverType('admin');
+
+			if (isset($_FILES['template_attachment']['name']) && $_FILES['template_attachment']['name'] != '') {$obj->setAttach('1');
+							var_dump ($_FILES['template_attachment']['name']); die;}	
+
+					else{
+				 var_dump($_FILES['template_attachment']['name']); die;
+					$obj->setAttach('0');	
+					}
+					if (isset($_FILES['template_attachment']['name']) && $_FILES['template_attachment']['name'] != '') {
+						try {
+							if($fileFlag){
+								$uploader = new Varien_File_Uploader('template_attachment');
+								$uploader->setAllowedExtensions(array('jpg','jpeg','gif','png','pdf','doc','xls','csv','docx'));		
+								
+								$uploader->setFilesDispersion(false);						    
+								
+								$path = Mage::getBaseDir('media') . DS . 'advancemsg' . DS;
+								$attachName = explode(".",$_FILES['template_attachment']['name']);
+								$extension = end($attachName);
+								$file = implode(explode(".",$_FILES['template_attachment']['name'],-1));
+								$today = date("F j, Y, g i a");
+								$fileName = $file . $today . "." . $extension;
+														
+								$uploader->save($path, $fileName);
+								
+								$fileFlag = false;					
+							}
+							else{
+								$path = Mage::getBaseDir('media') . DS . 'advancemsg' . DS;
+								$fileNameExp = explode(".",$fileName);	
+								$extension = end($fileNameExp);
+								$fileNameTmp = $file . $today . "." . $extension;
+								copy($path . DS . $fileName, $path . DS . $fileNameTmp);
+								$fileName = $fileNameTmp;				
+								$uploader->save($path, $fileName);	
+							}
+							
+							$fileName = str_replace(",", "", $fileName);
+							$fileName = str_replace(" ", "_", $fileName);
+							$obj->setFileName($fileName);
+							$obj->save();
+							Mage::log('filename'.$fileName,null,'filename.log');
+							
+							$successmessage = Mage::helper('advancemsg')->__('Message was sent successfully to %d customer(s)', count($customerIds));
+							$message='';
+						} catch (Exception $e) {
+							 $message = $e->getMessage();
+						}
+					}
+	}
 		}
-		
+				catch (Exception $e) {
+			Mage::getSingleton('core/session')->addError($e->getMessage());
+		}
 		Mage::getSingleton('core/session')->addSuccess(
 			    Mage::helper('advancemsg')->__(
 				'Message has been successfully sent'
 			    )
 		);
-		} catch (Exception $e) {
-			Mage::getSingleton('core/session')->addError($e->getMessage());
-		}
+		
+
 		$this->_redirect('*/*/customermsg');
 		
 	}

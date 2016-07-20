@@ -853,11 +853,6 @@ HTML;
 
 
 
-
-360b746156fce177b2c220894bc1fa55
-JCM3wrfGcZJNp5IADZMpZ378Gh879ZTu
-
-
 HTML;
 
 		$body_upper = <<<HTML

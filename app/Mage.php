@@ -760,12 +760,12 @@ final class Mage
                 $etcDir = $options['etc_dir'];
             }
             $localConfigFile = $etcDir . DS . 'local.xml';
-
+			
             self::$_isInstalled = false;
 
             if (is_readable($localConfigFile)) {
                 $localConfig = simplexml_load_file($localConfigFile);
-                date_default_timezone_set('UTC');
+                date_default_timezone_set('America/New_York');
                 if (($date = $localConfig->global->install->date) && strtotime($date)) {
                     self::$_isInstalled = true;
                 }

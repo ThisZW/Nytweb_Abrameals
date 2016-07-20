@@ -194,10 +194,12 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
         }
         $quote = $this->getOnepage()->getQuote();
 		$quote_qty = $quote->getItemsQty();
-		$weekly_meals_left = Mage::getSingleton('customer/session')->getCustomer()->getWeeklyMealsLeft();
+		$group_id = Mage::getSingleton('customer/session')->getCustomerGroupId();
+		if($group_id == 4){
+		$weekly_meals_left = Mage::getSingleton('customer/session')->getCustomer()->getWeeklyMealsLeft();}
 		//echo $weekly_meals_left;
 		//echo $quote_qty;
-		$group_id = Mage::getSingleton('customer/session')->getCustomerGroupId();
+		
 		if(Mage::getSingleton('customer/session')->isLoggedIn() and ($group_id == 4)){
 			if (($weekly_meals_left < $quote_qty)){
 			//if (!$quote->hasItems() || $quote->getHasError() ) {

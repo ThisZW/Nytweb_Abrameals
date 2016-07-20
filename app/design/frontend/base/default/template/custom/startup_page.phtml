@@ -2,11 +2,7 @@
 //7-5-2016 by Chris.
 //Custom Startup Page.
 if(Mage::getSingleton('customer/session')->isLoggedIn()){
-	//$customer = Mage::getSingleton('customer/session')->getCustomer();
-	//print_r ($customer);
-	$products = Mage::getModel('catalog/category')->load(3)->getProductCollection()->addAttributeToSelect();
-	//($products);
-	$product_model = Mage::getModel('catalog/product');
+
 ?>
 <div class="startup-container">
 	<h1>Let's Get Started!</h1>

@@ -1,3 +1,26 @@
+<!-- 7-19-2016 by Chris 
+This will auto scroll to review section if customers are actually come from sales/order/history
+-->
+
+
+<?php $fromOrderPage = $_GET['is_from_order_page']; 
+	if ($fromOrderPage == 1):?>
+<script type="text/javascript">
+
+function pageScrollToReview(){
+	jQuery('#tab_description_tabbed').removeClass('active');
+	jQuery('#tab_review_tabbed').addClass('active');
+	jQuery('#tab_description_tabbed_contents').hide();
+	jQuery('#tab_review_tabbed_contents').show();
+	jQuery('html, body').animate({
+    scrollTop: jQuery("#tab_review_tabbed").offset().top
+}, 1000);
+}
+
+window.onload = pageScrollToReview;
+</script>
+<?php endif;  ?>
+
 <?php
     $_helper = $this->helper('catalog/output');
     $helper_richsnippets = $this->helper('porto/richsnippets');

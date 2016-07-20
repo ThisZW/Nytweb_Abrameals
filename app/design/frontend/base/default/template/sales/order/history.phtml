@@ -51,6 +51,10 @@
     <tbody>
         <?php $_odd = ''; ?>
         <?php foreach ($_orders as $_order): ?>
+		
+
+		<?php $is = $_order->getAllItems();?>
+
         <tr>
             <td><?php echo $_order->getRealOrderId() ?></td>
             <td><span class="nobr"><?php echo $this->formatDate($_order->getCreatedAtStoreDate()) ?></span></td>
@@ -66,6 +70,39 @@
                 </span>
             </td>
         </tr>
+		<tr>
+		<td colspan="6"><div class="item-container" >
+		<!--  show all products inside the order as well as review url -->
+		<?php foreach ($is as $i ){ ?> 
+		<?php	$p_id = $i->getProductId();
+				$p_name = $i->getName();
+				$p_qty = (int)$i->getQtyOrdered();
+				$p_obj = Mage::getModel('catalog/product')->load($p_id);  
+				$p_img = $p_obj->getImageUrl();
+				$p_url = $p_obj->getProductUrl();
+				$p_cat = $p_obj->getCategoryIds();
+				?>
+			<div class="col-sm-4 col-md-4 col-xs-12">
+				<div class="meals">
+					<div class="order-img-container">
+						<img class="meal-img" style="height:100%;width:100%" src="<?php echo $p_img ?>" />
+					</div>
+					<div class="meal-inputs">
+						
+						<div class="meal-name"> <?php echo $p_name ?> </div>
+						<?php if(in_array(3,$p_cat)):?>
+						<a href="<?php echo $p_url ?>?is_from_order_page=1"><div class="review-button">Review This</div></a>
+						<?php endif; ?>
+						<?php if($p_qty > 1): ?>
+						<div class="order-qty-holder">Quantity Ordered: <?php echo $p_qty; ?> </div>
+						<?php endif;　?>
+					</div>
+				</div>	
+			</div>
+		<?php } ?>
+		</div>
+		</td>
+		</tr>
         <?php endforeach; ?>
     </tbody>
 </table>

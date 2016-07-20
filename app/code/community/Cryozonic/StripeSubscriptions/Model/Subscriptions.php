@@ -293,10 +293,10 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
         }
 
         // Subscribe the customer
-        try
+        try 
         {
             $trialDays = $this->getTrialDays($details);
-            $subscription = $this->subscribeCustomer($customer, $plan->id, $details['qty'], $trialDays, $paymentInfo, $couponCode);
+			$subscription = $this->subscribeCustomer($customer, $plan->id, $details['qty'], $trialDays, $paymentInfo, $couponCode);
             $this->_rollback['subscription'] = $subscription;
             $profile->setReferenceId($subscription->id);
             $profile->setState(Mage_Sales_Model_Recurring_Profile::STATE_ACTIVE);
@@ -404,8 +404,20 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
                 $days = $details['trial_period_frequency'];
                 break;
             case 'week':
-                $days = $details['trial_period_frequency'] * 7;
-                break;
+			//7-20-2016 by Chris  'fixed' date value to ensure it will forever start on next sunday.
+				if ($details['trial_period_frequency'] == 'fixed'){
+					$wday = getdate()['wday'];
+					$hour = getdate()['hours'];
+					if ($hour >= 12 && $wday == 7){
+						$days = 7;
+					} else {
+						$days = 7 - $wday;
+					}
+				} else {
+					$days = $details['trial_period_frequency'] * 7;
+                }
+
+				break;
             case 'semi_month':
                 $days = $details['trial_period_frequency'] * 14;
                 break;
@@ -416,6 +428,7 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
                 $days = $details['trial_period_frequency'] * 356;
                 break;
         }
+						//Mage::log($days,null,'crontest.log',true);
         return round($days);
     }
 
@@ -520,8 +533,15 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
             }
 
             if ($trialDays && $trialDays > 0) {
-                $params['trial_end'] = time() + $trialDays * 24 * 60 * 60;
+				//calculate time here in order to make everything start from sunday 12.pm.
+				$params['trial_end'] = time() + $trialDays * 24 * 60 * 60;
             }
+			$time = getdate();
+			if ($time['hours'] >= 12) {
+				$params['trial_end'] -= (($time['hours']-12)*3600 + $time['minutes']*60);
+			} else if ($time['hours'] < 12) {
+				$params['trial_end'] += ((13-$time['hours'])*3600 + $time['minutes']*60);
+			}
             // else
             // {
             //     // We add a 1 minute trial period in case something goes sour
@@ -529,7 +549,8 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
             //     // will go through which must be manually refunded.
             //     $params['trial_end'] = time() + 60;
             // }
-
+			
+		//	Mage::log($params, null, 'crontest.log',true);
             return $customer->subscriptions->create($params);
         }
         catch (Exception $e)

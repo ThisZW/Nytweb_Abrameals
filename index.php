@@ -34,6 +34,7 @@ Whoops, it looks like you have an invalid PHP version.</h3></div><p>Magento supp
     exit;
 }
 
+
 /**
  * Compilation includes configuration file
  */
@@ -62,6 +63,7 @@ if (file_exists($maintenanceFile)) {
 }
 
 require MAGENTO_ROOT . '/app/bootstrap.php';
+
 require_once $mageFilename;
 
 #Varien_Profiler::enable();
@@ -79,5 +81,6 @@ $mageRunCode = isset($_SERVER['MAGE_RUN_CODE']) ? $_SERVER['MAGE_RUN_CODE'] : ''
 
 /* Run store or run website */
 $mageRunType = isset($_SERVER['MAGE_RUN_TYPE']) ? $_SERVER['MAGE_RUN_TYPE'] : 'store';
-
+date_default_timezone_set('America/New_York');
 Mage::run($mageRunCode, $mageRunType);
+

@@ -90,8 +90,9 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 		$this->renderLayout();
 	}
 	
-	public function sendmessageAction()
+	/*public function sendmessageAction()
 	{	
+
 		// if the customer session is not set then redirect the user to login page
 		if(!Mage::getSingleton('customer/session')->getCustomer()->getId())	$this->_redirect('customer/account/login');	
 		$this->loadLayout();
@@ -107,10 +108,7 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 			$name=Mage::getSingleton('customer/session')->getCustomer()->getName();
 			$customerId=Mage::getSingleton('customer/session')->getCustomer()->getId();
 			$customerName=Mage::getSingleton('customer/session')->getCustomer()->getName();
-		}
-		
-		else
-		{
+		} else {
 			$name='Guest';
 		}
 		try{
@@ -129,12 +127,10 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 			->setReceiverId('1')
 			->setReceiverType('admin');
 
-			if (isset($_FILES['template_attachment']['name']) && $_FILES['template_attachment']['name'] != '') {$obj->setAttach('1');
-							var_dump ($_FILES['template_attachment']['name']); die;}	
-
-					else{
-				 var_dump($_FILES['template_attachment']['name']); die;
-					$obj->setAttach('0');	
+			if (isset($_FILES['template_attachment']['name']) && $_FILES['template_attachment']['name'] != '') {
+				$obj->setAttach('1');
+			} else {
+				$obj->setAttach('0');	
 					}
 					if (isset($_FILES['template_attachment']['name']) && $_FILES['template_attachment']['name'] != '') {
 						try {
@@ -188,10 +184,107 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 			    )
 		);
 		
+	*/
+	//	$this->_redirect('*/*/customermsg');
+		
+	//} 
+	
+	public function sendmessageAction()
+	{
+		$fileFlag = true;
+		// if the customer session is not set then redirect the user to login page
+		if(!Mage::getSingleton('customer/session')->getCustomer()->getId())	$this->_redirect('customer/account/login');	
+		$this->loadLayout();
+		$this->renderLayout();
+		//gets sends,date
+						
+		$message=$this->getRequest()->getParam('message');		
+		$messagetitle=$this->getRequest()->getParam('messagetitle');		
+		if(Mage::getSingleton('customer/session')->isLoggedIn()){		
+			$name=Mage::getSingleton('customer/session')->getCustomer()->getName();
+			$customerId=Mage::getSingleton('customer/session')->getCustomer()->getId();
+			$customerName=Mage::getSingleton('customer/session')->getCustomer()->getName();
+		}
+		
+		else
+		{
+			$name='Guest';
+		}
+		try{
+		//stores if message is not null		
+			if($message!='') {
+			$obj=Mage::getModel('advancemsg/content')
+				->setMessageText($message)
+				->setMessageTitle($messagetitle)
+				->setAddedAt(now())
+				->setStatus('0')
+				->setCustomerStatus('1')
+				->setParentId('0')
+				->setSenderId($customerId)
+				->setSenderType('customer')
+				->setSentByUsername($customerName)
+				->setReceiverId('1')
+				->setReceiverType('admin');
 
+				if (isset($_FILES['template_attachment']['name']) && $_FILES['template_attachment']['name'] != '') {$obj->setAttach('1');}
+				else{$obj->setAttach('0');}
+
+				if (isset($_FILES['template_attachment']['name']) && $_FILES['template_attachment']['name'] != '') {
+						if($fileFlag){
+							$uploader = new Varien_File_Uploader('template_attachment');
+							$uploader->setAllowedExtensions(array('jpg','jpeg','gif','png','pdf','doc','xls','csv','docx'));
+							$uploader->setFilesDispersion(false);						    
+							
+							$path = Mage::getBaseDir('media') . DS . 'advancemsg' . DS;
+							$attachName = explode(".",$_FILES['template_attachment']['name']);
+							$extension = end($attachName);
+							$file = implode(explode(".",$_FILES['template_attachment']['name'],-1));
+							$today = date("F j, Y, g i a");
+							$fileName = $file . $today . "." . $extension;
+													
+							$uploader->save($path, $fileName);
+							
+							$fileFlag = false;					
+						}
+						else{
+							$path = Mage::getBaseDir('media') . DS . 'advancemsg' . DS;
+							$fileNameExp = explode(".",$fileName);	
+							$extension = end($fileNameExp);
+							$fileNameTmp = $file . $today . "." . $extension;
+							copy($path . DS . $fileName, $path . DS . $fileNameTmp);
+							$fileName = $fileNameTmp;				
+							$uploader->save($path, $fileName);	
+						}
+						
+						$fileName = str_replace(",", "", $fileName);
+						$fileName = str_replace(" ", "_", $fileName);
+						$obj->setFileName($fileName);
+						$obj->save();
+						Mage::log('filename'.$fileName,null,'filename.log');
+						
+						$successmessage = Mage::helper('advancemsg')->__('Message was sent successfully to %d customer(s)', count($customerIds));
+						$message='';
+				} else{	
+					$obj->save();
+					$successmessage = Mage::helper('advancemsg')->__('Message was sent successfully to %d customer(s)', count($customerIds));
+					$message='';
+				}
+			
+			
+			}
+			Mage::getSingleton('core/session')->addSuccess(
+					Mage::helper('advancemsg')->__(
+					'Message has been successfully sent'
+					)
+			);
+		} catch (Exception $e) {
+			Mage::getSingleton('core/session')->addError($e->getMessage());
+		}
 		$this->_redirect('*/*/customermsg');
 		
 	}
+	
+	
 	public function massRemoveAction()
 	{
 	/**
@@ -422,7 +515,7 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 		try{
 		//if($messageText!='') {
 			
-			$messageContent= Mage::getModel('advancemsg/content')
+			$obj= Mage::getModel('advancemsg/content')
 				->setUserId($customerId)
 				->setMessageText($data['message'])
 				//->setAddedAt(date("Y-M-d H:i:s", Mage::getModel('core/date')->timestamp(time())))
@@ -516,5 +609,43 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 		    ->save();
 		}
 	}
+	
+	//7-25-2016 file attachment handler for advancedmsg
+	public function saveFormAttachment($attach){
+		$a = $attach['template_attachment'];
+		print_r($a);
+		$target_dir = $_SERVER["DOCUMENT_ROOT"] . "/media/customer_upload/";
+		$target_file = $target_dir . basename($a["name"]);
+		$uploadOk = 1;
+		
+		$imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+		$acceptedFileType = array(
+			'jpg',
+			'png',
+			'jpeg',
+			'pdf',
+			'doc',
+			'xls',
+			'csv',
+			'docx',
+		);
+		
+		if(!in_array($imageFileType,$acceptedFileType)){
+			$uploadOk = 0;
+		}
+		
+		if ($a['size'] > 2000000){
+			echo "<br> Sorry, your file is too large.";
+			$uploadOk = 0;
+		}
+		
+		if ($a["size"] == 0) {
+			return 0;
+		}
+		
+		
+	}
+	
+	
 	
 }

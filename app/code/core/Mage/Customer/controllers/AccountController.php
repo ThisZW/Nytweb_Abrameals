@@ -251,12 +251,15 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
      * Define target URL and redirect customer after logging in
      */
     protected function _loginPostRedirect()
-    {
-        $session = $this->_getSession();
+    {	
 
+        $session = $this->_getSession();
         if (!$session->getBeforeAuthUrl() || $session->getBeforeAuthUrl() == Mage::getBaseUrl()) {
             // Set default URL to redirect customer to
-            $session->setBeforeAuthUrl($this->_getHelper('customer')->getAccountUrl());
+			if($session->getCustomer()->getData('group_id') == 4){
+				//7-25-2016 by Chris
+			} else {
+            $session->setBeforeAuthUrl($this->_getHelper('customer')->getAccountUrl()); }
             // Redirect customer to the last page visited after logging in
             if ($session->isLoggedIn()) {
                 if (!Mage::getStoreConfigFlag(

@@ -1,6 +1,6 @@
 /**
  * WARNING: Do not change this file. Your changes will be lost.
- * 2016-07-18 17:39:38 */
+ * 2016-07-20 18:55:33 */
 
 @media (max-width: 480px) {
     .category-products .products-grid li.item {
@@ -268,4 +268,8 @@ display:none;
 
 .no_pref_img{
     width:30px;
+}
+
+.input-text{
+    height:200px;
 }

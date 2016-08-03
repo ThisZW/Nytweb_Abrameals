@@ -359,8 +359,9 @@ Billing.prototype = {
     },
 
     save: function(){
-        if (checkout.loadWaiting!=false) return;
-
+        //if (checkout.loadWaiting!=false)
+		//	return;
+	
         var validator = new Validation(this.form);
         if (validator.validate()) {
             checkout.setLoadWaiting('billing');
@@ -368,7 +369,6 @@ Billing.prototype = {
 //            if ($('billing:use_for_shipping') && $('billing:use_for_shipping').checked) {
 //                $('billing:use_for_shipping').value=1;
 //            }
-
             var request = new Ajax.Request(
                 this.saveUrl,
                 {

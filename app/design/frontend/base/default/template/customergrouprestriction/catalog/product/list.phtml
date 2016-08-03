@@ -4,6 +4,7 @@
 		$is_logged_in = 1;
 		$_productCollection=$this->getLoadedProductCollection();
 		$pref_str = $_GET['pref'];
+		//echo $pref_str;
 			if ($pref_str && $pref_str != 'none'){
 				$pref = explode(",", $pref_str);
 				}  
@@ -11,11 +12,11 @@
 					 $p = preg_replace("/\//","",$p);
 					 $_productCollection->addAttributeToFilter($p, 0);
 					 
-					}
+					} 
 	} else {
 		$_productCollection=$this->getLoadedProductCollection();
 		//print_r(getLoadedProductCollection);
-	}
+	} 
     $_helper = $this->helper('catalog/output');
 	$_image_helper = $this->helper('catalog/image');
     $store = Mage::app()->getStore();
@@ -476,26 +477,7 @@ var i = 0;
         </ul>
         <script type="text/javascript">
 		//$('.button.btn-cart').click(function(){
-		function validateLimit(){
-			var qty = 0;
-			var limit = 0;
-			jQuery('.inner-wrapper> .mini-products-list li').each(function(i,e){
-				if (typeof jQuery(e).data('qty') !== "undefined"){ 
-					qty += (jQuery(e).data('qty'));
-				}
-			});
-			jQuery('.inner-wrapper> .mini-products-list li').each(function(i,e){
-				if (typeof jQuery(e).data('planLimit') !== "undefined"){ 
-					limit += (jQuery(e).data('planLimit'));
-				}
-			});
-			console.log(qty+' '+limit);
-			if ( (qty+1) > limit) {
-				return false;
-			} else {
-				return true;
-			}
-		}
+
 		//});
 		
             jQuery('.col-main .products-grid li:nth-child(2n)').addClass('nth-child-2n');

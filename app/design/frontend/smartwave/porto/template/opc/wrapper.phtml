@@ -4,6 +4,7 @@ echo $this->getDesignStyles();
 $package = Mage::getDesign()->getPackageName();
 $theme = Mage::getDesign()->getTheme('frontend');
 $is_persistent = Mage::helper('opc')->isPersistentMember();
+$sub_total = Mage::helper('opc')->getSubscriptionTotal();
 ?>
 <div class="opc-wrapper-opc design_package_<?php echo $package;?> design_theme_<?php echo $theme;?>">
     <div class="page-title">
@@ -18,7 +19,7 @@ $is_persistent = Mage::helper('opc')->isPersistentMember();
     	<?php endif;?>
     	
     	<div class="right review-menu-block">
-    	  <a class="review-total theme-bg-color"><i class="icon-cart"></i><?php echo Mage::helper('opc')->getGrandTotal()?></a>
+    	  <a class="review-total theme-bg-color"><i class="icon-cart"></i><?php echo Mage::helper('opc')->getGrandTotal()?>&nbsp;<?php echo $sub_total；?></a>
     	  <div class="hidden theme-border-color" id="opc-review-block">
 		      <?php echo $this->_getReviewHtml()?>
 		  </div>
@@ -85,6 +86,7 @@ $is_persistent = Mage::helper('opc')->isPersistentMember();
 
 		<div class="opc-review-actions" id="checkout-review-submit">
 		      <h5 class="grand_total"><?php echo $this->__('Grand Total')?><?php echo Mage::helper('opc')->getGrandTotal()?></h5>
+			  <div class="subscription_plans_price"><?php echo $sub_total;?> </div>
 		      <?php echo $this->getChildHtml('agreements')?>
 		      <?php echo $this->getChildHtml('opc.newsletters');?>
 		      <button type="button" title="<?php echo $this->__('Place Order Now') ?>" class="button btn-checkout opc-btn-checkout"><span><span><?php echo $this->__('Place Order Now') ?></span></span></button>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <suggestmealsforemail translate="label"  module="suggestmealsforemail">
+            <label>Custom Configuration Tab</label>
+            <sort_order>1</sort_order>
+        </suggestmealsforemail>
+    </tabs>
+     <sections>
+        <suggestmealsforemail_options translate="label" module="suggestmealsforemail">
+            <label>Set Suggest Meals for Email</label>
+            <tab>suggestmealsforemail</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>1</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <section_one translate="label">
+                    <label>Suggested Meals</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>                
+                    <fields>
+                        <custom_field_one>
+                            <label>Meal #s</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Please type in the meals you suggest for this week's email by commas, ex:
+									#23,#33,#45......</comment>                   
+                        </custom_field_one>
+                    </fields>
+                </section_one>
+            </groups>                
+        </suggestmealsforemail_options>
+    </sections>
+</config>

@@ -556,9 +556,9 @@ class Mage_Sales_Model_Observer
 		if (!empty($ids)){
 			foreach ($ids as $profile_id) {
 				try{
-					Mage::log($profile_id, null, 'crontest.log',true);
+					Mage::log('Profile ID' . $profile_id . 'is now suspended' , null, 'crontest.log',true);
 					$profile = Mage::getModel('sales/recurring_profile')->load($profile_id);
-					$profile->setFreezeStatus(2)->suspend()->save();
+					$profile->setFreezeStatus(2)->suspend();
 				} catch (Exception $e){
 					Mage::log($e , null, 'crontest.log' , true);
 				}
@@ -585,9 +585,9 @@ class Mage_Sales_Model_Observer
 		if (!empty($ids)){
 			foreach ($ids as $profile_id) {
 				try{
-					Mage::log($profile_id, null, 'crontest.log',true);
+					Mage::log('Profile ID' . $profile_id . 'is now active.', null, 'crontest.log',true);
 					$profile = Mage::getModel('sales/recurring_profile')->load($profile_id);
-					$profile->setFreezeStatus(0)->activate()->save();
+					$profile->setFreezeStatus(0)->activate();
 				} catch (Exception $e){
 					Mage::log($e , null, 'crontest.log' , true);
 				}
@@ -665,7 +665,7 @@ class Mage_Sales_Model_Observer
 						->setSubject('Subject here......');
 			$email_model->setBody($body)
 						->setType('html')
-						->send();  
+						->send();  //add emails to queue
 			 
 			/*$email_model = Mage::getModel('core/email') ->setToName('zw') ->setToEmail('everbread1234@gmail.com') ->setFromEmail('admin@abrameals.com') ->setSubject('Subject here......');
 			$email_model->setBody($body) ->setType('html') ->send();*/
@@ -792,7 +792,34 @@ HTML;
 			//die;
 		}
 		
-		return $head.$body_upper.$item_html.$body_lower.$foot;
+		$item_html2 = '';
+		
+		$item_skus = Mage::getStoreConfig('suggestmealsforemail_options/section_one/custom_field_one', Mage::app()->getStore());
+		$skus = explode(",",$item_skus);
+		foreach ($skus as $sku){
+			$suggested_products = Mage::getModel("catalog/product")->loadByAttribute('sku', $sku);
+			$data = array(
+				'img' => $i->getImageUrl(),
+				'name' => $i ->getName(),
+				'category' => $i ->getCategoryIds()
+			);
+				
+			if(in_array(3 ,$data['category'])){
+				if($count < 3 ){
+					$count++;
+					$item_html2 = $item_html2 .
+					"<td>
+					<img style=\"width:190px\" src=\" " .  $data['img'] . "\" />
+					<p> " . $data['name'] . "</p>
+					</td>";
+				}
+			}
+		}
+		
+		
+		
+		
+		return $head.$body_upper.$item_html.$item_html2.$body_lower.$foot;
 	}
 	
 }

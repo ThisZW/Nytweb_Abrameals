@@ -435,6 +435,8 @@ class Cryozonic_Stripe_Model_Standard extends Mage_Payment_Model_Method_Abstract
     public function capture(Varien_Object $payment, $amount)
     {
         parent::capture($payment, $amount);
+			Mage::log($payment->debug(), Zend_Log::DEBUG,  'payment1.log', true);
+			//Mage::log($amount, null,  'my.log', true);
 
         if ($amount > 0)
         {
@@ -525,7 +527,7 @@ class Cryozonic_Stripe_Model_Standard extends Mage_Payment_Model_Method_Abstract
             $cents = 100;
             if ($this->isZeroDecimal($currency))
                 $cents = 1;
-
+			
             $params = array(
               "amount" => round($amount * $cents),
               "currency" => $currency,
@@ -547,6 +549,7 @@ class Cryozonic_Stripe_Model_Standard extends Mage_Payment_Model_Method_Abstract
 
             try
             {
+				Mage::log($params, null,  'params.log', true);
                 $charge = Stripe_Charge::create($params);
             }
             catch (Exception $e)

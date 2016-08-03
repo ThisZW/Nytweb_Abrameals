@@ -222,3 +222,119 @@ a.tooltip-close{position:absolute;right:10px;top:10px;color:#fff}
 	 content:none;
 	 height:auto;
  }
+ 
+.pager select{
+width: 5em !important;
+}
+.customer-message-massaction{
+	background: white;
+	border:none;
+}
+ .grid tr.filter{
+	 background:#99ff99;
+ }
+ .customer-message-apply-button > button{
+	padding:5px;
+	 border: none;
+	 background-color: #7aa93c;
+	 border-radius:5px;
+	 background:#7aa93c;
+	 color: #fff;
+ }
+ .customer-message-apply-button > button:hover{
+	 background-color:#00ff00;
+ }
+ .massaction a {
+ color:#000;
+ }
+ .customer-message-select-button{
+	 padding:5px;
+	 border: none;
+	 background-color: #7aa93c;
+	 border-radius:5px;
+	 color: #fff !important;
+}
+ 
+.massaction td:first-child>strong{
+	padding-left: 10px;
+}
+  
+ .customer-message-select-button:hover{
+	 background-color:#00ff00;
+ }
+ 
+.massaction td:first-child {
+	padding-top: 15px;
+padding-bottom: 22px;
+}
+
+.regular-price > .price{
+	font-size:20px !important;
+}
+.massaction a{
+	color:#fff;
+}
+.subscription_plans_price{
+	font-size: 15px;
+    font-weight: 600;
+    padding-bottom: 20px;
+    color: #3f3f3f;
+}
+.header-container{
+	background: rgb(0, 113, 9); /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(bottom right, rgb(0, 113, 9), rgba(138, 220, 63, 0.62)); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(rbottom right, rgb(0, 113, 9), rgba(138, 220, 63, 0.62)); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(bottom right, rgb(0, 113, 9), rgba(138, 220, 63, 0.62)); /* For Firefox 3.6 to 15 */
+	background: linear-gradient(to bottom right, rgb(0, 113, 9), rgba(138, 220, 63, 0.62)) !important;
+	}
+.button-solid{
+	background: linear-gradient(to bottom right, #257120, #8adc3f) !important;
+}
+
+.header-container.type1 .header .logo{
+	margin: 20px 25px 20px 0;
+}
+
+.header-container.type1 .main-nav ul.menu>li>a{
+	color: #fff !important;
+    padding:  5px 15px 5px 15px;
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+    font-size: 15px;
+	text-transform:none !important;
+}
+.header-container.type1 .main-nav ul.menu>li{
+	margin-bottom:10px;
+}
+
+.header-container.type1 .main-nav ul.menu>li:hover{
+	background-color: #29a909;
+}
+@media (min-width:1200px){
+	.header .logo img{
+		max-width:150%;
+	}
+	.get-started-menu > a{
+		font-weight:700 !important;
+	}
+	.get-started-menu {
+		margin-left:10% !important;
+	}
+}
+ .header-container.type1 .links a {
+    color: white;
+    font-size: 13px;
+	font-weight: normal;
+ }
+ .header-container.type1 .links li {
+
+    padding: 0 12px;
+    border: 0;
+    border-right: 1px solid #ffffff;
+    color: white;
+	text-transform:none;
+}
+.header-container.type1 .main-nav ul.menu>li.act{
+	background:#29a909 !important;
+}

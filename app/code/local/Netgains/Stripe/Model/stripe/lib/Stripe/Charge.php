@@ -35,6 +35,8 @@ class Stripe_Charge extends Stripe_ApiResource
   public static function create($params=null, $apiKey=null)
   {
     $class = get_class();
+	Mage::log($class->debug(), Zend_Log::DEBUG,  'createchargeclass.log', true);
+	Mage::log($params->debug(), Zend_Log::DEBUG,  'createchargeparams.log', true);
     return self::_scopedCreate($class, $params, $apiKey);
   }
 

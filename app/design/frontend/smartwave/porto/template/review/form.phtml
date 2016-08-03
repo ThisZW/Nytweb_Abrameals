@@ -24,6 +24,31 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 ?>
+
+<?php
+    $hasPurchasedProduct = false;
+    $currentProductId = Mage::registry('current_product')->getId();
+    $orders = Mage::getResourceModel('sales/order_collection')
+        ->addFieldToSelect('*')
+        ->addFieldToFilter('customer_id', Mage::getSingleton('customer/session')->getCustomer()->getId())
+        ->addFieldToFilter('state', array('in' => Mage::getSingleton('sales/order_config')->getVisibleOnFrontStates()))
+        ->setOrder('created_at', 'desc')
+    ;   
+
+    $this->setOrders($orders); 
+
+    foreach ($orders as $order) {
+        $items = $order->getAllVisibleItems();
+	foreach($items as $i){
+	    if ($i->getProductId() == $currentProductId) {
+	        $hasPurchasedProduct = true;
+	        break;
+	    }
+	    
+	}
+    }
+?>
+<?php if ($hasPurchasedProduct) : ?>
 <div class="form-add">
     <h3><?php echo $this->__('Write Your Own Review') ?></h3>
     <div class="block-content">
@@ -126,3 +151,6 @@
         <?php endif ?>
     </div>
 </div>
+<?php else: ?>
+      You have to order this meal first before review.
+<?php endif; ?>

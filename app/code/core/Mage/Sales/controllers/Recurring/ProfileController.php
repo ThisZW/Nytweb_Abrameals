@@ -130,12 +130,12 @@ class Mage_Sales_Recurring_ProfileController extends Mage_Core_Controller_Front_
 					break;
             }
 			if($redirect){
-				$this->_session->addSuccess('The Subscription plan has been canceled, the page will be redirected in a few seconds.  ' . '<a href="/subscription-plans.html">Go Instantly</a>' .
+				$this->_session->addSuccess('The Subscription plan has been canceled, the page will be redirected in a few seconds.  ' . '<a href="/get-started.html?switch_order=true">Go Instantly</a>' .
 				'<script type="text/javascript">
 					function leave() {
-						window.location = "http://108.61.159.150/~abrameals/subscription-plans.html";
+						window.location = "/get-started.html?switch_order=true";
 					}
-					setTimeout("leave()",4000);
+					setTimeout("leave()",3000);
 				</script>');
 			} else {
 				$this->_session->addSuccess($this->__('The profile state has been updated.'));

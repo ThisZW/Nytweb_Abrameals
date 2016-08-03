@@ -257,9 +257,9 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
         if (!$session->getBeforeAuthUrl() || $session->getBeforeAuthUrl() == Mage::getBaseUrl()) {
             // Set default URL to redirect customer to
 			if($session->getCustomer()->getData('group_id') == 4){
-				//7-25-2016 by Chris
+				$session->setBeforeAuthUrl('http://www.abrameals.com/menu.html');
 			} else {
-            $session->setBeforeAuthUrl($this->_getHelper('customer')->getAccountUrl()); }
+            $session->setBeforeAuthUrl('http://www.abrameals.com/get-started.html'); }
             // Redirect customer to the last page visited after logging in
             if ($session->isLoggedIn()) {
                 if (!Mage::getStoreConfigFlag(

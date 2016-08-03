@@ -155,9 +155,9 @@ Calendar._TT["TIME"] = "Time:";
             <?php endif; ?>
         </td>
     <?php endif ?>
-        <td class="filter-actions a-right">
+       <!--  <td class="filter-actions a-right">
             <?php echo $this->getMainButtonsHtml() ?>
-        </td>
+        </td> -->
         </tr>
     </table>
 <?php endif; ?>
@@ -173,10 +173,10 @@ Calendar._TT["TIME"] = "Time:";
         <?php if ($this->getHeadersVisibility() || $this->getFilterVisibility()): ?>
             <thead>
                 <?php if ($this->getHeadersVisibility()): ?>
-                    <tr class="headings">
+                    <tr class="headings customer-message-headings">
                     <?php $jj=0; foreach ($this->getColumns() as $_column): ?>
                     	<?php if ($jj == 0): ?>
-                    	<th<?php echo $_column->getHeaderHtmlProperty() ?>><span class="nobr"><?php echo $this->__('Marked Or UnMarked'); ?></span></th>
+                    	<th<?php echo $_column->getHeaderHtmlProperty() ?>><span class="nobr"><?php echo $this->__('Select Box'); ?></span></th>
                     	<?php else: ?>
                         <th<?php echo $_column->getHeaderHtmlProperty() ?>><span class="nobr"><?php echo $_column->getHeaderHtml() ?></span></th>
                     	<?php endif; ?>
@@ -186,6 +186,7 @@ Calendar._TT["TIME"] = "Time:";
                 <?php endif; ?>
                 <?php if ($this->getFilterVisibility()): ?>
                     <tr class="filter">
+					
                     
                     <?php foreach ($this->getColumns() as $_column): ?>
                         <th<?php echo $_column->getHeaderHtmlProperty() ?>><?php echo $_column->getFilterHtml() ?></th>
@@ -221,13 +222,13 @@ Calendar._TT["TIME"] = "Time:";
                 $messageId = $_item->getMessageId();
                
 		if($status== 0 || in_array($messageId, $unreadChildMessages)){
-			$color='#F5F5F5';
+			$color='#f2f2f2';
 		}else{
-			$color='#C0C0C0';
+			$color='#ffffff';
                  }if($status == 3 ){
-                        $color='#C0C0C0';
+                        $color='#f2f2f2';
                 }elseif($status == 4 ){
-                        $color='#F5F5F5';
+                        $color='#ffffff';
                  }
         
         ?>

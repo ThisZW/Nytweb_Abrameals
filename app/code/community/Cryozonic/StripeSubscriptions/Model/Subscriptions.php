@@ -206,7 +206,7 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
             $this->log("Error while trying to create an order for customer $customerStripeId: ".$e->getMessage());
             $this->rollback();
             $this->notifyTechnicalSupport('create_order_failed');
-            Mage::throwException($this->t("The subscription process could not be completed."));
+            Mage::throwException($this->t("The subscription process could not be completed.".$e->getMessage()));
         }
 
         $quoteItemInfo = $profile->getQuoteItemInfo();
@@ -288,7 +288,7 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
             {
                 $this->log("Error while trying to create invoice item: ".$e->getMessage());
                 $this->rollback();
-                Mage::throwException($this->t("The subscription process could not be completed."));
+                Mage::throwException($this->t("The subscription process could not be completed." . $e->getMessage()));
             }
         }
 
@@ -296,6 +296,30 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
         try 
         {
             $trialDays = $this->getTrialDays($details);
+			///7-28 by Chris, create a one-time payment for subscribers immeadiately after the register of subscription plan, and he won't be charged for next week.
+			/*  $create_params  = array(
+				'currency'	=>	'USD',
+				'amount'	=>	$details['price'],
+				'card'		=>	$paymentInfo->getAdditionalInformation()->getToken(),
+				'description' =>	'Subscription First Period Payment',
+				'capture'	=>	1,
+				'receipt_email' =>	$paymentInfo->getMethodInstance()->getCustomerEmail(),
+				'customer'	=>	$customerStripeId,
+			); */
+			$create_params  = array(
+				'currency'	=>	$details['currency_code'],
+				'amount'	=>	$details['price'] * 100,
+				'card'		=>	$paymentInfo->getAdditionalInformation('token'),
+				'description' =>	'Subscription First Week Payment',
+				'capture'	=>	true,
+				'receipt_email' =>	$paymentInfo->getMethodInstance()->getCustomerEmail(),
+				'customer'	=>	$customerStripeId,
+				);
+			
+			Stripe_Charge::create($create_params);
+			//Mage::throwException($this->t((string)(array)$paymentInfo));	
+			//Mage::log($paymentInfo->debug(), Zend_log::DEBUG,  'create_params.log', true);
+			
 			$subscription = $this->subscribeCustomer($customer, $plan->id, $details['qty'], $trialDays, $paymentInfo, $couponCode);
             $this->_rollback['subscription'] = $subscription;
             $profile->setReferenceId($subscription->id);
@@ -317,7 +341,7 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
             $this->log("Error while trying to subscribe customer $customerStripeId to plan {$plan->id}: ".$e->getMessage());
             $this->rollback();
             $this->notifyTechnicalSupport('subscribe_customer_failed');
-            Mage::throwException($this->t("The subscription process could not be completed."));
+            Mage::throwException($this->t("The subscription process could not be completed." . $e->getMessage()));
         }
 
         try
@@ -531,10 +555,13 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
                 );
                 $params['card'] = $this->getAvsFields($card);
             }
-
+			
+			//it is already paid at the time purchasing the subscription plan, skip thi week.
+			$firstWeek = 24*60*60*7;
+			
             if ($trialDays && $trialDays > 0) {
 				//calculate time here in order to make everything start from sunday 12.pm.
-				$params['trial_end'] = time() + $trialDays * 24 * 60 * 60;
+				$params['trial_end'] = time() + $firstWeek +  $trialDays * 24 * 60 * 60;
             }
 			$time = getdate();
 			if ($time['hours'] >= 12) {

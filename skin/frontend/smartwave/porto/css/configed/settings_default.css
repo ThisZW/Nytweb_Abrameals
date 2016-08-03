@@ -1,6 +1,6 @@
 /**
  * WARNING: Do not change this file. Your changes will be lost.
- * 2016-07-20 18:55:33 */
+ * 2016-08-03 10:36:25 */
 
 @media (max-width: 480px) {
     .category-products .products-grid li.item {
@@ -137,9 +137,7 @@ color:black;}
  < li { padding:15px }
 }
 
-.cms-index-index .header-container.type1, .header-container.type1{
-background-color: rgba(92, 146, 38, 0.84);
-}
+
 .slick-container{
    max-width:1200px;
    margin:0 auto;}

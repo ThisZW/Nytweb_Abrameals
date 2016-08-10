@@ -564,10 +564,10 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
 				$params['trial_end'] = time() + $firstWeek +  $trialDays * 24 * 60 * 60;
             }
 			$time = getdate();
-			if ($time['hours'] >= 12) {
-				$params['trial_end'] -= (($time['hours']-12)*3600 + $time['minutes']*60);
-			} else if ($time['hours'] < 12) {
-				$params['trial_end'] += ((13-$time['hours'])*3600 + $time['minutes']*60);
+			if ($time['hours'] >= 15) {
+				$params['trial_end'] -= (($time['hours']-15)*3600 + $time['minutes']*60);
+			} else if ($time['hours'] < 15) {
+				$params['trial_end'] += ((16-$time['hours'])*3600 + $time['minutes']*60);
 			}
             // else
             // {

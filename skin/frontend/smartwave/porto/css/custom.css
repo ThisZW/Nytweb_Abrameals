@@ -338,3 +338,25 @@ padding-bottom: 22px;
 .header-container.type1 .main-nav ul.menu>li.act{
 	background:#29a909 !important;
 }
+
+.freeze-next-week-notice {
+	margin:20px;
+	padding:20px;
+	font-size:18px;
+	font-weight:bold;
+	border: 2px grey solid;
+	min-height: 80px;
+	box-sizing:border-box;
+}
+
+.horiz-padding-20{
+	padding:0 0 0 20px !important;
+}
+
+.horiz-padding-20 > span{
+	background: #2b7927 !important;
+}
+.freeze-next-week-notice-actions-container{
+	float:right;
+	display:inline-block;
+}

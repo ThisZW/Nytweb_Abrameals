@@ -771,7 +771,7 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
 	}
 	
 	
-	/* public function addCustomOptionsAction(){
+	 /*public function addCustomOptionsAction(){
 		
 
 		$category = Mage::getModel('catalog/category')->load(3);
@@ -813,8 +813,8 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
 			$p->save();  
 			echo 'done ' . $p_id .' <br>';
 		}
-	}
-	*/
+	}*/
+	
 	public function testAction(){
 		 //customer collection object
 		
@@ -867,22 +867,32 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
 		<table align="center">
 		<tbody><tr><td>
 		<div class="background">
-			<table border="0" style="align:center" cellpadding="0" cellspacing="0" background="http://www.abrameals.com/media/email/abrameal_0004_line.png" width="600"  id="bodyTable">
+			<table border="0" style="align:center" cellpadding="0" cellspacing="0" background="http://www.abrameals.com/media/email/bg.jpg" width="600"  id="bodyTable">
 				<tr>
 				<td align="center" valign="top">
 				<table border="0" cellpadding="" cellspacing="0" width="" id="emailContainer">
                 <tr>
-				<td>
-				Header here..
-				</td>
+					<td class="header-content" height="80px" colspan="3">
+						<div style="text-align:center">
+							<img src="http://abrameals.com/media/email/abra_logo.png"/>
+						</div>
+					</td>
 				</tr>
+				<tr>
+					<td height="60px" colspan="3">
+						<div style="text-align:center">
+							<img src="http://abrameals.com/media/email/abrameal_0000_recommend_360.png" />					
+						</div>
+					</td>
+				</tr>
+				<td>
 				<td>
                     
 HTML;
 
 		$foot = <<<HTML
 				<tr>
-				<td>Footer here...
+				<td>&nbsp;<br>&nbsp;
 				</td>
                 </tr>
 				</tr>
@@ -896,9 +906,6 @@ HTML;
 </td></tr></tbody></table>
 
 
-360b746156fce177b2c220894bc1fa55
-JCM3wrfGcZJNp5IADZMpZ378Gh879ZTu
-
 
 HTML;
 
@@ -911,33 +918,40 @@ HTML;
 		</tr>
 		<tr>
 		<td align="center" colspan="3" width="100%">
-			<a style="text-align:center" href="http://www.abrameals.com/customer/account/loginFromEmail?username={$email}&token={$token}">
-			product review</a>
+			<a style="text-decoration:none; text-align:center" href="http://www.abrameals.com/customer/account/loginFromEmail?username={$email}&token={$token}&redirect_method=order_history">
+			<div style="Color: white;
+						display: inline-block;
+						margin-top: 20px;
+						padding: 10px;
+						border: 2px solid green;
+						border-radius: 6px;
+						background: #2b7927;"> 
+				Review Your Meals
+			</div>
+			</a>
 		</td>
 		</tr>
-		<tr>
-		<td align="center" colspan="3" width="100%">
-		<a href="http://www.abrameals.com/menu.html" >
-			Add your next week's plan:
-		</a>
-		<td>
-		</tr>
+
 HTML;
 		
 		$css  = <<<HTML
 <style>
 .background{
-	background:url("http://www.abrameals.com/media/email/abrameal_0004_line.png") no-repeat top center;
+	background:url("http://www.abrameals.com/media/email/bg.jpg") no-repeat top center;
 	width:600px;
 	align:center;
 }
 .p-name{
-	font-size:12px;
+	font-size:10px;
 	height:30px;
 	overflow:hidden;
 }
-
-
+a{
+	text-decoration:none;
+}
+.p-name{
+	color:black;
+}
 
 
 
@@ -959,22 +973,23 @@ HTML;
 			$items = $order->getAllVisibleItems();
 			foreach ($items as $item):
 			//	print_r($item->getData());
-				$id = $item->getId();
+				$id = $item->getProductId();
 				$i  = Mage::getModel('catalog/product')->load($id);
 				$data = array(
 					'img' => $i->getImageUrl(),
 					'name' => $i ->getName(),
-					'category' => $i ->getCategoryIds()
+					'category' => $i ->getCategoryIds(),
+					'url' => $i->getProductUrl()
 				);
-				var_dump($i);
+				//var_dump($data['url']);
 				//print_r($data['category']);
 				if(in_array(3 ,$data['category'])){
 					if($count < 3 ){
 						$count++;
 						$item_html = $item_html .
 						"<td width=\"33%\" align=\"center\">
-						<img style=\"width:155px\" align=\"center\" src=\" " .  $data['img'] . "\" />
-						<p class=\"p-name\"> " . $data['name'] . "</p>
+						<a style=\"text-decoration:none\" href=\"".$data['url']."\"><img style=\"width:155px\" align=\"center\" src=\" " .  $data['img'] . "\" />
+						<p style=\"font-size:12px; color:black;; padding: 0 20px; \" class=\"p-name\"> " . $data['name'] . "</p></a>
 						</td>";
 					}	
 					//echo $body;
@@ -983,39 +998,106 @@ HTML;
 			//die;
 		}
 		
-		
-		$content_between_items = '</tr><tr>';
-		
+		print_r($customer->getRecurringProfiles());
+
 		$item_html2 = '';
 		$count2 = 0;
 		$item_skus = Mage::getStoreConfig('suggestmealsforemail_options/section_one/custom_field_one', Mage::app()->getStore());
 		$skus = explode(",",$item_skus);
+		$suggested_ids = array();
+		
+		$preference_list = array(
+			'preference_all_veggies',
+			'preference_no_beef',
+			'preference_no_fish',
+			'preference_no_lamb',
+			'preference_no_pork',
+			'preference_no_poultry',
+			'preference_no_shrimp'
+		);
+
 		foreach ($skus as $sku){
 			$suggested_product = Mage::getModel("catalog/product")->loadByAttribute('sku', $sku);
+
 			$data = array(
 				'img' => $suggested_product->getImageUrl(),
 				'name' => $suggested_product ->getName(),
-				'category' => $suggested_product ->getCategoryIds()
+				'category' => $suggested_product ->getCategoryIds(),
+				'url' => $suggested_product ->getProductUrl(),
+				'id' => $suggested_product ->getId(),
 			);
-				
+			$c_pref = array();
+			
+			$validate = true;
+			
+			foreach ($preference_list as $pref){
+				if ($customer->getData($pref) == 1){
+					if($suggested_product->getData($pref) == 1){
+						$validate = false;
+						//echo '2';
+					}
+				}
+			}
+			//print_r($suggested_product->getData());
+			
+			//print_r($customer->getData());
+			//array_push($suggested_ids, $data['id']);
 			//if(in_array(3 ,$data['category'])){
+			if ($validate == true){
 				if($count2 < 3 ){
-					$count++;
+					$count2++;
 					$item_html2 = $item_html2 .
 					"<td width=\"33%\" align=\"center\">
-					<img style=\"width:155px\" src=\" " .  $data['img'] . "\" />
-					<p class=\"p-name\"> " . $data['name'] . "</p>
+					<a style=\"text-decoration:none\" href=\"".$data['url']."\"> <img style=\"width:155px\" src=\" " .  $data['img'] . "\" />
+					<p style=\"color:black; font-size:12px; padding: 0 20px; \" class=\"p-name\"> " . $data['name'] . "</p></a>
 					</td>";
 				}
-			//}
+			}
 		}
 		
+		$suggested_ids_string = implode ("," ,$suggested_ids);
+		//Filter by preference ..
 		
-		echo 'test';
+		$content_between_items = <<<HTML
+		</tr>		<tr>
+		<td align="center" colspan="3" width="100%">
+			<table>
+				<tr>
+					<td>
+					<a style="text-decoration:none" href="http://www.abrameals.com/customer/account/loginFromEmail?username={$email}&token={$token}&redirect_method=menu_add_suggested_plans&suggested_plans={$suggested_ids_string}">
+					<div style="Color: white;
+						display: inline-block;
+						margin-top: 20px;
+						padding: 10px;
+						border: 2px solid green;
+						border-radius: 6px;
+						background: #2b7927;" >Add to your plan:</div>
+					</td>
+					<td>
+					<a style="text-decoration:none" href="http://www.abrameals.com/customer/account/loginFromEmail?username={$email}&token={$token}&redirect_method=freeze_subscription">
+					<div style="Color: white;
+						display: inline-block;
+						margin-top: 20px;
+						padding: 10px;
+						border: 2px solid green;
+						border-radius: 6px;
+						background: #2b7927;" >Freeze for next week.</div>
+					</td>
+				</tr>
+			</table>
+		<td>
+		</tr> 
+		
+		<tr><td colspan="3" style="text-align:center; height:80px" >
+			<img src="http://www.abrameals.com/media/email/abrameal_0001_meals_360.png"/>
+		</td></tr>
+		<tr>
+HTML;
+		//echo 'test';
 		//print_r($item_html2);
-		echo 'test end';
+		//echo 'test end';
 		
-		return $head.$body_upper.$item_html.$content_between_items.$item_html2.$body_lower.$foot.$css;
+		return $head.$body_upper.$item_html2.$content_between_items.$item_html.$body_lower.$foot.$css;
 	}
 
 }

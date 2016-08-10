@@ -45,4 +45,11 @@ if( Mage::getSingleton('customer/session')->isLoggedIn() and $groupId != 4){ ?>
 			}
 			//print_r ($customer_pref);
 		?>if you want to change it  <a href="/customer/account/edit/">Click Here</a></h4>
+		
+
 <?php } ?>
+		<?php if ($_GET['redirect_method'] == 'menu_add_suggested_plans'){ ?>
+		<div class="dashboard" style="padding:10px;">
+			<div class="welcome-msg">Please choose your meal if you want to change from our default selection.</div>
+		</div>
+		<?php } ?>

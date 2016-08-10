@@ -32,7 +32,9 @@
   <link rel="stylesheet" href="/resources/demos/style.css">
 <!-- end 
 FREEZE NOTIFICATION-->
-<?php $freeze_status = $this->getHasFreezeSchedule();
+<?php 
+
+$freeze_status = $this->getHasFreezeSchedule();
  if($freeze_status == 1 || $freeze_status == 2){ ?>
 <div class="recurring-profiles-messages">
     <ul class="messages"><li class="success-msg"><ul><li><span>
@@ -148,6 +150,61 @@ Script for input date variables.-->
 	
 </script>
 <!--end-->
+<?php if ($_GET['freeze_for_next_week'] == 'yes') { ?>
+<!-- 8-8-2016 by Chris  -->
+
+<div class="freeze-next-week-notice">
+Are you sure you want to freeze your schedule for a week? <span>
+<div class="freeze-next-week-notice-actions-container" >
+<button type="button"  class="button horiz-padding-20" onclick="noticeYesAction()"><span><span><?php echo $this->__('Yes') ?></span></span></button>
+<button type="button"  class="button horiz-padding-20" onclick="noticeNoAction()"><span><span><?php echo $this->__('No') ?></span></span></button> </div>
+</div>
+<script>
+	function noticeYesAction(){
+		var nextSunday = getNextWeekDay(new Date(),0);
+		var secondNextSunday = getNextWeekDay(new Date(now.getTime() + ( 7 *24 * 60 * 60 * 1000)),0);
+		
+		var nsYear = nextSunday.getFullYear();
+		var nsMonth = nextSunday.getMonth();
+		var nsDate = nextSunday.getDate();
+
+		var snsYear = secondNextSunday.getFullYear();
+		var snsMonth = secondNextSunday.getMonth();
+		var snsDate = secondNextSunday.getDate();
+		
+		nsString = nsMonth + '-' + nsDate + '-' + nsYear;
+		snsString = snsMonth + '-' + snsDate + '-' + snsYear;
+		
+		console.log(nsString);
+		console.log(snsString);
+		
+		var secondNextSundayString = secondNextSunday.toISOString().slice(0,10);
+		
+		window.location.href = '<?php echo $this->getScheduleToFreezeUrl() ?>' + '?s=' + nsString + '&e=' + snsString;
+	}
+	
+	function getNextWeekDay(now,d){
+		if(d > now.getDay()) var x = d- now.getDay();
+		else var x= ((7+d)-now.getDay())
+		now.setDate( now.getDate() + x );
+		return now;
+	}
+	
+	var now = new Date();
+	
+	
+	function noticeNoAction(){
+		jQuery('.freeze-next-week-notice').css('display','none');
+	}
+	
+</script>
+
+<?php } ?>
+
+
+
+
+<!---->
 <div class="recurring-profiles-messages">
     <?php echo $this->getMessagesBlock()->toHtml() ?>
 </div>

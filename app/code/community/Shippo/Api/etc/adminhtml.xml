@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<config>
+    <menu>
+        <sales>
+            <!--<title>Shippo</title>
+            <sort_order>99</sort_order>-->
+            <children>
+                <shippomain>
+                    <title>Shippo</title>
+                    <sort_order>31</sort_order>
+                    <action>adminhtml/shippo/index</action>
+                </shippomain>
+            </children>
+        </sales>
+    </menu>
+    <!--<acl>
+        <resources>
+            <admin>
+                <children>               
+                    <system>
+                        <sort_order>1</sort_order>
+                        <children>
+                            <shippomain>
+                                <title>Shippo Configuration</title>
+                            </shippomain>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+      </acl>-->
+</config>

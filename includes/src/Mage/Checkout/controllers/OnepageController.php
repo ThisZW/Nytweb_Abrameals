@@ -197,6 +197,9 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
 		$group_id = Mage::getSingleton('customer/session')->getCustomerGroupId();
 		if($group_id == 4){
 		$weekly_meals_left = Mage::getSingleton('customer/session')->getCustomer()->getWeeklyMealsLeft();}
+		else {
+			$weekly_meals_left = 998; 
+		}
 		//echo $weekly_meals_left;
 		//echo $quote_qty;
 		
@@ -640,7 +643,7 @@ class Mage_Checkout_OnepageController extends Mage_Checkout_Controller_Action
             Mage::helper('checkout')->sendPaymentFailedEmail($this->getOnepage()->getQuote(), $e->getMessage());
             $result['success']  = false;
             $result['error']    = true;
-            $result['error_messages'] = $this->__('There was an error processing your order. Please contact us or try again later.');
+            $result['error_messages'] = $this->__('There was an error processing your order. Please contact us or try again later.' . $e);
         }
         $this->getOnepage()->getQuote()->save();
         /**

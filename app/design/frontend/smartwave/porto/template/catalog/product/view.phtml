@@ -1,8 +1,6 @@
 <!-- 7-19-2016 by Chris 
 This will auto scroll to review section if customers are actually come from sales/order/history
 -->
-
-
 <?php $fromOrderPage = $_GET['is_from_order_page']; 
 	if ($fromOrderPage == 1):?>
 <script type="text/javascript">
@@ -28,6 +26,7 @@ window.onload = pageScrollToReview;
     $code  = $store->getCode();
 ?>
 <?php $_product = $this->getProduct(); ?>
+<?php// print_r ($_product); ?>
 <?php
     $product = Mage::getModel('catalog/product')->load($_product->getId());
     $product_type = $_product->getTypeId();

@@ -152,6 +152,7 @@ class Mage_Sales_Model_Recurring_Profile extends Mage_Payment_Model_Recurring_Pr
             $this->setInternalReferenceId(Mage::helper('core')->uniqHash('temporary-'));
             $this->save();
             $this->setInternalReferenceId(Mage::helper('core')->uniqHash($this->getId() . '-'));
+
             $this->getMethodInstance()->submitRecurringProfile($this, $this->getQuote()->getPayment());
             $this->save();
             $this->_getResource()->commit();

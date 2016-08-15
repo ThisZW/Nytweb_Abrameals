@@ -40,6 +40,8 @@ Whoops, it looks like you have an invalid PHP version.</h3></div><p>Magento supp
  */
 define('MAGENTO_ROOT', getcwd());
 
+ini_set('memory_limit', '2048M'); 
+
 $compilerConfig = MAGENTO_ROOT . '/includes/config.php';
 if (file_exists($compilerConfig)) {
     include $compilerConfig;

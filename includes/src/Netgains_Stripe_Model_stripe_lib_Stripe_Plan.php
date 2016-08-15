@@ -1,5 +1,5 @@
 <?php
-
+require_once 'app/Mage.php';
 class Stripe_Plan extends Stripe_ApiResource
 {
   /**
@@ -23,6 +23,8 @@ class Stripe_Plan extends Stripe_ApiResource
   public static function create($params=null, $apiKey=null)
   {
     $class = get_class();
+	Mage::log('params'. $params, null , 'crontest.log', true);
+	Mage::log('apiKey' . $apiKey, null, 'crontest.log', true);
     return self::_scopedCreate($class, $params, $apiKey);
   }
 

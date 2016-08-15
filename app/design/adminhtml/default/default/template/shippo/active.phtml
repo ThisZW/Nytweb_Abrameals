@@ -1,0 +1,66 @@
+<?php if(!$this->getData('apikey')): ?>
+<div class="content-header">
+    <table cellspacing="0" class="grid-header">
+        <tr>
+            <td colspan="2"><h3><?=$this->__('Shippo')?></h3></td>
+        </tr>
+        <tr>
+            <td><h4><?=$this->__('Your account is set up')?>. <a href="https://goshippo.com/magento/" target="_blank"></h4><br /><?=$this->__('Visit Shippo here!') ?></a></td>
+            <td style="text-align:right;"><a href="https://goshippo.com/magento" title="Visit Shippo" target="_blank"><img style="max-width:100px;" src="<?=$this->getData('logoUrl')?>" alt="Visit Shippo" /></a></td>
+        </tr>
+    </table>
+</div>
+<?php endif; ?>
+<div class="entry-edit">
+    <form id="dummy_form" name="dummy_form" method="post" action="<?=$this->getUrl('*/*/post')?>">
+        <h4 class="icon-head head-edit-form fieldset-legend"><?=$this->__('Credentials')?></h4>
+<?php if($this->getData('apikey')): ?>
+<p>We've set you up! <strong>Do not close this page yet.</strong>
+<h5><a href="<?=$this->getData('setupUrl')?>" target="_blank">To complete the process, open this link in a new window and follow the instructions.</a></h5>
+<p>You'll need the <strong>API User</strong> and <strong>API Key</strong> below.</p>
+<?php else: ?>
+        <p>Shippo is set up for your Magento shop. If you have entered the information below in your <a href="https://goshippo.com/magento/" target="_blank">Shippo account</a>, your orders will be shown in your <a href="https://goshippo.com/user/orders">Shippo Orders</a>. Please note that for security reasons, we cannot retrieve your password in clear text any more. If you forgot the password, you can simply remove access via the button below, and create new credentials afterwards. </p>
+<?php endif; ?>
+        <fieldset id="my-fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><?=$this->__('API User')?></td>
+                    <td class="input-ele"><input type="text" value="<?php echo $this->getData('apiuser'); ?>"/></td>
+                </tr>
+                <tr>
+                    <td class="label"><?=$this->__('API Key')?></td>
+                    <td class="input-ele"><input type="text" value="<?php echo $this->getData('apikey') ? $this->getData('apikey') : "**************"; ?>"/></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<?php if(!$this->getData('apikey')): ?>
+<div class="content-header">
+    <table cellspacing="0" class="grid-header">
+        <tr>
+            <td><h3><?=$this->__('Shippo Setup')?></h3></td>
+            <td class="a-right">
+                <button onclick="editForm.submit()" class="scalable save" type="button"><span>Remove access</span></button>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="entry-edit">
+    <form id="remove_form" name="remove_form" method="post" action="<?=$this->getUrl('*/*/post')?>">
+        <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+        <h4 class="icon-head head-edit-form fieldset-legend">Check the box below and submit the form in order to remove the credentials we set up to import your orders to Shippo. You will be able to create new credentials afterwards, but it will be necessary that you enter the new API key <a href="https://goshippo.com/magento/">on our website</a> if you would like us to import your orders again.</h4>
+        <fieldset id="my-fieldset">
+            <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><?=$this->__('I would like to remove Shippo\'s access to my store')?><span class="required">*</span></td>
+                    <td class="input-ele"><input type="checkbox" class="checkbox required-entry" name="remove_access" /></td>
+                </tr>
+            </table>
+        </fieldset>
+    </form>
+</div>
+<script type="text/javascript">
+    var editForm = new varienForm('remove_form');
+</script>
+<?php endif; ?>

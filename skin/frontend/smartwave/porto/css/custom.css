@@ -111,6 +111,7 @@ a.tooltip-close{position:absolute;right:10px;top:10px;color:#fff}
 }
 .price-per-serving, .price-per-week , .plan-shipping{
 	font-size:15px;
+	color:black;
 }
 
 .step-title{
@@ -280,7 +281,7 @@ padding-bottom: 22px;
     padding-bottom: 20px;
     color: #3f3f3f;
 }
-.header-container{
+.header-container, .quickview-icon, .addtocart:hover, .addtocart:active, .theme-hover-bg-color:hover, .go, .button>span, .collapse, .btn, .btn-default{
 	background: rgb(0, 113, 9); /* For browsers that do not support gradients */
     background: -webkit-linear-gradient(bottom right, rgb(0, 113, 9), rgba(138, 220, 63, 0.62)); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(rbottom right, rgb(0, 113, 9), rgba(138, 220, 63, 0.62)); /* For Opera 11.1 to 12.0 */
@@ -359,4 +360,9 @@ padding-bottom: 22px;
 .freeze-next-week-notice-actions-container{
 	float:right;
 	display:inline-block;
+}
+
+.get-started-cancel-notice{
+	background: #fbfad5 !important;
+	text-align:center;
 }

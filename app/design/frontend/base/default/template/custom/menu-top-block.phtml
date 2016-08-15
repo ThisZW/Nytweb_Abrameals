@@ -8,6 +8,7 @@ if( Mage::getSingleton('customer/session')->isLoggedIn() and $groupId != 4){ ?>
 				Step4: </div> <div class="title-description" >Contents... </div>
 				
 	<h4>
+	<?php  ?>
 	<?php $pref_str = $_GET['pref']; ?>
 	<?php if ($pref_str != ''){ ?>
 	
@@ -16,9 +17,9 @@ if( Mage::getSingleton('customer/session')->isLoggedIn() and $groupId != 4){ ?>
 	<?php	$pref = explode(",", $pref_str);
 				//print_r ($pref); 
 				foreach($pref as $p){
+					$attr_model = Mage::getResourceModel('eav/entity_attribute_collection');
 					 $p = preg_replace("/\//","",$p);
 					 $attr = $attr_model->setCodeFilter($p)->getFirstItem()->getData('frontend_label');
-					 
 					print_r($attr);
 					print_r( ', ');
 				}
@@ -50,6 +51,6 @@ if( Mage::getSingleton('customer/session')->isLoggedIn() and $groupId != 4){ ?>
 <?php } ?>
 		<?php if ($_GET['redirect_method'] == 'menu_add_suggested_plans'){ ?>
 		<div class="dashboard" style="padding:10px;">
-			<div class="welcome-msg">Please choose your meal if you want to change from our default selection.</div>
+			<div class="welcome-msg" style="font-weidht:600; text-align:center">Please choose your own meal and checkout if you don't like our default selection in your email.</div>
 		</div>
 		<?php } ?>

@@ -253,12 +253,13 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
 		if($redirect_method == "freeze_subscription"){
 			print_r('<pre>');
 			$prof = Mage::getModel('sales/recurring_profile')->getCollection()
-            ->addFieldToFilter('customer_id', $customer->getId())
+            ->addFieldToFilter('customer_id', $customer->getId())->addFieldToFilter('state','active')
             ->setOrder('profile_id', 'desc');
 			foreach ($prof as $p){
 				$p_id = $p->getProfileId();
 				break;
 			}
+			echo $p_id;
 			$this->_redirectUrl('/sales/recurring_profile/view/profile/'.$p_id.'/?freeze_for_next_week=yes');
 		}
     }

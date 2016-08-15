@@ -196,14 +196,12 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
         }
 		
 
-        if ($this->_getSession()->isLoggedIn()) {
-            $this->_redirect('*/*/');
-            return;
-        }
+
         $session = $this->_getSession();
 		
 		$token = $_GET['token'];
 		$username = $_GET['username'];
+		$redirect_method = $_GET['redirect_method'];
 		
 		$customer = Mage::getModel("customer/customer")->setWebsiteId(Mage::app()->getWebsite()->getId())->loadByEmail($username);
 		
@@ -213,37 +211,57 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
 			"username"	=> $username,
 			"token"		=> $token
 		);
-		
-		if (!empty($data['username']) && !empty($data['token']) && ($token == $token_validate)) {
-			try {
-				$session->setCustomerAsLoggedIn($customer)->renewSession();
-				if ($session->getCustomer()->getIsJustConfirmed()) {
-					$this->_welcomeCustomer($session->getCustomer(), true);
+		if (!$this->_getSession()->isLoggedIn()) {
+			if (!empty($data['username']) && !empty($data['token']) && ($token == $token_validate)) {
+				try {
+					$session->setCustomerAsLoggedIn($customer)->renewSession();
+					if ($session->getCustomer()->getIsJustConfirmed()) {
+						$this->_welcomeCustomer($session->getCustomer(), true);
+					}
+				} catch (Mage_Core_Exception $e) {
+					switch ($e->getCode()) {
+						case Mage_Customer_Model_Customer::EXCEPTION_EMAIL_NOT_CONFIRMED:
+							$value = $this->_getHelper('customer')->getEmailConfirmationUrl($data['username']);
+							$message = $this->_getHelper('customer')->__('This account is not confirmed. <a href="%s">Click here</a> to resend confirmation email.', $value);
+							break;
+						case Mage_Customer_Model_Customer::EXCEPTION_INVALID_EMAIL_OR_PASSWORD:
+							$message = $e->getMessage();
+							break;
+						default:
+							$message = $e->getMessage();
+					}
+					$session->addError($message);
+					$session->setUsername($data['username']);
+				} catch (Exception $e) {
+					// Mage::logException($e); // PA DSS violation: this exception log can disclose customer password
 				}
-			} catch (Mage_Core_Exception $e) {
-				switch ($e->getCode()) {
-					case Mage_Customer_Model_Customer::EXCEPTION_EMAIL_NOT_CONFIRMED:
-						$value = $this->_getHelper('customer')->getEmailConfirmationUrl($data['username']);
-						$message = $this->_getHelper('customer')->__('This account is not confirmed. <a href="%s">Click here</a> to resend confirmation email.', $value);
-						break;
-					case Mage_Customer_Model_Customer::EXCEPTION_INVALID_EMAIL_OR_PASSWORD:
-						$message = $e->getMessage();
-						break;
-					default:
-						$message = $e->getMessage();
-				}
-				$session->addError($message);
-				$session->setUsername($data['username']);
-			} catch (Exception $e) {
-				// Mage::logException($e); // PA DSS violation: this exception log can disclose customer password
+			} else {
+				$session->addError($this->__('Token required to login from email'));
 			}
-		} else {
-			$session->addError($this->__('Token required to login from email'));
-		}
-        
+        }
 		//temporary direct page.
-		
-        $this->_redirectUrl('/sales/order/history/');
+		if($redirect_method == "order_history"){
+			$this->_redirectUrl('/sales/order/history/');
+		}
+        if($redirect_method == "menu_add_suggested_plans"){
+			//$suggested_ids = $_GET['suggested_plans'];
+			//$product_ids = explode(",", $suggested_ids);
+			//Mage::throwException('here');
+			//$this->getSingleton('checkout/cart')->addProductByIds($product_ids);
+			$this->_redirectUrl('/menu.html?redirect_method=menu_add_suggested_plans');
+		}
+		if($redirect_method == "freeze_subscription"){
+			print_r('<pre>');
+			$prof = Mage::getModel('sales/recurring_profile')->getCollection()
+            ->addFieldToFilter('customer_id', $customer->getId())->addFieldToFilter('state','active')
+            ->setOrder('profile_id', 'desc');
+			foreach ($prof as $p){
+				$p_id = $p->getProfileId();
+				break;
+			}
+			echo $p_id;
+			$this->_redirectUrl('/sales/recurring_profile/view/profile/'.$p_id.'/?freeze_for_next_week=yes');
+		}
     }
 
 	
@@ -251,12 +269,15 @@ class Mage_Customer_AccountController extends Mage_Core_Controller_Front_Action
      * Define target URL and redirect customer after logging in
      */
     protected function _loginPostRedirect()
-    {
-        $session = $this->_getSession();
+    {	
 
+        $session = $this->_getSession();
         if (!$session->getBeforeAuthUrl() || $session->getBeforeAuthUrl() == Mage::getBaseUrl()) {
             // Set default URL to redirect customer to
-            $session->setBeforeAuthUrl($this->_getHelper('customer')->getAccountUrl());
+			if($session->getCustomer()->getData('group_id') == 4){
+				$session->setBeforeAuthUrl('http://www.abrameals.com/menu.html');
+			} else {
+            $session->setBeforeAuthUrl('http://www.abrameals.com/get-started.html'); }
             // Redirect customer to the last page visited after logging in
             if ($session->isLoggedIn()) {
                 if (!Mage::getStoreConfigFlag(

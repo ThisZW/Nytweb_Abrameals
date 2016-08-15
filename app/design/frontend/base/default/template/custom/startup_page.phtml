@@ -2,8 +2,24 @@
 //7-5-2016 by Chris.
 //Custom Startup Page.
 if(Mage::getSingleton('customer/session')->isLoggedIn()){
-
+	$customer = Mage::getSingleton('customer/session')->getCustomer();
+	$prof = Mage::getModel('sales/recurring_profile')->getCollection()
+	->addFieldToFilter('customer_id', $customer->getId())->addFieldToFilter('state','active')
+	->setOrder('profile_id', 'desc');
+	foreach ($prof as $p){
+		$p_id = $p->getProfileId();
+		break;
+	}
 ?>
+<?php if ($p_id): ?>
+	<div class="dashboard"> <div class="welcome-msg get-started-cancel-notice">You have to cancel your current subscription plan before you start a new one.<a style="padding-left:10px;" href="http://www.abrameals.com/sales/recurring_profile/">Click here</a>
+	</div></div>
+	<script>
+	jQuery(document).ready(function(){
+		jQuery("#submit-btn").remove();
+	});	
+		</script>
+<?php endif; ?>
 <div class="startup-container">
 	<h1>Let's Get Started!</h1>
 	<div class="step-title">
@@ -44,15 +60,19 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()){
 			<div class="step2-container">
 				<div class="membership col-sm-6">
 					<div class="membership-block sub-block" id="sel-member">
-					    <div class="plan-img"><img src="/skin/shutterstock_408470188.jpg"/></div>
-						<div>Membership contents here...</div>
+					    <div class="plan-img" ><img src="/skin/shutterstock_408470188.jpg"/></div>
+						<div class="price-per-serving">$99.00 Lifetime Membership</div>
+						<div class="price-per-serving">With</div>
+						<div class="price-per-serving">Lifetime Warranty of the Cooker</div>
 						<input type="radio" class="radio-btn" id="member-btn" name="membership-or-pot" value="membership">
 					</div>
 				</div>
 				<div class="pot col-sm-6">
 					<div class="pot-block sub-block" id="sel-pot">
-						<div class="plan-img"><img src="/skin/shutterstock_193584815.jpg"/></div>
-						<div>Pot contents here...</div>
+						<div class="plan-img"><img src="/skin/pot.jpg"/></div>
+						<div class="price-per-serving">Buy Our SmartCooker For Only $249.00</div>
+						<div class="price-per-serving">With</div>
+						<div class="price-per-serving">2-year Warranty of the Cooker</div>
 						<input type="radio" class="radio-btn" id="pot-btn" name="membership-or-pot" value="pot">
 					</div>
 				</div>
@@ -62,7 +82,7 @@ if(Mage::getSingleton('customer/session')->isLoggedIn()){
 			<div class="step-title">
 				Step3:
 			</div>
-			<div class="title-description" >Choose your self preferences!</div>
+			<div class="title-description" >Choose your self preferences!</div> 
 			<div class="customer-preference">
 				<?php	$attcount = 0;
 						$attributes = Mage::getModel('customer/entity_attribute_collection');

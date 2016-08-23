@@ -1,8 +1,5 @@
 phpunit*.phar
 var
 cache
-*.png
-*.jpg
-*.gif
 *.pdf
 error_log

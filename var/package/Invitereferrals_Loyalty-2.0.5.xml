@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+    <name>Invitereferrals_Loyalty</name>
+    <version>2.0.5</version>
+    <stability>stable</stability>
+    <license>GPLv3</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Refer-a-Friend Marketing Software</summary>
+    <description>Start Customer referral marketing campaign like Refer-a-friend, Tell-a-friend to reward your customer.</description>
+    <notes>All bug Fixed</notes>
+    <authors><author><name>Invitereferrals</name><user>Invitereferrals</user><email>support@tagnpin.com</email></author></authors>
+    <date>2015-06-08</date>
+    <time>06:17:23</time>
+    <contents><target name="magecommunity"><dir name="Invitereferrals"><dir name="Campaign"><dir name="Block"><file name="default.php" hash="cc92857a8ff31b730b06428e00a57f1b"/></dir><dir name="Helper"><file name="Data.php" hash="57c7aaec2cc28f4aefe9cff7ca0e03cc"/></dir><dir name="etc"><file name="config.xml" hash="7f8f40d09d63097f172a910662112965"/><file name="system.xml" hash="952adebe457482563c277c98d4c20ddb"/></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="layout"><file name="Invitereferrals_campaign.xml" hash="2d13eba8b1f798084e8a3647f4c859b5"/></dir><dir name="template"><dir name="Invitereferrals_campaign"><file name="campaign.phtml" hash="92593ecb44009c5414c4add6730cb688"/></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Invitereferrals_Campaign.xml" hash="e14c64f6846ac1b7992b0856ecb3264c"/></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.1.0</min><max>6.0.0</max></php></required></dependencies>
+</package>

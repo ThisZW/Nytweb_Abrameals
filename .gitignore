@@ -1,5 +1,8 @@
 phpunit*.phar
-var
+var/report
+var/session
+var/log
+var/export
 cache
 *.pdf
 error_log

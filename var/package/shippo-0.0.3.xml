@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+    <name>shippo</name>
+    <version>0.0.3</version>
+    <stability>stable</stability>
+    <license>OSL 3.0</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Print your shipping labels with one click. Shippo imports your orders and allows you to print discounted shipping labels right away.</summary>
+    <description>Print your shipping labels with one click. Shippo imports your Magento orders and allows you to print labels right away. It's as easy as it should be. Choose your parcel dimension, pickup date, service type and preferred carrier and you will get your label within seconds. Comfortable, easy, reliable.&#xD;
+&#xD;
+Always find the cheapest rate. By comparing the express delivery rates of all courier services, we always find the best prices for your package shipments. Shippo offers both an API and a web interface that makes comparing carriers and finding the cheapest or fastest rates for shipments easy.&#xD;
+&#xD;
+It's FREE! As a Magento shop owner, you don't have to pay any setup or monthly fees. We will never charge any hidden fees or subscription costs. You only pay $0.05 per shipping label printed through our services.</description>
+    <notes>Improved version</notes>
+    <authors><author><name>Tobias Schottdorf</name><user>TobiasShippo</user><email>tobias@goshippo.com</email></author></authors>
+    <date>2014-04-28</date>
+    <time>18:33:28</time>
+    <contents><target name="magecommunity"><dir name="Shippo"><dir name="Api"><dir name="controllers"><file name="ShippoController.php" hash="eee2f02db83e7d90f687180b639f626c"/></dir><dir name="etc"><file name="adminhtml.xml" hash="21b0c98edca061e05fcc4c4765bb93f6"/><file name="config.xml" hash="b5be2580a263b72d4a3513f46faf145e"/></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Shippo_Api.xml" hash="e4a32a86871013b47dcabfbeef249887"/></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="template"><dir name="shippo"><file name="active.phtml" hash="dd496b954b68a4c652d914d5ad5198d8"/><file name="form.phtml" hash="e899ebdfa55589f7e60b8a6383f55d64"/></dir></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>0.0.1</min><max>9.9.9</max></php></required></dependencies>
+</package>

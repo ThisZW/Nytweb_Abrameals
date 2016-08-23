@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<package>
+    <name>Cubix_AddressLabel</name>
+    <version>1.0.0</version>
+    <stability>stable</stability>
+    <license uri="http://www.opensource.org/licenses/bsd-license.php">BSD License</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Print address labels directly from Magento admin. Ability to configure address label sheet size and other parameters</summary>
+    <description>Cubix Address Label Printing&#xD;
+&#xD;
+&lt;br /&gt;&lt;br /&gt;Do you need to print Address labels directly from the Magento admin panel? The latest extension from Cubix allows you to just do that. You can select multiple orders from the Order grid and print address labels in just one click. You can configure the label sheet dimensions. You can also specify the label (row and column number) from where yoru printing should start.&#xD;
+&#xD;
+&lt;br /&gt;&lt;br /&gt;&lt;strong&gt;Features:&lt;/strong&gt;&lt;br /&gt;&#xD;
+* Lightweight and compatible with all extensions.&lt;br /&gt;&#xD;
+* Ability to specify the exact dimensions of the address label sheet.&lt;br /&gt;&#xD;
+* Ability to specify the starting row and column label in the address label sheet. No need to throw away the half used sheets.&lt;br /&gt;&#xD;
+&#xD;
+&lt;br /&gt;&lt;br /&gt;&lt;strong&gt;Demo:&lt;/strong&gt; &lt;a href="http://magedemo1.cubixws.co.uk"&gt;http://magedemo1.cubixws.co.uk&lt;/a&gt;&#xD;
+&#xD;
+&lt;br /&gt;&lt;br /&gt;&lt;strong&gt;Installation instructions:&lt;/strong&gt;&lt;br /&gt;&#xD;
+* Go to Admin Panel &gt; System &gt; Magento Connect &gt; Magento Connect Manager and install the extension.&lt;br /&gt;&#xD;
+* Refresh all cache. go to Admin Panel &gt; System &gt; Cache Management, click on 'Select All' to select all your cache, choose 'Refresh' from Actions and click on Submit.&lt;br /&gt;&#xD;
+&#xD;
+&lt;br /&gt;&lt;br /&gt;&lt;strong&gt;Instructions for use:&lt;/strong&gt;&lt;br /&gt;&#xD;
+* Go to Admin Panel &gt; Sales &gt; Orders. &lt;br /&gt;&#xD;
+* Select the orders for which you would like an address label.&lt;br /&gt;&#xD;
+* Under 'Actions' dropdown select 'Print Address Labels' and press Submit. Your Address Labels PDF will be downloaded&lt;br /&gt;&#xD;
+* &lt;strong&gt;Important:&lt;/strong&gt; The Address Labels PDF is generated based on the size you specify in the Magento admin panel. However you will need to configure your custom label sheet page height and width in your printer properties. By default most printers will print PDF files on A4 size which may not be your label sheet size.</description>
+    <notes>-</notes>
+    <authors><author><name>Harshit Jain</name><user>auto-converted</user><email>enquiry@cubixws.com</email></author></authors>
+    <date>2012-06-14</date>
+    <time>21:37:48</time>
+    <contents><target name="magelocal"><dir name="Cubix"><dir name="AddressLabel"><dir name="Block"><dir name="Adminhtml"><dir name="System"><dir name="Config"><dir name="Form"><dir name="Fieldset"><dir name="Modules"><file name="AddressLabel.php" hash="485dc81ac16f28ec2414d26cae130523"/></dir></dir></dir></dir></dir></dir></dir><dir name="Helper"><file name="Data.php" hash="5c21d42b7afd762f6c82cc685c4f5a77"/></dir><dir name="Model"><file name="Observer.php" hash="e07d1e809cd1c20e79b285b412881c13"/><file name="Pdf.php" hash="4bac76da330d04208dd95c9521f3f147"/></dir><dir name="controllers"><dir name="Adminhtml"><file name="PdfController.php" hash="00456a5fb6a968017181cb94511f072a"/></dir></dir><dir name="etc"><file name="adminhtml.xml" hash="796b30d8a9f33dade2c4be0d9cc84de1"/><file name="config.xml" hash="0e0aa67c5d4cfb87c7ae3f5c7dfadfe9"/><file name="system.xml" hash="351b42a672032dd70546b4099538eb41"/></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Cubix_AddressLabel.xml" hash="a7ed0bb339eb42ddc4d6e3e3416f8504"/></dir></target><target name="mageskin"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="images"><file name="cubix_addresslabel.png" hash="54fb643a8d3f48f60211c674a36e9c5a"/></dir></dir></dir></dir></target></contents>
+    <compatible/>
+    <dependencies/>
+</package>

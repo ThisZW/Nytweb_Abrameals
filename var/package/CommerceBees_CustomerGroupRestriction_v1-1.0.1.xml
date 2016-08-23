@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+    <name>CommerceBees_CustomerGroupRestriction_v1</name>
+    <version>1.0.1</version>
+    <stability>stable</stability>
+    <license uri="https://www.gnu.org/copyleft/gpl.html">GPL v3</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Customer group restriction is a free Magento module to restrict some customer groups from buying certain products</summary>
+    <description>Customer group restriction is a free Magento module to restrict some customer groups from buying certain products</description>
+    <notes>Patch for Customer group restriction module is released to avoid errors during uninstallation</notes>
+    <authors><author><name>Commerce Bees</name><user>CommerceBees</user><email>support@commercebees.com</email></author></authors>
+    <date>2014-03-04</date>
+    <time>15:23:40</time>
+    <contents><target name="magelocal"><dir name="Ameex"><dir name="CustomerGroupRestriction"><dir name="Model"><dir name="Backend"><file name="Group.php" hash="f24eadc38e45c75905f7a88f19120cec"/></dir><file name="Observer.php" hash="e863e07690a9676983fb61d4bf1a951c"/><file name="Product.php" hash="0f16637b3e0af4a8f0f1689ab594f1ec"/><dir name="Source"><file name="Group.php" hash="fc9e7b288a6a57a28650a8049d32e956"/></dir></dir><dir name="etc"><file name="config.xml" hash="082dcdf853dabf6f844c5fef4ba7b7d6"/></dir><dir name="sql"><dir name="customergrouprestriction_setup"><file name="mysql4-install-0.0.1.php" hash="d2d158f8ee2cdc05efe2fbb1bf9a66d2"/></dir></dir></dir></dir></target><target name="magedesign"><dir name="frontend"><dir name="base"><dir name="default"><dir name="layout"><file name="customergrouprestriction.xml" hash="71ea236a632778c9a5243a0ed977388c"/></dir><dir name="template"><dir name="customergrouprestriction"><dir name="catalog"><dir name="product"><dir name="compare"><file name="list.phtml" hash="04ce582f321a2de12d2b2e6cb3faa6ae"/></dir><file name="list.phtml" hash="f15543d86e9c41920e11fc337025ea9c"/></dir></dir><dir name="checkout"><dir name="cart"><file name="crosssell.phtml" hash="edd009e4203bd3f9901163937bb1c8d1"/></dir></dir></dir></dir></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Ameex_CustomerGroupRestriction.xml" hash="f9634c4f37189d58f6b12e467d7222ec"/></dir></target><target name="mage"><dir name="."><file name="CommerceBees_CustomerGroupRestriction_Extension_Guide_V1.0.1.pdf" hash="62f008106803b96eacc89d3b1713c135"/><file name="uninstall_ameex_customergrouprestriction_module.php" hash="a7780ef49594d128cff81e0a847f570a"/></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.2.0</min><max>7.0.0</max></php></required></dependencies>
+</package>

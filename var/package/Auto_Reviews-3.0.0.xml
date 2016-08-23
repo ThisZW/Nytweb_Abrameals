@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+    <name>Auto_Reviews</name>
+    <version>3.0.0</version>
+    <stability>stable</stability>
+    <license>Open Software License (OSL)</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Auto approves product reviews based on customer type.</summary>
+    <description>Auto approves product reviews based on customer type.</description>
+    <notes>Auto approves product reviews based on customer type.</notes>
+    <authors><author><name>Exinent </name><user>Developer</user><email>developer@exinent.com</email></author></authors>
+    <date>2015-04-29</date>
+    <time>07:33:08</time>
+    <contents><target name="magecommunity"><dir name="Exinent"><dir name="Autoapprovereviews"><dir name="Helper"><file name="Data.php" hash="c066b27a7d0c243ef6910e0d11ee9a05"/></dir><dir name="Model"><dir name="Adminhtml"><dir name="System"><file name="Multiselect.php" hash="dbff3f21b183b9611cdf93d6b88cd51e"/></dir></dir></dir><dir name="controllers"><file name="ProductController.php" hash="4c157fedaa9882fc7f1c599b967228d6"/></dir><dir name="etc"><file name="config.xml" hash="f50c98a0dc06526d87a9e6c53be0a767"/><file name="system.xml" hash="67cde4f2369fbef3c3bd55a6c2464a8b"/></dir></dir></dir></target><target name="mageetc"><dir name="modules"><file name="Exinent_Autoapprovereviews.xml" hash="b468d55a398b1dd70240269b4bae9997"/></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.1.0</min><max>6.0.0</max></php></required></dependencies>
+</package>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+    <name>Rp_Importexportattributes</name>
+    <version>0.1.0</version>
+    <stability>stable</stability>
+    <license uri="http://opensource.org/licenses/osl-3.0.php">OSL</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>This extension will import/export attributes and its values.</summary>
+    <description>This extension will import or export attributes and its value. You can import any type of attribute and all associate attribute values as well as the attribute options themselves.&#xD;
+&#xD;
+Features:&#xD;
+- Import/Export Product Attributes with all Properties e.g. Attribute Code, Attribute Label, Attribute Set, Attribute Group etc.&#xD;
+- Create / Update Attribute Label for each Store View.&#xD;
+- Create / Update Attribute Option Value for each Store View.</description>
+    <notes>first release</notes>
+    <authors><author><name>Mage Rips</name><user>magerips</user><email>rpmagerips@gmail.com</email></author></authors>
+    <date>2015-04-27</date>
+    <time>15:29:58</time>
+    <contents><target name="mageetc"><dir name="modules"><file name="Rp_Importexportattributes.xml" hash="56af4d52f8388e994aa0cfb864d039ab"/></dir></target><target name="magelocal"><dir name="Rp"><dir name="Importexportattributes"><dir name="Block"><dir name="Adminhtml"><file name="Adminimportexportattributes.php" hash="b33ef27babec60470699d44e040c1aee"/></dir></dir><dir name="Helper"><file name="Data.php" hash="08589bb126c22fbb6b08fa27fe4d6f3a"/></dir><dir name="controllers"><dir name="Adminhtml"><file name="ImportexportattributesController.php" hash="bb840c7eb0499b40c3c45b3ed3d875d8"/></dir></dir><dir name="etc"><file name="adminhtml.xml" hash="a598547ed406dbc81f8ebea3904f2138"/><file name="config.xml" hash="f1add57560453bafcb2ac368c7d4d303"/></dir></dir></dir></target><target name="magedesign"><dir name="adminhtml"><dir name="default"><dir name="default"><dir name="template"><dir name="importexportattributes"><file name="adminimportexportattributes.phtml" hash="2b22d081fbd012f8c65f983f4765153b"/></dir></dir></dir></dir></dir><dir name="frontend"><dir name="base"><dir name="default"><dir name="layout"><file name="importexportattributes.xml" hash="7b996053e5799a06cded74fd9b43bbdf"/></dir></dir></dir><dir name="rwd"><dir name="default"><dir name="layout"><file name="importexportattributes.xml" hash="7b996053e5799a06cded74fd9b43bbdf"/></dir></dir></dir></dir></target><target name="mage"><dir name="rp_attributes"><file name="Demo CSV file import_all_attributes.csv" hash="01ae31250b85addb3552dbe9df5f4649"/><file name="exportAttribute.php" hash="85cb557d1e51e5fe4b11b7fa26e1a2be"/><file name="importAttribute.php" hash="1b6e5f618ed204e973f47357dbb2e400"/></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.0.1</min><max>6.0.0</max></php></required></dependencies>
+</package>

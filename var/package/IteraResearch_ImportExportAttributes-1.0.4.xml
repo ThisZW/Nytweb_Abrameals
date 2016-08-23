@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package>
+    <name>IteraResearch_ImportExportAttributes</name>
+    <version>1.0.4</version>
+    <stability>beta</stability>
+    <license uri="http://www.gnu.org/licenses">GNU Lesser General Public License</license>
+    <channel>community</channel>
+    <extends/>
+    <summary>Import / export product attributes, attribute options, attribute sets and groups.</summary>
+    <description>This extension will import/export product attributes, attribute options, attribute sets and attribute groups from/to CSV file using data flow advanced profiles.</description>
+    <notes>Tested on Magento 1.9.2.4</notes>
+    <authors><author><name>IteraResearch</name><user>IteraResearch</user><email>magentocommerce@itera-research.com</email></author></authors>
+    <date>2016-05-24</date>
+    <time>13:03:49</time>
+    <contents><target name="magecommunity"><dir name="IteraResearch"><dir name="ImportExportAttributes"><dir name="Model"><dir name="Convert"><dir name="Adapter"><dir name="Product"><file name="Attribute.php" hash="c70739ec21cecbe60e84bb8dc25f1ba4"/></dir></dir><dir name="Parser"><dir name="Product"><file name="Attribute.php" hash="3f837bf5908e0862daf03b07356a5153"/></dir></dir></dir></dir><dir name="data"><dir name="importexportattributes_setup"><file name="data-install-0.0.2.php" hash="32acbb25a792b5d3cd8c005c28c19156"/><file name="data-upgrade-1.0.0.php" hash="8cca5b4e48a58df534946807ef3afcf1"/></dir></dir><dir name="etc"><file name="config.xml" hash="67648296ea67f689902b09dc374c4f3c"/></dir></dir></dir></target><target name="mageetc"><dir><dir name="modules"><file name="IteraResearch_ImportExportAttributes.xml" hash="52b4c3fca1aa762e01c37e6ae1423f46"/></dir></dir></target></contents>
+    <compatible/>
+    <dependencies><required><php><min>5.1.0</min><max>6.0.0</max></php><package><name>Mage_Core_Modules</name><channel>community</channel><min>1.5.0.0</min><max>1.9.2.4</max></package></required></dependencies>
+</package>

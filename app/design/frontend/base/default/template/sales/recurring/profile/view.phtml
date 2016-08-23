@@ -67,8 +67,9 @@ $freeze_status = $this->getHasFreezeSchedule();
 		
 		<!-- 6-28 by Chris , call custom js fucntion-->
 		<button type="button" id="schedule_freeze_buttom" title="<?php echo $this->quoteEscape($this->__('Suspend')) ?>" class="button" onclick="showCalendar()"><span><span><?php echo $this->__('Schedule to Freeze') ?></span></span></button>
+
 		<!-- 6-8 by ron, css container for calendar-->
-		<div id="fullwidth-calendar-container" >
+		<div id="fullwidth-calendar-container" style="display:none">
 		<div id="calendar-container">
 			<div id="calendar-block" style="position: absolute; top:10px; left:10px;"> 
 				<span>Start Date: <br><input type="text" id="datepicker1" size="30" style="width:150px"><br></span>
@@ -93,9 +94,11 @@ Script for input date variables.-->
 
 	function showCalendar(){
 		if (document.getElementById('fullwidth-calendar-container').style.display == "none"){
-			document.getElementById('fullwidth-calendar-container').style.display = "block";
+			jQuery("#fullwidth-calendar-container").slideDown("slow", function(){});
+			
 		}
 		else{
+			jQuery("#fullwidth-calendar-container").slideUp("slow", function(){});
 			document.getElementById('fullwidth-calendar-container').style.display = "none";
 		}
 	}
@@ -109,9 +112,24 @@ Script for input date variables.-->
 			/*alert(startdatestr);
 			console.log(startdatestr);
 			return 0;*/
+			console.log(startdate);
+			console.log(enddate);
+			console.log(startdateyear);
+			console.log(enddateyear);
 			var enddatestr = 1;
-			if( (startdate.value !== "" || enddate.value !== "" ) && startdate.value < enddate.value && startdateyear.value <= enddateyear.value){
-			window.location.href = '<?php echo $this->getScheduleToFreezeUrl() ?>' + '?s=' +startdate.value + '&e=' + enddate.value; }
+			
+			if (startdate.value !== "" || enddate.value !== "" ){
+				if(startdate.replace('-','') < enddate.replace('-','')){
+					console.log('<?php echo $this->getScheduleToFreezeUrl() ?>' + '?s=' +startdate + '&e=' + enddate);
+					window.location.href = '<?php echo $this->getScheduleToFreezeUrl() ?>' + '?s=' +startdate + '&e=' + enddate;
+				}
+				else {
+					if(startdateyear <= enddateyear){
+						window.location.href = '<?php echo $this->getScheduleToFreezeUrl() ?>' + '?s=' +startdate + '&e=' + enddate;
+					}
+				}
+			}
+
 			else{
 				startdate.value="";
 				enddate.value="";

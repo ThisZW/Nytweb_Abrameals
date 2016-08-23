@@ -45,7 +45,7 @@ class Cryozonic_StripeSubscriptions_Model_Recurring_Profile extends Mage_Sales_M
 		$endFormated = date('m-d-Y',$endDate);*/
 		
 		$query_freeze = "UPDATE `sales_recurring_profile` SET `freeze_status` = 1, `freeze_start_date` = STR_TO_DATE('".$startDate."', '%m-%d-%Y'), `freeze_end_date` = STR_TO_DATE('".$endDate."', '%m-%d-%Y') WHERE profile_id= " . (int)$id;
-		
+
 		//Mage::log($query_freeze,null,'test.log',true);
 		$writeConnection->query($query_freeze);
 	}

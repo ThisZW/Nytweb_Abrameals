@@ -113,6 +113,7 @@ class Raveinfosys_Exporter_Model_Exportorders extends Raveinfosys_Exporter_Model
             "total_canceled",
             "total_invoiced",
             "customer_id",
+			"customer_freeze_status",
             "billing_prefix",
             "billing_firstname",
             "billing_middlename",
@@ -163,7 +164,7 @@ class Raveinfosys_Exporter_Model_Exportorders extends Raveinfosys_Exporter_Model
             "product_base_discount",
             "product_discount_percent",
             "is_child",
-            "product_option"
+          //  "product_option"
         );
 		
 		$attributesCollection = Mage::getResourceModel('catalog/product_attribute_collection');
@@ -184,8 +185,12 @@ class Raveinfosys_Exporter_Model_Exportorders extends Raveinfosys_Exporter_Model
         $billingAddress = $order->getBillingAddress();
         if (!$shippingAddress)
             $shippingAddress = $billingAddress;
-
-        $credit_detail = $this->getCreditMemoDetail($order);
+		
+		$customer_id = $order->getData('customer_id');
+        $customer = Mage::getModel('customer/customer')->load($customer_id);
+		$freeze_status = $customer->getData('freeze_status');
+		
+		$credit_detail = $this->getCreditMemoDetail($order);
         $a =  array(
             $order->getIncrementId(),
             $order->getData('customer_email'),
@@ -250,6 +255,7 @@ class Raveinfosys_Exporter_Model_Exportorders extends Raveinfosys_Exporter_Model
             $order->getData('total_canceled'),
             $order->getData('total_invoiced'),
             $order->getData('customer_id'),
+			$freeze_status,
             $this->formatText($order->getBillingAddress()->getData('prefix')),
             $this->formatText($order->getBillingAddress()->getData('firstname')),
             $this->formatText($order->getBillingAddress()->getData('middlename')),
@@ -287,7 +293,7 @@ class Raveinfosys_Exporter_Model_Exportorders extends Raveinfosys_Exporter_Model
         return array(
             '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
             '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
-            '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
+            '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '','');
     }
 
     //To return the array of ordered items
@@ -316,7 +322,7 @@ class Raveinfosys_Exporter_Model_Exportorders extends Raveinfosys_Exporter_Model
             $item->getBaseDiscountAmount(),
             $item->getDiscountPercent(),
             $this->getChildInfo($item),
-            $item->getdata('product_options')
+          //  $item->getdata('product_options')
         );
 		
 		$attributesCollection = Mage::getResourceModel('catalog/product_attribute_collection');
@@ -335,6 +341,7 @@ class Raveinfosys_Exporter_Model_Exportorders extends Raveinfosys_Exporter_Model
 		//print_r($_product);
 		$collections = array();
 		foreach ($attributesCollection as $attribute){
+			if($_product)
 			$data = $_product->getData($attribute->getAttributeCode());
 				array_push($collections, $data); 
 		}

@@ -325,7 +325,35 @@ class Cryozonic_StripeSubscriptions_Model_Subscriptions extends Cryozonic_Stripe
             $profile->setReferenceId($subscription->id);
             $profile->setState(Mage_Sales_Model_Recurring_Profile::STATE_ACTIVE);
             $profile->setCustomerId($order->getCustomerId());
+						
+			$group = Mage::getStoreConfig("payment/cryozonic_stripesubscriptions/scgroup");
+			
+			$customerId = $order->getCustomerId();
+			
+			$resource = Mage::getSingleton('core/resource');
+			
+			$writeConnection = $resource->getConnection('core_write');
+			
+			$query = "UPDATE `customer_entity` SET group_id = " . (int)$group . " WHERE entity_id = " . (int)$customerId;
+			
+			Mage::log($query, Zend_log::DEBUG, 'subtest.log', true);
+			
+			$writeConnection->query($query);
+			/* object save not working, use direct sql instead
+			$mgCustomer = Mage::getModel('customer/customer')->load($profile->getCustomerId());
+			
+			$mgCustomer->setGroupId($group);
+			            
+			Mage::log($mgCustomer,Zend_log::DEBUG, 'subtest.log', true);
+			
+			try{
+				$mgCustomer->save();
+			}
+			catch (Exception $e){
+				Mage::log($e, Zend_log::DEBUG, 'subtest2.log', true);
+			}
             // $profile->setState(Mage_Sales_Model_Recurring_Profile::STATE_PENDING);
+			*/
         }
         catch (Exception $e)
         {

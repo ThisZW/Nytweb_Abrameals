@@ -366,3 +366,18 @@ padding-bottom: 22px;
 	background: #fbfad5 !important;
 	text-align:center;
 }
+.product-name > h1{
+	font-weight:600 !important;
+}
+
+.hide-border > th{
+	    display: list-item !important;
+    list-style: disc inside;
+	padding:5px 5px !important;
+}
+td.hide-border{
+	padding:5px 15px !important;
+}
+th.cooking-time-col-width{
+	display:table-cell !important;
+}

@@ -550,6 +550,14 @@ class Mage_Sales_Model_Observer
 		
 		$resource = Mage::getSingleton('core/resource');
 		$readConnection = $resource->getConnection('core/read');
+		
+		$query_cid = 'SELECT customer_id from sales_recurring_profile WHERE freeze_start_date = "' . $currentDate . '" and state = "active" and freeze_status = 1 ;';
+		$c_id = $readConnection->fetchOne($query_cid);
+		
+		$customer = Mage::getModel('customer/customer')->load($c_id);
+		
+		$customer->setData('freeze_status',1)->save();
+		
 		$query = 'SELECT profile_id from sales_recurring_profile WHERE freeze_start_date = "' . $currentDate . '" and state = "active" and freeze_status = 1 ;';
 		$ids = $readConnection->fetchCol($query);
 		//Mage::log($ids,null,'crontest.log',true);
@@ -579,7 +587,16 @@ class Mage_Sales_Model_Observer
 		
 		$resource = Mage::getSingleton('core/resource');
 		$readConnection = $resource->getConnection('core/read');
+		
+		$query_cid = 'SELECT customer_id from sales_recurring_profile WHERE freeze_start_date = "' . $currentDate . '" and state = "suspended" and freeze_status = 2 ;';
+		$c_id = $readConnection->fetchOne($query_cid);
+		
+		$customer = Mage::getModel('customer/customer')->load($c_id);
+		
+		$customer->setData('freeze_status',0)->save();
+		
 		$query = 'SELECT profile_id from sales_recurring_profile WHERE freeze_start_date = "' . $currentDate . '" and state = "suspended" and freeze_status = 2 ;';
+		
 		$ids = $readConnection->fetchCol($query);
 		//Mage::log($ids,null,'crontest.log',true);
 		if (!empty($ids)){
@@ -625,6 +642,28 @@ class Mage_Sales_Model_Observer
 			$customer->setWeeklyMealsLeft($total)->setCurrentPlanPerWeek($total)->save();
 		}
 	}
+	//8-17-2016 by Chris
+	public function cronJobCreateSuggestedMealOrders(){
+		$customer_collection = Mage::getModel('customer/customer')->getCollection()->addAttributeToSelect('*')->addFieldToFilter('group_id',4)-> addFieldToFilter('freeze_status', 0);
+		foreach ($customer_collection as $customer){
+			if ($a = 1) {// customer who did not place any order within one week**
+				$c_id = $customer->getData('entity_id');
+				$c = Mage::getModel('customer/customer')->load($c_id);
+				$p_ids = $c->getData('default_meals_next_week');
+				$p_ids_array = explode(',',$p_ids);
+				foreach($p_ids_array as $id){
+					$order = Mage::getModel('sales/order');
+					$order->setQuote(); //order quotes**
+					$order->getCustomer($customer);
+					$order->setPayment(); //payment methods**(leave it empty since it's free?)
+					$order->setShipping(); //shipping methods**
+					$order->save();
+				}
+			} 
+		}	
+	}	
+
+	
 	
 	/**
 	 * This will send emails weekly and dynamically to customers with their last week meals as well as filtered meals by their preference for next week. 
@@ -632,7 +671,8 @@ class Mage_Sales_Model_Observer
 	 * *Cron Job
 	 test file code/core/Mage/checkout/cartcontroller.php
 	 */
-	 
+	
+
 	public function cronJobSendWeeklyEmails(){
 		 //customer collection object
 		
@@ -845,6 +885,7 @@ HTML;
 				'url' => $suggested_product ->getProductUrl(),
 				'id' => $suggested_product ->getId(),
 			);
+			
 			$c_pref = array();
 			
 			$validate = true;
@@ -860,6 +901,7 @@ HTML;
 			if ($validate == true){
 				if($count2 < $p_limit ){
 					$count2++;
+					array_push($suggested_ids , $data['id']);
 					$item_html2 = $item_html2 .
 					"<td width=\"33%\" align=\"center\">
 					<a style=\"text-decoration:none\" href=\"".$data['url']."\"> <img style=\"width:155px\" src=\" " .  $data['img'] . "\" />
@@ -876,6 +918,8 @@ HTML;
 		
 		$suggested_ids_string = implode ("," ,$suggested_ids);
 		//Filter by preference ..
+		//8-17-2016 by Chris
+		$customer->setData('default_meals_next_week', $suggested_ids_string)->save();
 		
 		$content_between_items = <<<HTML
 		</tr>		<tr>

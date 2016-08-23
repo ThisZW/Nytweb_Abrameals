@@ -211,6 +211,7 @@ class Zalw_Advancemsg_ManageController extends Mage_Core_Controller_Front_Action
 			$name='Guest';
 		}
 		try{
+			//8-16-2016 by Chris
 		//stores if message is not null		
 			if($message!='') {
 			$obj=Mage::getModel('advancemsg/content')

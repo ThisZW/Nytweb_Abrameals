@@ -771,7 +771,7 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
 	}
 	
 	
-	/* public function addCustomOptionsAction(){
+	 public function addCustomOptionsActionDisabled(){ //won't be called from frontend
 		
 
 		$category = Mage::getModel('catalog/category')->load(3);
@@ -813,9 +813,9 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
 			$p->save();  
 			echo 'done ' . $p_id .' <br>'; 
 		}
-	} */
+	} 
 	
-	public function testAction(){ //won't be called from frontend
+	public function testActionDisabled(){ //won't be called from frontend
 		 //customer collection object
 		
 		$customer_collection = Mage::getModel('customer/customer')->getCollection()->addAttributeToSelect('*')->addFieldToFilter('group_id',4);

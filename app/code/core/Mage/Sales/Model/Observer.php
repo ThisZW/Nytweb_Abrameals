@@ -615,7 +615,7 @@ class Mage_Sales_Model_Observer
 	
 		
 	/**
-	 * This Will refresh the customer attribute weekly_meals_left in order to count and restric customers from buying more meal * plans more than they do
+	 * This Will refresh the customer attribute weekly_meals_left in order to count and restrict customers from buying more meal * plans more than they do
 	 * 6-29-2016 by Chris
 	 * *Cron Job
 	 */
@@ -646,19 +646,119 @@ class Mage_Sales_Model_Observer
 	public function cronJobCreateSuggestedMealOrders(){
 		$customer_collection = Mage::getModel('customer/customer')->getCollection()->addAttributeToSelect('*')->addFieldToFilter('group_id',4)-> addFieldToFilter('freeze_status', 0);
 		foreach ($customer_collection as $customer){
-			if ($a = 1) {// customer who did not place any order within one week**
-				$c_id = $customer->getData('entity_id');
-				$c = Mage::getModel('customer/customer')->load($c_id);
-				$p_ids = $c->getData('default_meals_next_week');
-				$p_ids_array = explode(',',$p_ids);
+		    //get customer id
+			$c_id = $customer->getData('entity_id');
+            //get customer latest order
+            $orders = Mage::getResourceModel('sales/order_collection')
+            ->addFieldToSelect('*')
+            ->addFieldToFilter('customer_id', $c_id)
+            ->addAttributeToSort('created_at', 'DESC')
+            ->setPageSize(1);
+            $last_order_date = $orders->getFirstItem()->getcreated_at();
+            // customer who did not place any order within one week
+            $timediff = time() - strtotime($last_order_date);
+            if ($timediff >= 604800) {
+                //get transaction model
+                $transaction = Mage::getModel('core/resource_transaction');
+                //get array of default items
+                $c = Mage::getModel('customer/customer')->load($c_id);
+                $p_ids = $c->getData('default_meals_next_week');
+                $p_ids_array = explode(',',$p_ids);
+
+                $order = Mage::getModel('sales/order');
+                //set customer info
+                $order->setCustomer_email($customer->getEmail())
+                ->setCustomerFirstname($customer->getFirstname())
+                ->setCustomerLastname($customer->getLastname())
+                ->setCustomerGroupId($customer->getGroupId())
+                ->setCustomer_is_guest(0)
+                ->setCustomer($customer);
+
+                //set billing
+                $billing = $customer->getDefaultBillingAddress();
+                $billingAddress = Mage::getModel('sales/order_address')
+                ->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_BILLING)
+                ->setCustomerId($customer->getId())
+                ->setCustomerAddressId($customer->getDefaultBilling())
+                ->setCustomer_address_id($billing->getEntityId())
+                ->setPrefix($billing->getPrefix())
+                ->setFirstname($billing->getFirstname())
+                ->setMiddlename($billing->getMiddlename())
+                ->setLastname($billing->getLastname())
+                ->setSuffix($billing->getSuffix())
+                ->setCompany($billing->getCompany())
+                ->setStreet($billing->getStreet())
+                ->setCity($billing->getCity())
+                ->setCountry_id($billing->getCountryId())
+                ->setRegion($billing->getRegion())
+                ->setRegion_id($billing->getRegionId())
+                ->setPostcode($billing->getPostcode())
+                ->setTelephone($billing->getTelephone())
+                ->setFax($billing->getFax());
+                $order->setBillingAddress($billingAddress);
+                //set payment
+                $orderPayment = Mage::getModel('sales/order_payment')
+                ->setCustomerPaymentId(0)
+                ->setMethod('purchaseorder')
+                ->setPo_number(' â€“ ');
+                $order->setPayment($orderPayment);
+			     //set shipping
+                $shipping = $customer->getDefaultShippingAddress();
+                $shippingAddress = Mage::getModel('sales/order_address')
+                ->setAddressType(Mage_Sales_Model_Quote_Address::TYPE_SHIPPING)
+                ->setCustomerId($customer->getId())
+                ->setCustomerAddressId($customer->getDefaultShipping())
+                ->setCustomer_address_id($shipping->getEntityId())
+                ->setPrefix($shipping->getPrefix())
+                ->setFirstname($shipping->getFirstname())
+                ->setMiddlename($shipping->getMiddlename())
+                ->setLastname($shipping->getLastname())
+                ->setSuffix($shipping->getSuffix())
+                ->setCompany($shipping->getCompany())
+                ->setStreet($shipping->getStreet())
+                ->setCity($shipping->getCity())
+                ->setCountry_id($shipping->getCountryId())
+                ->setRegion($shipping->getRegion())
+                ->setRegion_id($shipping->getRegionId())
+                ->setPostcode($shipping->getPostcode())
+                ->setTelephone($shipping->getTelephone())
+                ->setFax($shipping->getFax());
+                 
+                $order->setShippingAddress($shippingAddress);
+                $subTotal = 0;
 				foreach($p_ids_array as $id){
-					$order = Mage::getModel('sales/order');
-					$order->setQuote(); //order quotes**
-					$order->getCustomer($customer);
-					$order->setPayment(); //payment methods**(leave it empty since it's free?)
-					$order->setShipping(); //shipping methods**
-					$order->save();
+					
+					$_product = Mage::getModel('catalog/product')->load($id);
+                    $rowTotal = $_product->getPrice();
+                    $orderItem = Mage::getModel('sales/order_item')
+                    ->setQuoteItemId(0)
+                    ->setQuoteParentItemId(NULL)
+                    ->setProductId($id)
+                    ->setProductType(1)
+                    ->setQtyBackordered(NULL)
+                    ->setTotalQtyOrdered(1)
+                    ->setQtyOrdered(1)
+                    ->setName($_product->getName())
+                    ->setSku($_product->getSku())
+                    ->setPrice($_product->getPrice())
+                    ->setBasePrice($_product->getPrice())
+                    ->setOriginalPrice($_product->getPrice())
+                    ->setRowTotal($rowTotal)
+                    ->setBaseRowTotal($rowTotal);
+
+                    $subTotal += $rowTotal;
+                    $order->addItem($orderItem);
 				}
+                //add total to order
+                $order->setSubtotal($subTotal)
+                ->setBaseSubtotal($subTotal)
+                ->setGrandTotal($subTotal)
+                ->setBaseGrandTotal($subTotal);
+                 //launch transaction
+                $transaction->addObject($order);
+                $transaction->addCommitCallback(array($order, 'place'));
+                $transaction->addCommitCallback(array($order, 'save'));
+                $transaction->save();
 			} 
 		}	
 	}	
@@ -675,19 +775,19 @@ class Mage_Sales_Model_Observer
 
 	public function cronJobSendWeeklyEmails(){
 		 //customer collection object
-		
-		$customer_collection = Mage::getModel('customer/customer')->getCollection()->addAttributeToSelect('*')->addFieldToFilter('group_id',4);
+		$customer_collection = Mage::getModel('customer/customer')->getCollection()->addAttributeToSelect('*')->addFieldToFilter('group_id',4)-> addFieldToFilter('freeze_status', 0);
 
 		foreach ($customer_collection as $customer){
-			$email = $customer->getEmail();//generate a random token
-			$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+            $email = $customer->getEmail();//generate a random token;
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 			$randstring = '';
 			for ($i = 0; $i < 30; $i++) {
 				$randstring = $randstring . $characters[rand(0, strlen($characters))];
 			}
 			
 			$customer->setData('customer_login_token',$randstring)->save();
-			
+
 			//Email body generated by function below
 			$body = $this->generateBodyHtml($customer, $randstring);
 			print_r($body);
@@ -695,16 +795,15 @@ class Mage_Sales_Model_Observer
 			$email_model = Mage::getModel('core/email');
 			
 			$name = $customer->getName();
-			
+
 			$email_model->setSenderName('Abrameals')
 						->setToName($name)
 						->setToEmail($email)
 						->setFromEmail('admin@abrameals.com')
-						->setSubject('Subject here......');
+						->setSubject('Your coming meals for the following week');
 			$email_model->setBody($body)
 						->setType('html')
 						->send();  
-			
 			sleep(1);
 		}
 		 

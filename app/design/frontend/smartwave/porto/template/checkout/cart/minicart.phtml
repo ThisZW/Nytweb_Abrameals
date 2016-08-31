@@ -91,6 +91,35 @@
 			$('.topCartContent').hide();
 			$('.collapse').hide();
 		}
+
+         //check if user select enough meals, if not stop proceeding to checkout page
+        $('#btn-checkout-confirm').click(function(e){
+            var qty = 0;
+            var limit = 0;
+            jQuery('.inner-wrapper> .mini-products-list li', parent.document.body).each(function(i,e){
+                if (typeof jQuery(e).data('qty') !== "undefined"){ 
+                    qty += (jQuery(e).data('qty'));
+                }
+            });
+            jQuery('.inner-wrapper> .mini-products-list li', parent.document.body).each(function(i,e){
+                if (typeof jQuery(e).data('planLimit') !== "undefined"){
+                    limit += (jQuery(e).data('planLimit'));
+                } 
+            });
+            if(limit == 0){
+                group_id = <?php echo Mage::getSingleton('customer/session')->getCustomerGroupId(); ?>;
+                if (group_id !== 4){
+                    e.preventDefault();
+                    alert('You must select a Subscription Plan and Membership options first');
+                }
+            }
+            if (qty != limit) {
+                e.preventDefault();
+                var unselected = limit - qty;
+                alert('You have '+ unselected+' more meals to select.');
+            }
+            
+        });
 	});
 
 

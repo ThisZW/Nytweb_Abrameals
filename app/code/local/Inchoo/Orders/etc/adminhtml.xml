@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+ 
+<config>
+    <menu>
+        <sales>
+            <children>
+                <inchoo_orders translate="title" module="inchoo_orders">
+                    <sort_order>10</sort_order>
+                    <title>Freezing Customers</title>
+                    <action>adminhtml/order/</action>
+                </inchoo_orders>
+            </children>
+        </sales>
+    </menu>
+</config>

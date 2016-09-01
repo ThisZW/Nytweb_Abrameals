@@ -709,7 +709,7 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
 		
 
 		$subscription_plan = $_POST["subscription-plans"];
-		var_dump($subscription_plan);
+		//var_dump($subscription_plan);
 		switch($subscription_plan){
 			case '5-per-week' :
 				$plan_id = $this->plan_5;

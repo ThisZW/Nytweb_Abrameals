@@ -720,7 +720,7 @@ class Mage_Checkout_CartController extends Mage_Core_Controller_Front_Action
 				$limit = 3;
 				break;
 		}
-		echo $plan_id;
+		//echo $plan_id;
 		$membership_or_pot = $_POST["membership-or-pot"];
 		switch($membership_or_pot){
 			case 'membership' :
